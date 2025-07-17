@@ -1,0 +1,12 @@
+@import '~/styles/helpers/mixins';
+
+.content {
+  min-block-size: var(--block-size);
+
+  @include lg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: 24px 30px;
+  }
+}

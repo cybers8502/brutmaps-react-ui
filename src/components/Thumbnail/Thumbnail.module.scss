@@ -1,0 +1,68 @@
+@import '~/styles/helpers/mixins';
+
+.thumbnail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: max-content;
+  gap: 13px;
+  position: relative;
+
+  div:first-child {
+    inline-size: 100%;
+    grid-column: 1/-1;
+  }
+
+  picture,
+  img {
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.swiperPrev,
+.swiperNext {
+  position: absolute;
+  inset-block-start: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transform: translateY(-50%);
+  z-index: 2;
+
+  svg {
+    inline-size: 24px;
+    aspect-ratio: 1/1;
+
+    path {
+      fill: #000;
+      transition: fill 0.3s ease;
+    }
+  }
+
+  &:hover svg path {
+    fill: #fff;
+  }
+}
+
+.swiperPrev {
+  inset-inline-start: 10px;
+
+  svg {
+    transform: rotate(180deg);
+  }
+}
+
+.swiperNext {
+  inset-inline-end: 10px;
+}
+
+.pagination {
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

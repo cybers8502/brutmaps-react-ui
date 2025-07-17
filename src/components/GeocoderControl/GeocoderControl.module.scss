@@ -1,0 +1,121 @@
+@import '~/styles/helpers/mixins';
+
+.geocoder {
+  position: relative;
+
+  input {
+    inline-size: 100%;
+    block-size: 36px;
+    border: none;
+    border-radius: unset;
+    background: none;
+    color: var(--primary-text);
+    font-size: 16px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    caret-color: #db1313;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::-webkit-input-placeholder {
+      color: #000;
+    }
+
+    &:-moz-placeholder {
+      color: #000;
+    }
+
+    &.placeholder {
+      color: #000;
+    }
+  }
+
+  :global {
+
+    .mapboxgl-ctrl-geocoder--icon {
+      fill:  currentColor;
+    }
+
+    .mapboxgl-ctrl-geocoder--powered-by,
+    .mapboxgl-ctrl-geocoder--icon-search,
+    .mapboxgl-ctrl-geocoder--icon-loading,
+    .mapboxgl-ctrl-geocoder--pin-right {
+      display: none !important;
+    }
+
+    .mapboxgl-ctrl-geocoder--button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      block-size: 100%;
+      aspect-ratio: 1/1;
+      cursor: pointer;
+      transition: .3s ease;
+    }
+
+    .mapboxgl-ctrl-geocoder {
+      position: relative;
+      z-index: 1;
+    }
+
+    .suggestions-wrapper {
+      position: absolute;
+      inset-block-start: 100%;
+      inset-inline-start: 0;
+      inline-size: 100%;
+      overflow: hidden;
+      font-size: 16px;
+      line-height: 21px;
+      transition: color 0.3s ease;
+      background-color: #fff;
+    }
+
+    .suggestions {
+      border: 2px solid #2D2D2D;
+
+      > li {
+        > a {
+          display: block;
+          padding-block: 10px;
+          padding-inline: 14px;
+          color: #2D2D2D;
+          cursor: pointer;
+        }
+
+        &:not(:last-child) {
+          border-block-end: 1px solid #dfddd8;
+        }
+
+        &:not(:has(a)) {
+          padding-block: 10px;
+          padding-inline: 14px;
+        }
+      }
+
+      & > li > a:hover {
+        color: #db1313;
+      }
+
+      &:not(:has(a:hover)) {
+        li[class*='active'] > a {
+          color: #db1313;
+        }
+      }
+    }
+  }
+}
+
+.button {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  inline-size: 21px;
+  block-size: 32px;
+
+  path {
+    fill: #2d2d2d;
+  }
+}

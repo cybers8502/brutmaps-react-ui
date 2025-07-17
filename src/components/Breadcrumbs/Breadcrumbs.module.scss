@@ -1,0 +1,31 @@
+@import '~/styles/helpers/mixins';
+
+.breadcrumbs {
+  display: flex;
+  gap: 11px;
+  margin-block-end: 32px;
+  padding-inline: 3px;
+  line-height: 18px;
+  color: #000;
+
+  a,
+  span {
+    display: block;
+  }
+
+  a {
+    color: inherit;
+    text-decoration-line: underline;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--primary-red);
+    }
+  }
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

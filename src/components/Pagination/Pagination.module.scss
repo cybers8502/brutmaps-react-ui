@@ -1,0 +1,32 @@
+@import '~/styles/helpers/mixins';
+
+.container {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  color: #FC6565;
+  text-align: center;
+}
+
+.item {
+
+  &:not(.active) {
+    text-decoration: underline;
+  }
+}
+
+.space {
+  position: relative;
+  top: -6px;
+}
+
+.pages {
+  display: inherit;
+  gap: 24px;
+  grid-auto-flow: column;
+  align-items: flex-end;
+
+  > * {
+    color: #000;
+  }
+}

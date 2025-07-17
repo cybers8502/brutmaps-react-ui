@@ -1,0 +1,97 @@
+@import '~/styles/helpers/mixins';
+
+.component {
+  display: grid;
+  gap: 8px;
+  padding-block: 10px;
+  padding-inline: var(--paddings);
+  z-index: 1;
+
+  @include pre-lg {
+    position: absolute;
+    inset-block-start: 0;
+    inline-size: 100%;
+    grid-template-columns: 1fr 36px;
+
+    &.isOpen {
+      background-color: #0e0e13;
+    }
+  }
+
+  @include lg {
+    --item-size: minmax(293px, 328px);
+
+    grid-template-columns: var(--item-size) 1fr;
+    padding-inline: 43px;
+    background-color: #000;
+    gap: 14px;
+  }
+
+  .mobileContainer {
+    display: grid;
+    gap: inherit;
+
+    @include pre-lg {
+      position: absolute;
+      inset-block-start: 100%;
+      inline-size: 100%;
+      background-color: #0e0e13;
+      padding: inherit;
+    }
+
+    @include lg {
+      grid-auto-columns: var(--item-size);
+      grid-auto-flow: column;
+    }
+  }
+
+  .geoControl,
+  .select,
+  .filter {
+    border: 2px solid #2D2D2D;
+    background: #FFF;
+    color: #0e0e13;
+    leading-trim: both;
+    text-edge: cap;
+    block-size: 40px;
+    padding-inline: 17px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .geoControl {
+    padding-inline-end: 0;
+
+    input {
+      padding-inline-end: 40px;
+    }
+
+    :global {
+
+      .suggestions-wrapper {
+        inline-size: calc(100% + 21px);
+        inset-inline: -19px;
+      }
+
+      .suggestions > li > a {
+        padding-inline: 17px;
+      }
+    }
+  }
+
+  .button {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-block-start: 2px;
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+    block-size: 36px;
+    color: #fff;
+
+    > * {
+      position: absolute;
+    }
+  }
+}

@@ -1,0 +1,68 @@
+@import '~/styles/helpers/mixins';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.photoEl {
+  position: relative;
+
+  input {
+    display: none;
+  }
+
+  &:hover, &.drag-active {
+
+    .photoPreview {
+      border-color: #db1313;
+    }
+  }
+}
+
+.photoPreview {
+  display: block;
+  position: relative;
+  inline-size: 72px;
+  block-size: 72px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background: url('/icon-mdi-user.svg') no-repeat center #d0cfcf;
+  cursor: pointer;
+
+  &:not(:has(img)){
+    border: 2px solid transparent;
+    transition: border-color .3s ease;
+  }
+
+  img {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: inherit;
+  }
+}
+
+.thing {
+  display: flex;
+  place-items: center;
+  place-content: center;
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-end: 2px;
+  inline-size: 18px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: #DB1313;
+  color: #fff;
+  cursor: pointer;
+}
+
+.error {
+  color: var(--error-message);
+}

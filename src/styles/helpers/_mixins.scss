@@ -1,0 +1,12 @@
+@import 'variables';
+
+@mixin pre-lg {
+  @media screen and (width < $MOBILE_BREAKPOINT) {
+    @content;
+  }
+}
+@mixin lg {
+  @media screen and (width >= $MOBILE_BREAKPOINT) {
+    @content;
+  }
+}

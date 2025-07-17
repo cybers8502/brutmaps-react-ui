@@ -1,0 +1,80 @@
+@import '~/styles/helpers/mixins';
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  inline-size: min(420px, 100%);
+  margin-inline: auto;
+  padding-block: 46px;
+  transition: opacity .3s ease;
+
+  @include pre-lg {
+    min-block-size: var(--block-size);
+  }
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(109, 109, 124, 0.1);
+  z-index: 1;
+
+  & + .frame {
+    opacity: .5;
+  }
+}
+
+.mainBlock {
+  margin-block: auto;
+}
+
+.buttonWrap {
+
+  :global(.button) {
+    inline-size: 100%;
+  }
+
+  @include lg {
+    margin-block-start: 8px;
+  }
+}
+
+.footer {
+  text-align: center;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  @include pre-lg {
+    margin-block-start: auto;
+  }
+
+  @include lg {
+    margin-block-start: 40px;
+  }
+}
+
+.buttonBack {
+  display: flex;
+  place-items: center;
+  place-content: center;
+  position: absolute;
+  inset-block-start: 23px;
+  inset-inline-start: -57px;
+  inline-size: 40px;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+
+  &:hover {
+    color: #DB1313;
+  }
+}
+
+.agreements {
+  display: grid;
+  gap: 8px;
+}

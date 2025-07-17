@@ -1,0 +1,21 @@
+@import '~/styles/helpers/mixins';
+
+.posts-list {
+  display: grid;
+  gap: 24px;
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-block-end: 37px;
+
+  > * {
+    margin-block-end: 0;
+  }
+}

@@ -1,0 +1,57 @@
+@import '~/styles/helpers/mixins';
+
+.header {
+  display: grid;
+  gap: 12px;
+
+  @include lg {
+    gap: 15px;
+  }
+}
+
+.layout {
+  [class*='site-centered'] {
+    background-color: var(--primary-white);
+  }
+}
+
+.section {
+  padding-block: var(--padding-start);
+
+  @include pre-lg {
+    max-inline-size: 600px;
+    margin-inline: auto;
+  }
+
+  @include lg {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: min(600px, 58%) min(400px, 38%);
+    gap: 24px;
+    padding-block-end: 63px;
+  }
+}
+
+.wrap {
+  overflow: hidden;
+
+  @include lg {
+    inline-size: 100%;
+  }
+
+  [data-banner] {
+    @include lg {
+      display: none !important;
+    }
+  }
+}
+
+.aside {
+  @include lg {
+    [data-banner] {
+      position: sticky;
+      inset-block-start: var(--padding-start);
+      inline-size: 100%;
+    }
+  }
+}

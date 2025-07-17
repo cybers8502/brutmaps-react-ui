@@ -1,0 +1,13 @@
+.cancel {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  block-size: 100%;
+  aspect-ratio: 1/1;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor:  pointer;
+  background-color: #fff;
+}

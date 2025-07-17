@@ -1,0 +1,85 @@
+.form {
+
+  &__fieldsgroup {
+    display: grid;
+    gap: 16px;
+  }
+
+  &__fieldset {
+    display: grid;
+    gap: 5px;
+
+    :has(label) {
+      display: grid;
+      grid-template-columns: 1fr 77%;
+      gap: 16px;
+    }
+  }
+
+  input, select {
+    inline-size: 100%;
+    block-size: 48px;
+    padding-inline: 12px;
+    border: 2px solid #2D2D2D;
+    background-color: #FFF;
+    color: #000;
+    font-size: 14px;
+    leading-trim: both;
+    text-edge: cap;
+    font-style: normal;
+    font-weight: 400;
+
+    @include lg {
+      block-size: 40px;
+    }
+  }
+
+  select {
+    appearance: none;
+    background: url(/dropdown-arrow.svg) no-repeat center right/36px 36px;
+    cursor: pointer;
+  }
+
+  .checkbox {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 16px 1fr;
+    gap: 13px;
+    text-align: start;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      display: block;
+      inline-size: 16px;
+      aspect-ratio: 1/1;
+      background-color: #fff;
+      border: 2px solid #2D2D2D;
+      transition: background-color .3s ease;
+    }
+
+    input {
+      display: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+
+      @include lg {
+        transition: .3s ease;
+
+        &:hover {
+          color: var(--primary-red);
+        }
+      }
+    }
+
+    &:has(input:checked) {
+
+      &:before {
+        background: url(/checkbox-selected.svg) no-repeat center/16px 16px #2D2D2D;
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+@import '~/styles/helpers/mixins';
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @include pre-lg {
+    padding-block: 22px;
+    padding-inline: 44px;
+  }
+
+  @include lg {
+    block-size: 60px;
+    margin-inline: auto 40px;
+  }
+
+  a {
+    color: #fff;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #DB1313;
+    }
+  }
+}

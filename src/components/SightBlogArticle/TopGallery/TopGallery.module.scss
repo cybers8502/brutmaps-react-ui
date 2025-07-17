@@ -1,0 +1,122 @@
+@import '~/styles/helpers/mixins';
+
+.topGallery,
+.swiper {
+
+  .picture, figure, picture, img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+    background-color: #ccc;
+  }
+}
+
+.topGallery {
+
+  @include lg {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    margin-block-end: 14px;
+    grid-template-columns: 100%;
+    grid-template-rows: 300px;
+    grid-template-areas:
+    "main";
+
+    &:has(.picture:nth-last-child(2)) {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+    "main second";
+    }
+
+    &:has(.picture:nth-last-child(3)) {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 300px);
+      grid-template-areas:
+    "main second"
+    "main third";
+    }
+
+    &:has(.picture:nth-last-child(4)) {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 300px);
+      grid-template-areas:
+    "main second"
+    "third fourth";
+    }
+
+    &:has(.picture:nth-last-child(5)) {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-areas:
+    "main main second third"
+    "main main fourth fifth";
+    }
+
+    .picture:nth-child(1) {grid-area: main}
+    .picture:nth-child(2) {grid-area: second}
+    .picture:nth-child(3) {grid-area: third}
+    .picture:nth-child(4) {grid-area: fourth}
+    .picture:nth-child(5) {grid-area: fifth}
+  }
+}
+
+.swiper {
+  inline-size: 100%;
+  user-select: none;
+
+  :global(.swiper-slide) {
+    block-size: auto;
+  }
+
+  :global(.swiper-pagination) {
+    position: absolute;
+    inset-block-end: 40px;
+    inset-inline-end: 10px;
+    inline-size: 175px;
+    border-block-end: 2px solid #db1313;
+    z-index: 1;
+
+    :global(.swiper-scrollbar-drag) {
+      position: absolute;
+      inset-block-start: auto;
+      inset-inline-start: 0;
+      inset-block-end: 0;
+      block-size: 8px;
+      background-color: #db1313;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+  }
+}
+
+.popup {
+  background-color: var(--primary-black)!important;
+}
+
+.galleryPopup {
+  position: relative;
+  border-radius: 0!important;
+  background-color: transparent!important;
+}
+
+.showMore {
+
+  @include lg {
+    position: absolute;
+    inset-block-end: 15px;
+    inset-inline-end: 15px;
+    padding: 10px 15px;
+    background-color: #fff;
+    border: 2px solid var(--primary-black);
+    font-size: 14px;
+    transition: .3s ease;
+    transition-property: border-color, color;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--primary-red);
+      color: var(--primary-red);
+    }
+  }
+}

@@ -1,0 +1,67 @@
+@import '~/styles/helpers/mixins';
+
+.swiper {
+  margin-inline: 0;
+  overflow: visible;
+  block-size: 100dvh;
+  inline-size: 100%;
+
+  @include lg {
+    block-size: calc( 100dvh - 48px );
+  }
+
+  :global(.swiper-slide) {
+    height: auto;
+
+    figure,
+    picture,
+    img {
+      display: block;
+      block-size: 100%;
+      object-fit: cover;
+    }
+
+  }
+
+  :global {
+
+    .swiper-slide {
+      transition: opacity .3s ease;
+      will-change: opacity;
+    }
+
+    .swiper-slide:not(.swiper-slide-active) {
+      opacity: 0.5;
+    }
+  }
+
+  :global(.swiper-pagination) {
+    position: absolute;
+    inset-block-end: 40px;
+    inset-inline-end: 10px;
+    inline-size: 175px;
+    border-block-end: 2px solid #db1313;
+    z-index: 1;
+
+    @include lg {
+      inset-block-end: 80px;
+      inset-inline-end: -103px;
+      inline-size: 315px;
+    }
+
+    :global(.swiper-scrollbar-drag) {
+      position: absolute;
+      inset-block-start: auto;
+      inset-inline-start: 0;
+      inset-block-end: 0;
+      block-size: 8px;
+      background-color: #db1313;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+
+      @include lg {
+        block-size: 13px;
+      }
+    }
+  }
+}

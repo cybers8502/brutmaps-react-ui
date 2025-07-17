@@ -1,0 +1,71 @@
+@import '~/styles/helpers/mixins';
+
+.container {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--primary-white);
+  cursor: pointer;
+  z-index: 1;
+
+  @include lg {
+    block-size: 60px;
+  }
+
+  &:hover {
+
+    .popup {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  picture {
+    inline-size: 42px;
+    block-size: 42px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    overflow: clip;
+  }
+}
+
+.name {
+  margin-inline-end: 10px;
+}
+
+.popup {
+  display: grid;
+  justify-content: flex-start;
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-end: 0;
+  background-color: #2d2d2d;
+  padding-block: 8px;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s ease;
+  transition-property: visibility, opacity;
+
+  li {
+  }
+
+  a, button {
+    display: block;
+    padding-block: 8px;
+    padding-inline: 16px;
+    color: var(--primary-white);
+    font-size: 16px;
+    line-height: 18px;
+    transition: color .3s ease;
+    cursor: pointer;
+
+    &:hover {
+      color: #DB1313;
+    }
+  }
+}

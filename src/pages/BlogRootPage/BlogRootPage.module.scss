@@ -1,0 +1,9 @@
+@import '~/styles/helpers/mixins';
+
+.layout {
+  @include pre-lg {
+    [class^='site-centered'] {
+      inline-size: min(475px, 100%);
+    }
+  }
+}

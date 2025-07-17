@@ -1,0 +1,68 @@
+@import '~/styles/helpers/mixins';
+
+.container {
+  inline-size: min(572px, 100%);
+  margin-inline: auto;
+  background-color: #fff;
+}
+
+.picture {
+  display: flex;
+  align-items: center;
+  inline-size: 75px;
+  block-size: 75px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: clip;
+  text-align: center;
+  font-size: 11px;
+  line-height: 130%;
+  background-color: rgba(204, 204, 204, .3);
+}
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  inline-size: min(420px, 100%);
+  margin-inline: auto;
+  padding-block: 54px 54px;
+
+  @include pre-lg {
+    min-block-size: var(--block-size);
+  }
+}
+
+.mainBlock {
+  margin-block: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 55px;
+  margin-block-end: 30px;
+}
+
+.profileDetails {
+  display: grid;
+  gap: 16px;
+}
+
+.buttonWrapper {
+  display: grid;
+  gap: 16px;
+  inline-size: 100%;
+
+  @include lg {
+    margin-block-start: 8px;
+  }
+
+  :global {
+
+    .button {
+      inline-size: 100%;
+    }
+  }
+}

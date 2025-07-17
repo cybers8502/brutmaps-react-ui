@@ -1,0 +1,113 @@
+@import '~/styles/helpers/mixins';
+
+.item {
+  display: grid;
+  background-color: #fff;
+
+  @include lg {
+    padding-inline-end: 40px;
+    gap: 62px;
+    grid-template-columns: 420px 1fr;
+  }
+
+  &:hover {
+    .title {
+      color: var(--primary-red);
+    }
+  }
+}
+
+.title {
+  align-items: center;
+  margin-block-end: 22px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  transition: color 0.3s ease;
+
+  a {
+    color: currentColor;
+  }
+}
+
+.description {
+  display: grid;
+  gap: 10px;
+}
+
+.picture {
+  @include pre-lg {
+    aspect-ratio: 1/1;
+  }
+
+  a,
+  img {
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.txt {
+}
+
+.regular-price {
+  margin-block-end: 6px;
+  padding-inline: 6px;
+  font-weight: 700;
+  line-height: 1;
+
+  span {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset-block-start: 10px;
+      inset-inline: -4px;
+      block-size: 1px;
+      background-color: #db1313;
+    }
+  }
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.rightColl {
+  max-inline-size: 480px;
+
+  @include pre-lg {
+    padding: 30px;
+  }
+
+  @include lg {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-block: 41px 34px;
+  }
+}
+
+.footer {
+  margin-block-start: 40px;
+}
+
+.buttonsWrap {
+  display: flex;
+  gap: 26px;
+  margin-block-start: 26px;
+
+  [class^='button'] {
+    inline-size: 110px;
+    block-size: 48px;
+    font-weight: bold;
+
+    @include lg {
+      inline-size: 180px;
+    }
+  }
+}

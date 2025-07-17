@@ -1,0 +1,32 @@
+.container {
+  position: relative;
+  block-size: 40px;
+  padding-inline-end: 0!important;
+  border: 2px solid #2D2D2D;
+  background-color: #fff;
+
+  --inlineStart: 14px;
+
+  .select {
+    inline-size: 100%;
+    block-size: 100%;
+    padding-inline: var(--inlineStart) 40px;
+    border: none;
+    font-size: inherit;
+    font-weight: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url(/dropdown-arrow.svg) no-repeat 100% 50% #fff;
+    color: inherit;
+
+    &.selected {
+      background: #fff;
+    }
+  }
+
+  &.loader {
+    display: flex;
+    align-items: center;
+    padding-inline-start: var(--inlineStart);
+  }
+}

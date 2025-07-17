@@ -1,0 +1,58 @@
+@use "~/styles/helpers/mixins" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+  isolation: isolate;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background:rgba(0, 0, 0, .6);
+
+  @include pre-lg {
+
+    :global {
+      .close-button {
+        background-color: var(--Content-Gray-50, #F5F5F7);
+        color: var(--Text-Black);
+      }
+    }
+  }
+}
+
+.wrap {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  min-height: 100%;
+  pointer-events: none;
+
+  @include lg {
+    padding: 24px;
+  }
+}
+
+.content {
+  margin: auto;
+  inline-size: 100%;
+  background-color: #fff;
+  pointer-events: all;
+
+  @include pre-lg {
+    min-block-size: 100dvh;
+  }
+
+  @include lg {
+    inline-size: min(100%, 544px);
+    border-radius: 32px;
+  }
+}
+
+.cancelButton {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  block-size: 24px;
+  aspect-ratio: 1 / 1;
+  z-index: 2;
+}

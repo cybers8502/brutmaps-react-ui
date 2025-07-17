@@ -1,0 +1,89 @@
+@import '~/styles/helpers/mixins';
+
+.title {
+  margin-block-end: 20px;
+}
+
+.grid {
+  display: grid;
+  gap: 24px;
+
+  @include pre-lg {
+    grid-auto-flow: row;
+  }
+
+  @include lg {
+    grid-template-columns: 456px 1fr;
+  }
+}
+
+.description {
+  margin-block-end: 30px;
+
+  li {
+    position: relative;
+    padding-inline-start: 22px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset-inline-start: 9px;
+      inset-block-start: 9px;
+      inline-size: 4px;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+  }
+}
+
+.information {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  background-color: rgba(255, 255, 255, 0.8);
+
+  @include lg {
+    padding: 44px;
+  }
+}
+
+.regular-price {
+  margin-block-end: 6px;
+  padding-inline: 6px;
+  font-weight: 700;
+
+  span {
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset-block-start: 10px;
+      inset-inline: -4px;
+      block-size: 1px;
+      background-color: #db1313;
+    }
+  }
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  margin-block-start: auto;
+}
+
+.buttonsWrap {
+  [class^='button'] {
+    inline-size: 180px;
+    block-size: 48px;
+    font-weight: bold;
+  }
+}

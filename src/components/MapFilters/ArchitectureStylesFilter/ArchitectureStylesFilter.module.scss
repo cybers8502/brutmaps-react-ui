@@ -1,0 +1,26 @@
+.container {
+  position:  relative;
+  padding-inline-end: 0!important;
+
+  .select {
+    inline-size: 100%;
+    block-size: 100%;
+    padding-inline: 0 40px;
+    border: none;
+    font-size: inherit;
+    font-weight: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url(dropdown-arrow.svg) no-repeat 100% 50% #fff;
+    color: inherit;
+
+    &.selected {
+      background: #fff;
+    }
+  }
+
+  &.loader {
+    display: flex;
+    align-items: center;
+  }
+}

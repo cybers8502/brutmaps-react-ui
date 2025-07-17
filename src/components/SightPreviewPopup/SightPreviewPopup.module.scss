@@ -1,0 +1,89 @@
+@import '~/styles/helpers/mixins';
+
+.container {
+  position: relative;
+  padding: 0;
+  color: inherit;
+  background-color: #DFDDD9;
+
+  @include pre-lg {
+    display: grid;
+    grid-template-columns: 181px 1fr;
+    grid-template-rows: 100%;
+    align-items: center;
+    position: absolute;
+    inset-block-end: 20px;
+    inset-inline: 20px;
+    block-size: 235px;
+  }
+
+  @include lg {
+    transition: color 0.3s ease;
+    color: #FFF;
+    font-weight: 700;
+    line-height: 20px;
+    cursor: pointer;
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      inset-block-end: 0;
+      block-size: 25%;
+      background: linear-gradient(0deg, #2D2D2D 0%, rgba(45, 45, 45, 0.00) 100%);
+      z-index: 2;
+    }
+
+    &:hover {
+      color: #db1313;
+    }
+  }
+}
+
+.picture {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.imgLink {
+  block-size: 100%;
+}
+
+.text {
+  text-align: left;
+
+  @include pre-lg {
+    padding: 22px;
+  }
+
+  @include lg {
+    position: absolute;
+    inset-block-end: 11px;
+    inset-inline: 15px;
+    z-index: 3;
+  }
+
+  b {
+    font-weight: 700;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  inline-size: 28px;
+  aspect-ratio: 1 / 1;
+
+  svg path {
+    fill: #000;
+  }
+}

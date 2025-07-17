@@ -1,0 +1,12 @@
+@import '~/styles/helpers/mixins';
+
+.frame {
+  position: relative;
+  inline-size: min(572px, 100%);
+  margin-inline: auto;
+
+  @include lg {
+    background-color: #fff;
+    margin: 0 auto;
+  }
+}

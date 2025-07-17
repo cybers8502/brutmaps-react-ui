@@ -1,0 +1,20 @@
+@import '~/styles/helpers/mixins';
+
+.logo {
+  display: block;
+  inline-size: 105px;
+  color: #dfddd8;
+}
+
+.logo-wrap {
+  display: grid;
+  align-items: center;
+  font-size: 12px;
+  line-height: 18px;
+  color: #dfddd8;
+
+  @include lg {
+    grid-template-columns: 105px 230px;
+    gap: 18px;
+  }
+}

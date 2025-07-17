@@ -1,0 +1,82 @@
+@import '~/styles/helpers/mixins';
+
+.section {
+
+}
+
+.wrap {
+
+}
+
+.content {
+  inline-size: 100%;
+  padding-block: 20px 30px;
+  background-color: #fff;
+  overflow: hidden;
+
+  > :global(.article) {
+    max-inline-size: 600px;
+    margin-inline: auto;
+  }
+}
+
+.info {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 17px;
+  line-height: 1.2;
+
+  @include pre-lg {
+    margin-block-end: 17px;
+    padding-inline-end: 13px;
+  }
+
+  @include lg {
+    font-size: 24px;
+    grid-area: info;
+  }
+
+  time {
+    margin-inline-start: 30px;
+    font-weight: 500;
+  }
+}
+
+.header {
+  margin-block-end: 32px;
+
+  @include lg {
+    display: grid;
+    grid-template-areas:
+      'title button'
+      'info info';
+    grid-template-columns: 1fr 230px;
+    grid-auto-rows: min-content;
+    margin-block-end: 34px;
+    gap: 8px 24px;
+
+    h1 {
+      grid-area: title;
+    }
+  }
+}
+
+.buttonWrapper {
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 8px;
+
+  @include lg {
+    grid-area: button;
+  }
+
+  :global(.button) {
+    block-size: 50px;
+    padding-inline: 22px;
+
+    @include lg {
+      padding-inline: 30px;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@import '~/styles/helpers/mixins';
+
+body:has(.commonMap) {
+  background-color: var(--primary-background);
+}
+
+.commonMap {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  position: relative;
+  block-size: 100dvh;
+
+  .commonMapContent {
+    padding: 0;
+  }
+
+  :global {
+
+    .site-centered {
+      display: grid;
+      grid-template-rows: auto;
+      position: relative;
+      inline-size: 100%;
+      block-size: 100%;
+      padding: 0;
+
+      @include lg {
+        grid-template-rows: auto 1fr;
+      }
+    }
+
+    .mapboxgl-map {
+      //block-size: var(--block-size)!important;
+      isolation: isolate;
+    }
+  }
+}

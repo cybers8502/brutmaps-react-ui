@@ -1,0 +1,12 @@
+@import '~/styles/helpers/mixins';
+
+.container {
+  margin-block-start: 1rem;
+
+  div:has(iframe) {
+
+    iframe {
+      margin-inline: auto!important;
+    }
+  }
+}

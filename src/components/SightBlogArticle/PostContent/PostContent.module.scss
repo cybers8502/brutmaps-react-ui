@@ -1,0 +1,20 @@
+@use "~/styles/helpers/mixins" as *;
+
+:global {
+  .article {
+
+    figure {
+      cursor: pointer;
+    }
+  }
+}
+
+.popup {
+  background-color: var(--primary-black)!important;
+}
+
+.galleryPopup {
+  position: relative;
+  border-radius: 0!important;
+  background-color: transparent!important;
+}

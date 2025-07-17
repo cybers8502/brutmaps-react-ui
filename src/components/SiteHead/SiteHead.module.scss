@@ -1,0 +1,82 @@
+@import '~/styles/helpers/mixins';
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--paddings);
+  background-color: #2d2d2d;
+
+  @include pre-lg {
+    padding-block: 14px;
+  }
+
+  @include lg {
+    display: grid;
+    grid-template-columns: 392px 1fr;
+    padding-inline: 43px;
+  }
+}
+
+.mobile-head {
+  @include pre-lg {
+    position: absolute;
+    inset: 0;
+    background-color: #2d2d2d;
+    z-index: 3;
+
+    [class*='logo'] {
+      inline-size: 198px;
+    }
+  }
+}
+
+.authControls {
+  display: flex;
+
+  @include pre-lg {
+    display: grid;
+    grid-auto-rows: max-content;
+  }
+
+  @include lg {
+    block-size: 60px;
+  }
+
+  > a, > button {
+    display: flex;
+    place-items: center;
+    padding-inline: 26px;
+    font-size: 16px;
+    line-height: 18px;
+    color: var(--primary-white);
+    cursor: pointer;
+
+    @include pre-lg {
+      padding-block: 22px;
+      padding-inline: 35px;
+      border-inline-start: 9px solid transparent;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 100%;
+
+      &.is-active {
+        border-inline-start-color: #db1313;
+        background: rgba(217, 217, 217, 0.1);
+      }
+    }
+
+    @include lg {
+      block-size: 100%;
+      padding-block-start: 5px;
+      border-block-end: 5px solid transparent;
+      transition: border-bottom-color 0.3s ease;
+
+      &:hover,
+      &.is-active {
+        border-bottom-color: #db1313;
+      }
+    }
+  }
+}

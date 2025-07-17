@@ -1,0 +1,71 @@
+//TODO remove buttons
+.button {
+  display: inline-flex;
+  place-items: center;
+  place-content: center;
+  block-size: 50px;
+  padding-inline: 10px;
+  font-weight: 400;
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+
+  @include lg {
+    block-size: 32px;
+    padding-inline: 12px;
+  }
+
+  &--stroke-red {
+    border: 2px solid #db1313;
+    background-color: transparent;
+    color: #db1313;
+    transition: 0.3s ease;
+    transition-property: background-color, color;
+
+    &:active {
+      background-color: #db1313;
+      color: #fff;
+    }
+
+    @include lg {
+      &:hover {
+        background-color: #db1313;
+        color: #fff;
+      }
+    }
+  }
+
+  &--fill-red {
+    background-color: #db1313;
+    color: #fff;
+    transition: 0.3s ease;
+    transition-property: background-color;
+
+    &:active {
+      background-color: rgba(219, 19, 19, 0.8);
+    }
+
+    @include lg {
+      &:hover {
+        background-color: rgba(219, 19, 19, 0.8);
+      }
+    }
+  }
+
+  &--fill-dark-shade-gray {
+    background-color: #2d2d2d;
+    color: #fff;
+    transition: 0.3s ease;
+    transition-property: background-color;
+
+    &:active {
+      background-color: rgba(45, 45, 45, 0.8);
+    }
+
+    @include lg {
+      &:hover {
+        background-color: rgba(45, 45, 45, 0.8);
+      }
+    }
+  }
+}

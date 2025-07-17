@@ -1,0 +1,12 @@
+@import '~/styles/helpers/mixins';
+
+.section {
+  display: grid;
+  gap: 8px;
+
+  @include lg {
+    grid-template-columns: 200px;
+    gap: 14px;
+    padding-block-end: 8px;
+  }
+}
