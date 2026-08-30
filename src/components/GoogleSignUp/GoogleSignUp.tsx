@@ -6,6 +6,7 @@ import {jwtDecode} from 'jwt-decode';
 import routes from '~/util/routes.ts';
 import apiRoutes from '~/util/apiRoutes.ts';
 import styles from './GoogleSignUp.module.scss';
+import {gqlFetch} from '~/util/graphql.ts';
 import {
   CheckEmailExistsResponse,
   CheckEmailInput,
@@ -17,36 +18,45 @@ import {
 } from '~/components/GoogleSignUp/GoogleSignUp.interface.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
 
-const checkEmail = async (url: string, {arg}: {arg: CheckEmailInput}) => {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(arg),
-  });
+const CHECK_EMAIL_MUTATION = `
+  mutation CheckEmail($email: String!) {
+    checkEmail(input: {clientMutationId: "1", email: $email}) {
+      result { exists message }
+    }
+  }
+`;
 
-  if (!res.ok) throw new Error('Email check failed');
-  return res.json();
+const GOOGLE_AUTH_MUTATION = `
+  mutation GoogleAuth($email: String!, $firstName: String, $lastName: String, $avatar: String) {
+    googleAuth(input: {
+      clientMutationId: "1"
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+      avatar: $avatar
+    }) {
+      authPayload {
+        authToken
+        refreshToken
+        user { email }
+      }
+    }
+  }
+`;
+
+const checkEmail = async (_url: string, {arg}: {arg: CheckEmailInput}) => {
+  return gqlFetch<CheckEmailExistsResponse>(CHECK_EMAIL_MUTATION, arg as unknown as Record<string, unknown>);
 };
 
-const registerUser = async (url: string, {arg}: {arg: RegisterUserInput}) => {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      // 'X-WP-Nonce': window?.WP_DATA?.nonce || '',
-    },
-    body: JSON.stringify(arg),
-  });
-
-  if (!res.ok) throw new Error((await res.json()).message || 'Registration failed');
-  return res.json();
+const registerUser = async (_url: string, {arg}: {arg: RegisterUserInput}) => {
+  return gqlFetch<RegisterUserResponse>(GOOGLE_AUTH_MUTATION, arg as unknown as Record<string, unknown>);
 };
 
 export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}: GoogleSignUpProps) {
   const navigate = useNavigate();
 
   const {trigger: register} = useSWRMutation<RegisterUserResponse, Error, string, RegisterUserInput>(
-    import.meta.env.VITE_SITE_URI + apiRoutes.googleLogin,
+    import.meta.env.VITE_SITE_URI + apiRoutes.graphql,
     registerUser,
   );
 
@@ -55,7 +65,7 @@ export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}
     Error,
     string,
     CheckEmailInput
-  >(import.meta.env.VITE_SITE_URI + apiRoutes.checkEmail, checkEmail);
+  >(import.meta.env.VITE_SITE_URI + apiRoutes.graphql, checkEmail);
 
   const handleSuccess = async (credentialResponse: CredentialProps) => {
     inProgress(true);
@@ -64,14 +74,14 @@ export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}
       const decoded: DecodedCredentialResponse = jwtDecode(credentialResponse.credential as string);
 
       const email = decoded.email;
-      const first_name = decoded.given_name || '';
-      const last_name = decoded.family_name || '';
+      const firstName = decoded.given_name || '';
+      const lastName = decoded.family_name || '';
       const picture = decoded.picture || '';
 
       if (withUserCheckUp) {
         const check = await checkEmailExists({email});
 
-        if (check.data.exists) {
+        if (check.checkEmail.result.exists) {
           errorMessage('User with this email already exists. Please log in instead.');
           return;
         }
@@ -79,12 +89,13 @@ export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}
 
       const result = await register({
         email,
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         avatar: picture,
       });
 
-      saveTokens(result.data.access_token, result.data.refresh_token, email);
+      const {authToken, refreshToken} = result.googleAuth.authPayload;
+      saveTokens(authToken, refreshToken);
       invalidateMapData();
       navigate(routes.myAccount);
     } catch (error: unknown) {

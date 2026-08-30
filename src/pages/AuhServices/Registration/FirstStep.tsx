@@ -6,20 +6,30 @@ import PasswordField from '~/pages/AuhServices/components/PasswordField/Password
 import {useState} from 'react';
 import useSWRMutation from 'swr/mutation';
 import apiRoutes from '~/util/apiRoutes.ts';
+import {gqlFetch} from '~/util/graphql.ts';
 
 interface FirstStepProps {
   initialData: {email: string; password: string};
   handleFirstStep: ({email, password}: {email: string; password: string}) => void;
 }
 
-const checkEmailExists = async (url: string, {arg}: {arg: {email: string}}) => {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(arg),
-  });
+interface CheckEmailResponse {
+  checkEmail: {
+    result: {exists: boolean; message: string};
+  };
+}
 
-  return response.json();
+const CHECK_EMAIL_MUTATION = `
+  mutation CheckEmail($email: String!) {
+    checkEmail(input: {clientMutationId: "1", email: $email}) {
+      result { exists message }
+    }
+  }
+`;
+
+const checkEmailExists = async (_url: string, {arg}: {arg: {email: string}}) => {
+  const data = await gqlFetch<CheckEmailResponse>(CHECK_EMAIL_MUTATION, arg as Record<string, unknown>);
+  return data.checkEmail.result;
 };
 
 export default function FirstStep({initialData, handleFirstStep}: FirstStepProps) {
@@ -31,7 +41,7 @@ export default function FirstStep({initialData, handleFirstStep}: FirstStepProps
 
   const [apiError, setApiError] = useState('');
   const {trigger: checkEmail, isMutating} = useSWRMutation(
-    import.meta.env.VITE_SITE_URI + apiRoutes.checkEmail,
+    import.meta.env.VITE_SITE_URI + apiRoutes.graphql,
     checkEmailExists,
   );
 

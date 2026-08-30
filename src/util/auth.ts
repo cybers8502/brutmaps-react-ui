@@ -1,6 +1,9 @@
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode, JwtPayload} from 'jwt-decode';
 import Cookies from 'js-cookie';
-import apiRoutes from '~/util/apiRoutes.ts';
+import {gqlFetch} from '~/util/graphql.ts';
+
+const LEEWAY_SEC = 45;
+let inFlightRefresh: Promise<string | null> | null = null;
 
 interface RequestInit {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -8,13 +11,24 @@ interface RequestInit {
   body?: BodyInit | null;
 }
 
-export const saveTokens = (accessToken: string, refreshToken: string, email: string) => {
+function isExpired(token: string): boolean {
+  try {
+    const decoded = jwtDecode<JwtPayload>(token);
+    if (!decoded?.exp) return true;
+    const now = Math.floor(Date.now() / 1000);
+    return decoded.exp < (now + LEEWAY_SEC);
+  } catch {
+    return true;
+  }
+}
+
+export const saveTokens = (accessToken: string, refreshToken: string) => {
   Cookies.set('authToken', accessToken, {
     expires: 1 / 96,
     secure: true,
     sameSite: 'Strict',
   });
-  Cookies.set('refreshToken', JSON.stringify({refreshToken: refreshToken, email: email}), {
+  Cookies.set('refreshToken', refreshToken, {
     expires: 7,
     secure: true,
     sameSite: 'Strict',
@@ -34,59 +48,89 @@ export const removeAccessToken = () => Cookies.remove('authToken');
 
 export const removeRefreshToken = () => Cookies.remove('refreshToken');
 
-async function refreshAuthToken() {
-  const refreshTokenData = await getRefreshToken();
+const REFRESH_TOKEN_MUTATION = `
+  mutation RefreshJwtAuthToken($jwtRefreshToken: String!) {
+    refreshJwtAuthToken(input: {clientMutationId: "1", jwtRefreshToken: $jwtRefreshToken}) {
+      authToken
+    }
+  }
+`;
 
-  if (!refreshTokenData) {
+async function refreshAuthToken() {
+  const refreshToken = await getRefreshToken();
+
+  if (!refreshToken) {
     throw new Error('Refresh token is missing.');
   }
 
-  const {email, refreshToken} = JSON.parse(refreshTokenData);
+  const data = await gqlFetch<{refreshJwtAuthToken: {authToken: string} | null}>(
+    REFRESH_TOKEN_MUTATION,
+    {jwtRefreshToken: refreshToken},
+  );
 
-  const response = await fetch(import.meta.env.VITE_SITE_URI + apiRoutes.refreshToken, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({email, refresh_token: refreshToken}),
-  });
+  const authToken = data.refreshJwtAuthToken?.authToken;
+  if (!authToken) throw new Error('Failed to refresh token');
 
-  if (!response.ok) throw new Error('Failed to refresh token');
-
-  const data = await response.json();
-  Cookies.set('authToken', data.access_token);
-  Cookies.set('refreshToken', data.refresh_token);
-  return data.access_token;
+  Cookies.set('authToken', authToken);
+  return authToken;
 }
 
-export async function fetchWithToken(url: string, options?: RequestInit) {
-  let authToken = Cookies.get('authToken');
-
-  if (authToken) {
-    const decodedToken = jwtDecode(authToken);
-    const currentTime = Date.now() / 1000;
-
-    if (!decodedToken?.exp) throw new Error('Token decoded is missing.');
-
-    if (decodedToken.exp < currentTime) {
-      try {
-        authToken = await refreshAuthToken();
-      } catch (error) {
-        clearTokens();
-        throw error;
-      }
+async function ensureFreshToken(): Promise<string> {
+  let token = getAccessToken();
+  console.log('token ', token);
+  if (!token || isExpired(token)) {
+    console.log('!token');
+    if (!inFlightRefresh) {
+      inFlightRefresh = (async () => {
+        try {
+          const newToken = await refreshAuthToken();
+          console.log('newToken ', newToken);
+          return newToken || getAccessToken() || null;
+        } finally {
+          console.log('finally');
+          const t = inFlightRefresh;
+          setTimeout(() => { if (inFlightRefresh === t) inFlightRefresh = null; }, 0);
+        }
+      })();
     }
-  } else {
-    throw new Error('Authentication token is missing.');
+    const refreshed = await inFlightRefresh;
+    console.log('refreshed ', refreshed);
+    if (!refreshed) {
+      clearTokens();
+      throw new Error('Unable to refresh auth token.');
+    }
+    token = refreshed;
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...options?.headers,
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
+  return token;
+}
+
+
+export async function fetchWithToken(url: string, options?: RequestInit) {
+  const authToken = await ensureFreshToken();
+  console.log('authToken ', authToken);
+  const doFetch = (bearer: string) =>
+    fetch(url, {
+      ...options,
+      headers: {
+        ...(options?.headers || {}),
+        Authorization: `Bearer ${bearer}`,
+      },
+    });
+
+  let response = await doFetch(authToken);
+
+  console.log('response ', response);
+  console.log('response.status ', response.status);
+  if (response.status === 401 || response.status === 419) {
+    try {
+      const fresh = await ensureFreshToken();
+      response = await doFetch(fresh);
+    } catch (e) {
+      clearTokens();
+      throw e instanceof Error ? e : new Error('Unauthorized and refresh failed.');
+    }
+  }
 
   let responseData = null;
   try {

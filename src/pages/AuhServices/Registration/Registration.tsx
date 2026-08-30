@@ -15,6 +15,9 @@ import classNames from 'classnames';
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
 import useFetchUserCountries from '~/hooks/fetchApi/useFetchUserCountries.tsx';
 import apiRoutes from '~/util/apiRoutes.ts';
+import {gqlFetch} from '~/util/graphql.ts';
+import {saveTokens} from '~/util/auth.ts';
+import {invalidateMapData} from '~/util/mutateMapData.ts';
 import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
 
@@ -28,18 +31,77 @@ interface RegisterUserFrom {
   subscribe_to_newsletter: boolean;
 }
 
-const registerUser = async (url: string, {arg}: {arg: FormData}) => {
-  const response = await fetch(url, {
+interface RegisterInput {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  country: string;
+  subscribeToNewsletter: boolean;
+  photoFile: File | null;
+}
+
+interface RegisterResponse {
+  register: {
+    authPayload: {
+      authToken: string;
+      refreshToken: string;
+      user: {email: string};
+    };
+  };
+}
+
+const REGISTER_MUTATION = `
+  mutation Register(
+    $email: String!
+    $password: String!
+    $firstName: String
+    $lastName: String
+    $country: String
+    $subscribeToNewsletter: Boolean
+    $photoUrl: String
+  ) {
+    register(input: {
+      clientMutationId: "1"
+      email: $email
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      country: $country
+      subscribeToNewsletter: $subscribeToNewsletter
+      photoUrl: $photoUrl
+    }) {
+      authPayload {
+        authToken
+        refreshToken
+        user { email }
+      }
+    }
+  }
+`;
+
+const uploadPhoto = async (photoFile: File): Promise<string> => {
+  const formData = new FormData();
+  formData.append('photo', photoFile);
+
+  const response = await fetch(import.meta.env.VITE_SITE_URI + apiRoutes.userPhotoUpload, {
     method: 'POST',
-    body: arg,
+    body: formData,
   });
 
+  const responseData = await response.json();
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'User registration failed.');
+    throw new Error(responseData.message || 'Photo upload failed.');
   }
 
-  return response.json();
+  return responseData.data.photo_url;
+};
+
+const registerUser = async (_url: string, {arg}: {arg: RegisterInput}): Promise<RegisterResponse> => {
+  const {photoFile, ...fields} = arg;
+  const photoUrl = photoFile ? await uploadPhoto(photoFile) : null;
+
+  return gqlFetch<RegisterResponse>(REGISTER_MUTATION, {...fields, photoUrl});
 };
 
 export default function RegisterUser() {
@@ -69,7 +131,7 @@ export default function RegisterUser() {
   });
 
   const {trigger: sendRequest, isMutating} = useSWRMutation(
-    import.meta.env.VITE_SITE_URI + apiRoutes.userEmailRegistration,
+    import.meta.env.VITE_SITE_URI + apiRoutes.graphql,
     registerUser,
   );
 
@@ -87,20 +149,20 @@ export default function RegisterUser() {
     setApiError('');
 
     try {
-      const formData = new FormData();
-      formData.append('email', userData.email);
-      formData.append('password', userData.password);
-      formData.append('first_name', data.firstName);
-      formData.append('last_name', data.lastName);
-      formData.append('country', data.country);
-      formData.append('subscribe_to_newsletter', String(data.subscribe_to_newsletter));
+      const result = await sendRequest({
+        email: userData.email,
+        password: userData.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        country: data.country,
+        subscribeToNewsletter: data.subscribe_to_newsletter,
+        photoFile,
+      });
 
-      if (photoFile) {
-        formData.append('photo', photoFile);
-      }
-      await sendRequest(formData);
-
-      navigate(routes.login);
+      const {authToken, refreshToken} = result.register.authPayload;
+      saveTokens(authToken, refreshToken);
+      invalidateMapData();
+      navigate(routes.myAccount);
     } catch (error) {
       if (error instanceof Error) {
         setApiError(error.message);

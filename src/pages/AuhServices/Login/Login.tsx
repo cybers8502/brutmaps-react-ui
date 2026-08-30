@@ -13,6 +13,7 @@ import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/
 import useSWRMutation from 'swr/mutation';
 import {saveTokens} from '~/util/auth.ts';
 import apiRoutes from '~/util/apiRoutes.ts';
+import {gqlFetch} from '~/util/graphql.ts';
 import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
@@ -23,31 +24,27 @@ interface LoginInput {
 }
 
 interface ResponseData {
-  status: string;
-  data: {
-    access_token: string;
-    refresh_token: string;
+  login: {
+    authToken: string;
+    refreshToken: string;
     user: {
       email: string;
     };
   };
 }
 
-const loginUser = async (url: string, {arg}: {arg: LoginInput}): Promise<ResponseData> => {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(arg),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Could not log in.');
+const LOGIN_MUTATION = `
+  mutation Login($username: String!, $password: String!) {
+    login(input: {clientMutationId: "1", username: $username, password: $password}) {
+      authToken
+      refreshToken
+      user { email }
+    }
   }
+`;
 
-  return response.json();
+const loginUser = async (_url: string, {arg}: {arg: LoginInput}): Promise<ResponseData> => {
+  return gqlFetch<ResponseData>(LOGIN_MUTATION, arg as unknown as Record<string, unknown>);
 };
 
 export default function LoginUser() {
@@ -62,7 +59,7 @@ export default function LoginUser() {
   const [apiError, setApiError] = useState('');
 
   const {trigger: authTrigger, isMutating} = useSWRMutation<ResponseData, Error, string, LoginInput>(
-    import.meta.env.VITE_SITE_URI + apiRoutes.loginUser,
+    import.meta.env.VITE_SITE_URI + apiRoutes.graphql,
     loginUser,
   );
 
@@ -72,11 +69,7 @@ export default function LoginUser() {
     try {
       const responseData = await authTrigger(data);
 
-      saveTokens(
-        responseData.data.access_token,
-        responseData.data.refresh_token,
-        responseData.data.user.email,
-      );
+      saveTokens(responseData.login.authToken, responseData.login.refreshToken);
       invalidateMapData();
       navigate(routes.myAccount);
     } catch (error) {

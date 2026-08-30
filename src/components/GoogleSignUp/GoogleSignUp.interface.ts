@@ -5,19 +5,18 @@ export interface GoogleSignUpProps {
 }
 
 export interface CheckEmailExistsResponse {
-  status: string;
-  message: string;
-  data: {
-    exists: boolean;
+  checkEmail: {
+    result: {exists: boolean; message: string};
   };
 }
 
 export interface RegisterUserResponse {
-  status: string;
-  data: {
-    access_token: string;
-    refresh_token: string;
-    user: {email: string};
+  googleAuth: {
+    authPayload: {
+      authToken: string;
+      refreshToken: string;
+      user: {email: string};
+    };
   };
 }
 
@@ -38,7 +37,7 @@ export interface CheckEmailInput {
 
 export interface RegisterUserInput {
   email: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   avatar: string;
 }
