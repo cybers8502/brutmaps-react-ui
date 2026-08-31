@@ -12,14 +12,12 @@ import {ArrowToLeftIcon} from '~/components/Icons/Icons.tsx';
 import classNames from 'classnames';
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
 import useFetchUserCountries from '~/hooks/fetchApi/useFetchUserCountries.tsx';
-import apiRoutes from '~/util/apiRoutes.ts';
-import {useRegister} from '@brutmaps/api';
+import {useRegister, useUploadUserPhoto} from '@brutmaps/api';
 import {saveTokens} from '~/util/auth.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
 import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
 import {useTranslation} from 'react-i18next';
-import i18n from '~/i18n/index.ts';
 
 interface RegisterUserFrom {
   firstName: string;
@@ -31,22 +29,13 @@ interface RegisterUserFrom {
   subscribe_to_newsletter: boolean;
 }
 
-const uploadPhoto = async (photoFile: File): Promise<string> => {
-  const formData = new FormData();
-  formData.append('photo', photoFile);
-
-  const response = await fetch(import.meta.env.VITE_SITE_URI + apiRoutes.userPhotoUpload, {
-    method: 'POST',
-    body: formData,
+const fileToBase64 = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
-
-  const responseData = await response.json();
-  if (!response.ok) {
-    throw new Error(responseData.message || i18n.t('auth.photoUploadFailed'));
-  }
-
-  return responseData.data.photo_url;
-};
 
 export default function RegisterUser() {
   const {t} = useTranslation();
@@ -76,6 +65,7 @@ export default function RegisterUser() {
   });
 
   const {register: registerUser, isLoading: isMutating} = useRegister();
+  const {uploadUserPhoto} = useUploadUserPhoto();
 
   const handleFirstStep = async (data: {email: string; password: string}) => {
     setUserData(data);
@@ -91,7 +81,9 @@ export default function RegisterUser() {
     setApiError('');
 
     try {
-      const photoUrl = photoFile ? await uploadPhoto(photoFile) : undefined;
+      const photoUrl = photoFile
+        ? await uploadUserPhoto(await fileToBase64(photoFile), photoFile.name)
+        : undefined;
 
       const authPayload = await registerUser({
         email: userData.email,

@@ -9,7 +9,6 @@ const apiRoutes = {
   shopProductsList: '/wp-json/v1/shop/products',
   instagramGalleryList: '/wp-json/v1/sights-images',
   userAvailableCountries: '/wp-json/v1/profile/user-countries',
-  userPhotoUpload: '/wp-json/v1/user/photo',
   resetPassword: '/wp-json/v1/auth/reset-password',
   lostPassword: '/wp-json/v1/auth/lost-password',
   changePassword: '/wp-json/v1/auth/change-password',
