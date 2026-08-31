@@ -1,5 +1,5 @@
 import {createContext, useContext, useState} from 'react';
-import Product from '../components/ProductsList/Product.interface.ts';
+import type {Product} from '@brutmaps/api';
 
 const ProductsContext = createContext<{
   products: Product[] | undefined;

@@ -1,4 +1,4 @@
-import Product from '../Product.interface.ts';
+import type {Product} from '@brutmaps/api';
 import parse from 'html-react-parser';
 import {Link} from 'react-router-dom';
 import styles from './Product.module.scss';
@@ -27,16 +27,16 @@ export default function ProductItem(props: Product) {
           <h3 className={styles.title}>
             <Link to={`/product/${props.slug}`}>{props.name}</Link>
           </h3>
-          <div className={classNames(styles.description, 'article')}>{parse(props.short_description)}</div>
+          <div className={classNames(styles.description, 'article')}>{parse(props.shortDescription)}</div>
         </div>
 
         <div className={styles.footer}>
-          {props.sale_price && (
+          {props.salePrice && (
             <p className={styles['regular-price']}>
-              <span>${props.regular_price}</span>
+              <span>${props.regularPrice}</span>
             </p>
           )}
-          <p className={styles.price}>${props.sale_price ? props.sale_price : props.regular_price}</p>
+          <p className={styles.price}>${props.salePrice ? props.salePrice : props.regularPrice}</p>
           <div className={styles.buttonsWrap}>
             {props.stripe && (
               <Link to={props.stripe} className={'button button--fill-red'}>

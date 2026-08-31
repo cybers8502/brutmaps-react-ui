@@ -2,13 +2,13 @@ import {useRef} from 'react';
 import styles from './Thumbnail.module.scss';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {Navigation} from 'swiper/modules';
-import {Image} from '../ProductsList/Product.interface.ts';
+import type {ProductImage} from '@brutmaps/api';
 import {NavigationOptions} from 'swiper/types';
 import {useTranslation} from 'react-i18next';
 
 interface ThumbnailProps {
-  image: Image;
-  images: Image[];
+  image: ProductImage;
+  images: ProductImage[];
 }
 
 export default function Thumbnail({image, images}: ThumbnailProps) {

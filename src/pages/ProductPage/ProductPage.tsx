@@ -1,4 +1,4 @@
-import useFetchProducts from '~/hooks/fetchApi/useFetchProducts.tsx';
+import {useProducts} from '@brutmaps/api';
 import styles from './ProductPage.module.scss';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
@@ -14,7 +14,7 @@ export default function ProductPage() {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {slug} = useParams();
-  const {products: fetchedProducts, isLoading, isError} = useFetchProducts();
+  const {products, isLoading, error} = useProducts();
 
   //TODO: докрутить с корзиной
   const handleAddToCart = async (productId) => {
@@ -23,11 +23,14 @@ export default function ProductPage() {
   };
 
   if (isLoading) return t('common.loading');
-  if (isError) return t('common.serverError');
+  if (error) return t('common.serverError');
 
-  const product = fetchedProducts.data.products.find((product) => product.slug === slug);
+  const product = products.find((product) => product.slug === slug);
 
-  if (!product) navigate('/404');
+  if (!product) {
+    navigate('/404');
+    return null;
+  }
 
   const breadcrumbItems = [
     {name: t('common.home'), path: '/'},
@@ -47,13 +50,13 @@ export default function ProductPage() {
 
           <div className={styles.footer}>
             <div>
-              {product.sale_price && (
+              {product.salePrice && (
                 <p className={styles['regular-price']}>
-                  <span>${product.regular_price}</span>
+                  <span>${product.regularPrice}</span>
                 </p>
               )}
               <p className={styles.price}>
-                ${product.sale_price ? product.sale_price : product.regular_price}
+                ${product.salePrice ? product.salePrice : product.regularPrice}
               </p>
             </div>
             <div className={styles.buttonsWrap}>
