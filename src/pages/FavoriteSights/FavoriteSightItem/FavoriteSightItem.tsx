@@ -12,9 +12,10 @@ interface FavoriteSightItemProps {
 
 export default function FavoriteSightItem({id}: FavoriteSightItemProps) {
   const {t} = useTranslation();
-  const {sightDetails, isLoading} = useFetchObjectPost(id);
+  const {sight, isLoading} = useFetchObjectPost(id);
 
-  const objDetail = sightDetails?.data;
+  const objDetail = sight;
+  const previewImage = objDetail?.topGallery?.[0] || objDetail?.gallery?.[0];
 
   return (
     <li className={styles.item}>
@@ -22,14 +23,14 @@ export default function FavoriteSightItem({id}: FavoriteSightItemProps) {
         t('common.loading')
       ) : (
         <>
-          {objDetail?.main_data.image && objDetail?.main_data.image.length > 0 && (
+          {previewImage && (
             <picture className={styles.picture}>
-              <img src={objDetail?.main_data.image} alt={objDetail?.main_data.title} />
+              <img src={previewImage.url} alt={previewImage.alt || objDetail?.title} />
             </picture>
           )}
           <div className={styles.info}>
-            <h3 className={styles.title}>{objDetail?.main_data.title || ''}</h3>
-            <p className={styles.address}>{objDetail?.main_data.sub_title || ''}</p>
+            <h3 className={styles.title}>{objDetail?.title || ''}</h3>
+            <p className={styles.address}>{objDetail?.address || ''}</p>
             <div className={styles.buttonsWrapper}>
               <Button href={`/?sight=${objDetail?.id || 0}`}>{t('common.seeOnMap')}</Button>
               <Button href={`${routes.sightSinglePage}/${objDetail?.slug}`}>{t('common.seeDetails')}</Button>

@@ -4,14 +4,14 @@ import styles from './PhotoItem.module.scss';
 
 type PhotoItemProps = PhotoPost;
 
-export default function PhotoItem({title, link, preview_image_url, author}: PhotoItemProps) {
+export default function PhotoItem({title, link, previewImageUrl, author}: PhotoItemProps) {
   const figcaption = <figcaption>{author?.figcaption}</figcaption>;
 
   return (
     <Link to={link} className={styles.item}>
       <figure>
         <picture>
-          <img src={preview_image_url} alt={title || 'img'} title={title || 'img'} />
+          <img src={previewImageUrl} alt={title || 'img'} title={title || 'img'} />
         </picture>
         <figcaption>
           {author?.link ? (

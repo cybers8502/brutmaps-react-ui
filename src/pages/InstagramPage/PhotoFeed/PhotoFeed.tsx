@@ -25,7 +25,7 @@ export default function PhotoFeed() {
 
   return (
     <div className={styles.feed}>
-      {postList?.map((post) => <PhotoItem key={post.post_id} {...post} />)}
+      {postList?.map((post) => <PhotoItem key={post.postId} {...post} />)}
 
       {isLoading && <p>{t('common.loading')}</p>}
       {isError && <p>{t('common.error')}</p>}

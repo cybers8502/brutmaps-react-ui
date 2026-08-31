@@ -3,7 +3,7 @@ import styles from './TopGallery.module.scss';
 import {Link} from 'react-router-dom';
 import PopupLayout from '~/layouts/PopupLayout/PopupLayout.tsx';
 import BlogGallery from '~/components/SightBlogArticle/BlogGallery/BlogGallery.tsx';
-import {ImageItem} from '~/hooks/fetchApi/useFetchObjectPost.tsx';
+import type {GalleryImage as ImageItem} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
 import {useEffect, useRef, useState} from 'react';
 import useMobileState from '~/hooks/useMobileState.ts';
 import {Mousewheel, Pagination, Scrollbar} from 'swiper/modules';

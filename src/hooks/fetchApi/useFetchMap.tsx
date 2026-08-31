@@ -1,19 +1,5 @@
-import {IMapLayers} from '../../components/MapLayers/MapLayers.tsx';
-import apiRoutes from '~/util/apiRoutes.ts';
-import {useHandlerApi} from '~/hooks/useHandlerApi.ts';
+import {useSightsMap} from '@brutmaps/api';
 import {useSearchParams} from 'react-router-dom';
-
-interface CommonMap {
-  featureCollection: IMapLayers;
-}
-
-interface ResponseData {
-  status: string;
-  data?: CommonMap;
-  message?: string;
-}
-
-const keyPrefix = 'map_data';
 
 export default function useFetchMapDetails() {
   const [searchParams] = useSearchParams();
@@ -21,18 +7,14 @@ export default function useFetchMapDetails() {
   const architectId = searchParams.get('architect');
   const typeId = searchParams.get('type');
 
-  const {data, isLoading, error, mutate} = useHandlerApi<ResponseData>(
-    `${apiRoutes.objectsPost}?architects[]=${architectId || ''}&taxonomy_terms[]=${typeId || ''}`,
-    true,
-    {
-      keyPrefix,
-    },
-  );
+  const {featureCollection, isLoading, error} = useSightsMap({
+    architects: architectId ? [architectId] : undefined,
+    taxonomyTerms: typeId ? [typeId] : undefined,
+  });
 
   return {
-    featureCollection: data?.data?.featureCollection,
-    isLoading: isLoading,
+    featureCollection,
+    isLoading,
     isError: error,
-    mutate,
   };
 }

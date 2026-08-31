@@ -17,20 +17,23 @@ interface SightDetailProps {
 export default function SightBlogArticle({sightSlug, onSeeMap, className}: SightDetailProps) {
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const {sightDetails, isLoading, isError} = useFetchObjectPost(sightSlug || '');
+  const {sight, isLoading, isError} = useFetchObjectPost(sightSlug || '');
 
   if (isLoading) return <p>{t('common.loading')}</p>;
-  if (isError) navigate('/404');
-
-  if (!sightDetails?.status || sightDetails.status !== 'success') {
+  if (isError) {
     navigate('/404');
-    return;
+    return null;
   }
 
-  const objDetail = sightDetails.data;
+  if (!sight) {
+    navigate('/404');
+    return null;
+  }
+
+  const objDetail = sight;
 
   const seeOnMap = () => {
-    navigate(`/?sight=${sightDetails?.data?.id || 0}`);
+    navigate(`/?sight=${sight?.id || 0}`);
     if (onSeeMap) onSeeMap();
   };
 
