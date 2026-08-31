@@ -130,7 +130,7 @@ export default function ProfileForm({data, refetch, setIsEditing}: ProfileFormPr
             {isMutating ? t('common.saving') : t('account.saveChanges')}
           </Button>
           <Button onClick={() => setIsEditing(false)}>{t('common.cancel')}</Button>
-          <AccountDelete userId={String(data.databaseId)} />
+          <AccountDelete />
         </div>
       </div>
     </form>

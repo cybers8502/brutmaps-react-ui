@@ -92,6 +92,8 @@ const translation: Translation = {
     no: 'Ні',
     saveChanges: 'Зберегти зміни',
     deleteAccount: 'Видалити акаунт',
+    deleteAccountConfirm: 'Ви впевнені, що хочете видалити акаунт? Цю дію неможливо скасувати.',
+    deleting: 'Видалення...',
   },
   map: {
     searchResult: 'Результат пошуку',

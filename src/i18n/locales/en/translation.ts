@@ -90,6 +90,8 @@ const translation = {
     no: 'No',
     saveChanges: 'Save Changes',
     deleteAccount: 'Delete account',
+    deleteAccountConfirm: 'Are you sure you want to delete your account? This action cannot be undone.',
+    deleting: 'Deleting...',
   },
   map: {
     searchResult: 'Search result',
