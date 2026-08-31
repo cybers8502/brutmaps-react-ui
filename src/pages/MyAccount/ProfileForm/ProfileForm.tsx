@@ -3,13 +3,13 @@ import {useForm} from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
 import PhotoUploader from '~/components/PhotoUploader/PhotoUploader.tsx';
 import {fetchWithToken} from '~/util/auth.ts';
-import errorMessages from '~/constants/errorMessages.const.ts';
 import Button from '~/components/Button/Button.tsx';
 import styles from '../MyAccount.module.scss';
 import useFetchUserCountries from '~/hooks/fetchApi/useFetchUserCountries.tsx';
 import apiRoutes from '~/util/apiRoutes.ts';
 import AccountDelete from '~/pages/MyAccount/AccountDelete/AccountDelete.tsx';
 import {IUserData} from '~/pages/MyAccount/UserData.interface.ts';
+import {useTranslation} from 'react-i18next';
 
 interface ProfileEditFrom {
   firstName: string;
@@ -33,6 +33,7 @@ const updateUserProfile = async (url: string, {arg}: {arg: FormData}) => {
 };
 
 export default function ProfileForm({data, mutate, setIsEditing}: ProfileFormProps) {
+  const {t} = useTranslation();
   const {trigger: updateProfile, isMutating} = useSWRMutation(
     import.meta.env.VITE_SITE_URI + apiRoutes.editProfile,
     updateUserProfile,
@@ -101,28 +102,28 @@ export default function ProfileForm({data, mutate, setIsEditing}: ProfileFormPro
 
       <div className={'form__fieldsgroup'}>
         <div className='form__fieldset'>
-          <label>Email</label>
-          <input type='email' {...register('email', {required: errorMessages.emailRequired})} />
+          <label>{t('auth.email')}</label>
+          <input type='email' {...register('email', {required: t('errors.emailRequired')})} />
           {errors.email && <p className='error'>{errors.email.message}</p>}
         </div>
 
         <div className='form__fieldset'>
-          <label>First Name</label>
-          <input type='text' {...register('firstName', {required: errorMessages.inputRequired})} />
+          <label>{t('auth.firstName')}</label>
+          <input type='text' {...register('firstName', {required: t('errors.inputRequired')})} />
           {errors.firstName && <p className='error'>{errors.firstName.message}</p>}
         </div>
 
         <div className='form__fieldset'>
-          <label>Last Name</label>
-          <input type='text' {...register('lastName', {required: errorMessages.inputRequired})} />
+          <label>{t('auth.lastName')}</label>
+          <input type='text' {...register('lastName', {required: t('errors.inputRequired')})} />
           {errors.lastName && <p className='error'>{errors.lastName.message}</p>}
         </div>
 
         {!isLoadingCountries && countriesList && (
           <div className='form__fieldset'>
-            <label>Country</label>
-            <select id='country' {...register('country', {required: errorMessages.inputRequired})}>
-              <option defaultChecked>Country</option>
+            <label>{t('auth.country')}</label>
+            <select id='country' {...register('country', {required: t('errors.inputRequired')})}>
+              <option defaultChecked>{t('auth.country')}</option>
               {Object.entries(countriesList).map(([code, name]) => (
                 <option key={code} value={code} defaultChecked={code === data.country}>
                   {name}
@@ -136,14 +137,14 @@ export default function ProfileForm({data, mutate, setIsEditing}: ProfileFormPro
         {/*TODO if user is deleted on mailchimp to show a notification that it couldn't be subscribe*/}
         <label className='checkbox'>
           <input type='checkbox' {...register('is_subscribed')} />
-          <span>I Agree to receive news & updates from Brutmaps</span>
+          <span>{t('auth.agreeNewsletter')}</span>
         </label>
 
         <div className={styles.buttonWrapper}>
           <Button isSubmit disabled={isMutating}>
-            {isMutating ? 'Saving...' : 'Save Changes'}
+            {isMutating ? t('common.saving') : t('account.saveChanges')}
           </Button>
-          <Button onClick={() => setIsEditing(false)}>Cancel</Button>
+          <Button onClick={() => setIsEditing(false)}>{t('common.cancel')}</Button>
           <AccountDelete userId={data.user_id} />
         </div>
       </div>

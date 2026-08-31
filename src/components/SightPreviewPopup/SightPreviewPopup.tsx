@@ -3,6 +3,7 @@ import {GeoJSONFeature} from '../MapLayers/MapLayers.tsx';
 import {CanselIconButton} from '../Icons/Icons.tsx';
 import classNames from 'classnames';
 import getJsonObject from '~/util/getImagesArray.ts';
+import {useTranslation} from 'react-i18next';
 
 interface SightPreviewPopupProps {
   popupInfo: {
@@ -14,6 +15,8 @@ interface SightPreviewPopupProps {
 }
 
 export default function SightPreviewPopup({popupInfo, closeHandle, onClick}: SightPreviewPopupProps) {
+  const {t} = useTranslation();
+
   if (!popupInfo) return null;
 
   return (
@@ -24,7 +27,11 @@ export default function SightPreviewPopup({popupInfo, closeHandle, onClick}: Sig
           return (
             <button onClick={() => onClick(popupInfo?.properties.slug || '')} className={styles.imgLink}>
               <picture className={styles.picture}>
-                <img src={imgInfo.url} alt={imgInfo.alt || `Image`} title={imgInfo.title || `Image`} />
+                <img
+                  src={imgInfo.url}
+                  alt={imgInfo.alt || t('sightPreviewPopup.imageAlt')}
+                  title={imgInfo.title || t('sightPreviewPopup.imageAlt')}
+                />
               </picture>
             </button>
           );

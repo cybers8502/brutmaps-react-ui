@@ -10,12 +10,14 @@ import classNames from 'classnames';
 import Button from '~/components/Button/Button.tsx';
 import {CancelIcon, FilterIcon} from '~/components/Icons/Icons.tsx';
 import useMobileState from '~/hooks/useMobileState.ts';
+import {useTranslation} from 'react-i18next';
 
 interface MapFiltersProps {
   mapRef: RefObject<MapRef>;
 }
 
 export default function MapFilters({mapRef}: MapFiltersProps) {
+  const {t} = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobileView = useMobileState();
 
@@ -49,7 +51,7 @@ export default function MapFilters({mapRef}: MapFiltersProps) {
     <div className={classNames(styles.component, {[styles.isOpen]: isShownMobilePopup})}>
       <GeocoderControl
         mapRef={mapRef}
-        placeholder={'Search location'}
+        placeholder={t('map.searchLocation')}
         accessToken={mapboxToken}
         className={styles.geoControl}
       />

@@ -3,6 +3,7 @@ import AddToFavoriteSightButton from '~/components/AddToFavoriteSightButton/AddT
 import styles from './FavoriteSightItem.module.scss';
 import Button from '~/components/Button/Button.tsx';
 import routes from '~/util/routes.ts';
+import {useTranslation} from 'react-i18next';
 
 interface FavoriteSightItemProps {
   id: string;
@@ -10,6 +11,7 @@ interface FavoriteSightItemProps {
 }
 
 export default function FavoriteSightItem({id}: FavoriteSightItemProps) {
+  const {t} = useTranslation();
   const {sightDetails, isLoading} = useFetchObjectPost(id);
 
   const objDetail = sightDetails?.data;
@@ -17,7 +19,7 @@ export default function FavoriteSightItem({id}: FavoriteSightItemProps) {
   return (
     <li className={styles.item}>
       {isLoading ? (
-        'Loading...'
+        t('common.loading')
       ) : (
         <>
           {objDetail?.main_data.image && objDetail?.main_data.image.length > 0 && (
@@ -29,8 +31,8 @@ export default function FavoriteSightItem({id}: FavoriteSightItemProps) {
             <h3 className={styles.title}>{objDetail?.main_data.title || ''}</h3>
             <p className={styles.address}>{objDetail?.main_data.sub_title || ''}</p>
             <div className={styles.buttonsWrapper}>
-              <Button href={`/?sight=${objDetail?.id || 0}`}>See on Map</Button>
-              <Button href={`${routes.sightSinglePage}/${objDetail?.slug}`}>See Details</Button>
+              <Button href={`/?sight=${objDetail?.id || 0}`}>{t('common.seeOnMap')}</Button>
+              <Button href={`${routes.sightSinglePage}/${objDetail?.slug}`}>{t('common.seeDetails')}</Button>
               <AddToFavoriteSightButton sightId={id} />
             </div>
           </div>

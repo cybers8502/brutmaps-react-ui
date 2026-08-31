@@ -11,13 +11,16 @@ import routes from '~/util/routes.ts';
 import {clearTokens, getAccessToken} from '~/util/auth.ts';
 import AuthControls from '~/components/SiteHead/AuthControls/AuthControls.tsx';
 import SocialLinks from '~/components/SiteHead/SocialLinks/SocialLinks.tsx';
+import LanguageSwitcher from '~/components/LanguageSwitcher/LanguageSwitcher.tsx';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
+import {useTranslation} from 'react-i18next';
 
 interface SiteHeadProps {
   className?: string;
 }
 
 export default function SiteHead({className}: SiteHeadProps) {
+  const {t} = useTranslation();
   const [isActive, setIsActive] = useState(false);
   const isMobileView = useMobileState();
   const navigate = useNavigate();
@@ -44,13 +47,15 @@ export default function SiteHead({className}: SiteHeadProps) {
 
           <SocialLinks />
 
+          <LanguageSwitcher />
+
           <div className={styles.authControls}>
             {getAccessToken() ? (
               <AuthControls />
             ) : (
               <>
-                <Link to={routes.login}>Log In</Link>
-                <Link to={routes.registration}>Sign up</Link>
+                <Link to={routes.login}>{t('siteHead.logIn')}</Link>
+                <Link to={routes.registration}>{t('siteHead.signUp')}</Link>
               </>
             )}
           </div>
@@ -77,17 +82,19 @@ export default function SiteHead({className}: SiteHeadProps) {
           <div className={styles.authControls}>
             {getAccessToken() ? (
               <>
-                <Link to={routes.myAccount}>My Account</Link>
-                <Link to={routes.favoriteSights}>My Favorite Objects</Link>
-                <button onClick={handleLogout}>Logout</button>
+                <Link to={routes.myAccount}>{t('siteHead.myAccount')}</Link>
+                <Link to={routes.favoriteSights}>{t('siteHead.myFavoriteObjects')}</Link>
+                <button onClick={handleLogout}>{t('siteHead.logout')}</button>
               </>
             ) : (
               <>
-                <Link to={routes.login}>Login</Link>
-                <Link to={routes.registration}>Register</Link>
+                <Link to={routes.login}>{t('siteHead.login')}</Link>
+                <Link to={routes.registration}>{t('siteHead.register')}</Link>
               </>
             )}
           </div>
+
+          <LanguageSwitcher />
 
           <SocialLinks />
         </div>

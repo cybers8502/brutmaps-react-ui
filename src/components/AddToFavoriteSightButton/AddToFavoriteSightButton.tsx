@@ -5,13 +5,18 @@ import {useFavorites} from '~/hooks/useFavoritesSights.ts';
 import routes from '~/util/routes.ts';
 import apiRoutes from '~/util/apiRoutes.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
+import {useTranslation} from 'react-i18next';
 
-const CATEGORIES = [
-  {key: 'favorite', label: 'Favorite'},
-  {key: 'want_to_go', label: 'Want to Go'},
-  {key: 'visited', label: 'Visited'},
-  {key: 'hidden', label: 'Hidden'},
-];
+const useCategories = () => {
+  const {t} = useTranslation();
+
+  return [
+    {key: 'favorite', label: t('favorites.categoryFavorite')},
+    {key: 'want_to_go', label: t('favorites.categoryWantToGo')},
+    {key: 'visited', label: t('favorites.categoryVisited')},
+    {key: 'hidden', label: t('favorites.categoryHidden')},
+  ];
+};
 
 const toggleCategory = async (sightId: number, category: string) => {
   return await fetchWithToken(import.meta.env.VITE_SITE_URI + apiRoutes.userToggleFavorites, {
@@ -22,6 +27,8 @@ const toggleCategory = async (sightId: number, category: string) => {
 };
 
 export default function AddToFavoriteSightButton({sightId}: {sightId: string}) {
+  const {t} = useTranslation();
+  const CATEGORIES = useCategories();
   const {favorites, mutate} = useFavorites();
   const [processingCategory, setProcessingCategory] = useState<string | null>(null);
 
@@ -45,7 +52,7 @@ export default function AddToFavoriteSightButton({sightId}: {sightId: string}) {
   };
 
   if (!getAccessToken()) {
-    return <Button href={routes.login}>Login to save</Button>;
+    return <Button href={routes.login}>{t('auth.loginToSave')}</Button>;
   }
 
   return (
@@ -60,7 +67,11 @@ export default function AddToFavoriteSightButton({sightId}: {sightId: string}) {
             onClick={() => handleToggle(key)}
             disabled={isLoading}
             variant={isActive ? 'fillRed' : 'strokeRed'}>
-            {isLoading ? 'Processing...' : isActive ? `Remove ${label}` : `Add ${label}`}
+            {isLoading
+              ? t('favorites.processing')
+              : isActive
+                ? t('favorites.remove', {label})
+                : t('favorites.add', {label})}
           </Button>
         );
       })}

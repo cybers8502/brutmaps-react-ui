@@ -1,7 +1,6 @@
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
 import styles from './PasswordRecovery.module.scss';
-import errorMessages from '~/constants/errorMessages.const.ts';
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
 import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
@@ -10,6 +9,7 @@ import PasswordField from '~/pages/AuhServices/components/PasswordField/Password
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
 import apiRoutes from '~/util/apiRoutes.ts';
 import routes from '~/util/routes.ts';
+import {useTranslation} from 'react-i18next';
 
 interface ResetPasswordInput {
   password: string;
@@ -17,6 +17,7 @@ interface ResetPasswordInput {
 }
 
 export default function ResetPasswordPage() {
+  const {t} = useTranslation();
   const {
     register,
     handleSubmit,
@@ -47,12 +48,12 @@ export default function ResetPasswordPage() {
       });
 
       const respData = await response.json();
-      if (!response.ok) throw new Error(respData.message || 'Could not change password.');
+      if (!response.ok) throw new Error(respData.message || t('auth.couldNotChangePassword'));
 
-      setSuccessMessage(respData.message || 'Password successfully changed! Redirect...');
+      setSuccessMessage(respData.message || t('auth.passwordChangedRedirect'));
       setTimeout(() => navigate(routes.login), 3000);
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'An error occurred.';
+      const message = error instanceof Error ? error.message : t('auth.errorOccurred');
       setApiError(message);
       setDisabledButton(false);
     } finally {
@@ -65,19 +66,19 @@ export default function ResetPasswordPage() {
       <AuhServicesLayout>
         <div className={styles.frame}>
           <div className={styles.mainBlock}>
-            <PageTitle>Password reset</PageTitle>
+            <PageTitle>{t('auth.passwordReset')}</PageTitle>
             <form className={'form form__fieldsgroup'} onSubmit={handleSubmit(onSubmit)}>
               <PasswordField
                 register={register as unknown as UseFormRegister<{password: string}>}
                 errors={errors as FieldErrors<{password: string}>}
-                placeholder={'New Password*'}
+                placeholder={t('auth.newPasswordPlaceholder')}
               />
 
               <div className={'form__fieldset'}>
                 <input
                   type='password'
-                  placeholder={'Confirm Password'}
-                  {...register('confirmPassword', {required: errorMessages.passwordRequired})}
+                  placeholder={t('auth.confirmPasswordPlaceholder')}
+                  {...register('confirmPassword', {required: t('errors.passwordRequired')})}
                 />
                 {errors.confirmPassword && <p className='error'>{errors.confirmPassword.message}</p>}
               </div>
@@ -87,7 +88,7 @@ export default function ResetPasswordPage() {
 
               <div className={styles.buttonWrap}>
                 <Button isSubmit disabled={disabledButton}>
-                  {!isLoading ? 'Continue' : 'Loading...'}
+                  {!isLoading ? t('common.continue') : t('common.loading')}
                 </Button>
               </div>
             </form>

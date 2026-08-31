@@ -8,13 +8,15 @@ import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.tsx';
 import routes from '~/util/routes.ts';
 import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
+import {useTranslation} from 'react-i18next';
 
 export default function BlogArticle() {
+  const {t} = useTranslation();
   const {slug} = useParams();
   const navigate = useNavigate();
   const {article, isLoading, isError} = useFetchBlogArticle(slug || '');
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p>{t('common.loading')}</p>;
   if (isError) navigate('/404');
 
   const articleDetail = article?.data;
@@ -25,8 +27,8 @@ export default function BlogArticle() {
   }
 
   const breadcrumbItems = [
-    {name: 'Home', path: routes.commonMap},
-    {name: 'Blog', path: routes.blog},
+    {name: t('common.home'), path: routes.commonMap},
+    {name: t('nav.blog'), path: routes.blog},
     {name: articleDetail.title},
   ];
 

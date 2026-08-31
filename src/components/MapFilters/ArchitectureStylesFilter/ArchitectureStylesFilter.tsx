@@ -3,6 +3,7 @@ import styles from './ArchitectureStylesFilter.module.scss';
 import classNames from 'classnames';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
 import {Fragment} from 'react';
+import {useTranslation} from 'react-i18next';
 
 interface ArchitectureStylesFilterProps {
   selectedType: string;
@@ -22,6 +23,7 @@ export default function ArchitectureStylesFilter({
   setSelectedType,
   className,
 }: ArchitectureStylesFilterProps) {
+  const {t} = useTranslation();
   const {taxonomies: architectureStyles} = useFetchTaxonomies<ArchitectureStylesResponse[]>('taxonomy');
 
   const handleCancel = () => {
@@ -29,7 +31,9 @@ export default function ArchitectureStylesFilter({
   };
 
   if (!architectureStyles?.length)
-    return <div className={classNames(className, styles.container, styles.loader)}>Loading...</div>;
+    return (
+      <div className={classNames(className, styles.container, styles.loader)}>{t('common.loading')}</div>
+    );
 
   return (
     <div className={classNames(className, styles.container)}>
@@ -37,7 +41,7 @@ export default function ArchitectureStylesFilter({
         value={selectedType}
         onChange={(e) => setSelectedType(e.target.value)}
         className={classNames(styles.select, {[styles.selected]: selectedType})}>
-        <option value=''>All styles</option>
+        <option value=''>{t('map.allStyles')}</option>
         {architectureStyles.map((t) => (
           <Fragment key={t.id}>
             <option value={t.slug}>{t.label}</option>

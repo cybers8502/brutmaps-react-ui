@@ -4,8 +4,11 @@ import {Link} from 'react-router-dom';
 import styles from './Product.module.scss';
 import classNames from 'classnames';
 import addToCart from '../../../hooks/addToCart.ts';
+import {useTranslation} from 'react-i18next';
 
 export default function ProductItem(props: Product) {
+  const {t} = useTranslation();
+
   //TODO: докрутить с корзиной
   const handleAddToCart = async (productId) => {
     await addToCart(productId, 1);
@@ -37,11 +40,11 @@ export default function ProductItem(props: Product) {
           <div className={styles.buttonsWrap}>
             {props.stripe && (
               <Link to={props.stripe} className={'button button--fill-red'}>
-                Buy now
+                {t('common.buyNow')}
               </Link>
             )}
             <Link to={`/product/${props.slug}`} className={'button button--fill-dark-shade-gray'}>
-              Read More
+              {t('common.readMore')}
             </Link>
           </div>
         </div>

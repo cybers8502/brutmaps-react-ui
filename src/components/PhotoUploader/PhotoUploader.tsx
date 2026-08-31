@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import classNames from 'classnames';
 import styles from './PhotoUploader.module.scss';
 import {CancelBolderIcon, PenIcon} from '~/components/Icons/Icons.tsx';
-import errorMessages from '~/constants/errorMessages.const.ts';
+import {useTranslation} from 'react-i18next';
 
 interface PhotoUploaderProps {
   onPhotoChange: (file: File | null) => void;
@@ -10,6 +10,7 @@ interface PhotoUploaderProps {
 }
 
 export default function PhotoUploader({onPhotoChange, photoPreview}: PhotoUploaderProps) {
+  const {t} = useTranslation();
   const [dragActive, setDragActive] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -30,11 +31,11 @@ export default function PhotoUploader({onPhotoChange, photoPreview}: PhotoUpload
 
   const handleFileChange = (file: File) => {
     if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      setErrorMessage(errorMessages.allowedImageFormat);
+      setErrorMessage(t('errors.allowedImageFormat'));
       return;
     }
     if (file.size > 2 * 1024 * 1024) {
-      setErrorMessage(errorMessages.allowedImageSize);
+      setErrorMessage(t('errors.allowedImageSize'));
       return;
     }
     setErrorMessage('');
@@ -51,7 +52,7 @@ export default function PhotoUploader({onPhotoChange, photoPreview}: PhotoUpload
         <label className={styles.photoPreview}>
           <input type='file' accept='image/*' onChange={(e) => handleFileChange(e.target.files![0])} />
           {photoPreview ? (
-            <img src={photoPreview} alt='Loaded photo' width='100' />
+            <img src={photoPreview} alt={t('photoUploader.loadedPhotoAlt')} width='100' />
           ) : (
             <span className={classNames(styles.thing)}>
               <PenIcon />
@@ -66,7 +67,7 @@ export default function PhotoUploader({onPhotoChange, photoPreview}: PhotoUpload
           <></>
         )}
       </div>
-      {errorMessage ? <p className={styles.error}>{errorMessage}</p> : <p>Your photo</p>}
+      {errorMessage ? <p className={styles.error}>{errorMessage}</p> : <p>{t('photoUploader.yourPhoto')}</p>}
     </div>
   );
 }

@@ -4,8 +4,11 @@ import {Link} from 'react-router-dom';
 import {Post} from '../Post.interface';
 import styles from './PostItem.module.scss';
 import routes from '~/util/routes.ts';
+import {useTranslation} from 'react-i18next';
 
 export default function PostItemPreview({...props}: Post) {
+  const {t} = useTranslation();
+
   return (
     <div className={styles.item}>
       <Link to={`${routes.blog}/${props.slug}`}>
@@ -32,7 +35,7 @@ export default function PostItemPreview({...props}: Post) {
         </div>
       </div>
       <Link to={`${routes.blog}/${props.slug}`} className={classNames(styles['read-more'], 'button')}>
-        Read More
+        {t('common.readMore')}
       </Link>
     </div>
   );

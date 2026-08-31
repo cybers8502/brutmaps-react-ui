@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
 import useFetchArchitectBySlug from '~/hooks/fetchApi/useFetchArchitectBySlug.tsx';
 import {ArchitectsResponse} from '~/hooks/fetchApi/useFetchArchitects.tsx';
+import {useTranslation} from 'react-i18next';
 
 interface ArchitectsFilterProps {
   className: string;
@@ -19,6 +20,7 @@ export default function ArchitectsFilter({
   selectedArchitect,
   setSelectedArchitect,
 }: ArchitectsFilterProps) {
+  const {t} = useTranslation();
   const [isPopupShown, setIsPopupShown] = useState(false);
   const [search, setSearch] = useState('');
   const [architectName, setArchitectName] = useState('');
@@ -52,7 +54,7 @@ export default function ArchitectsFilter({
   return (
     <div className={classNames(className, styles.wrap)}>
       <button className={styles.button} onClick={() => setIsPopupShown(!isPopupShown)}>
-        <span>{architectName ? architectName : 'All architects'}</span>
+        <span>{architectName ? architectName : t('map.allArchitects')}</span>
       </button>
 
       {selectedArchitect && <CancelButton onCancel={handleCancel} />}
@@ -66,7 +68,7 @@ export default function ArchitectsFilter({
                 type='text'
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder='Search'
+                placeholder={t('map.search')}
                 className={styles.searchInput}
               />
               {search && <CancelButton onCancel={() => setSearch('')} />}
@@ -74,9 +76,9 @@ export default function ArchitectsFilter({
 
             {search?.length >= 2 ? (
               <div className={styles.list}>
-                <p>Search result</p>
+                <p>{t('map.searchResult')}</p>
                 {loadingSearch ? (
-                  <p>Loading...</p>
+                  <p>{t('common.loading')}</p>
                 ) : architectOptions?.length ? (
                   <div className={styles.grid}>
                     {architectOptions?.map((a) => (
@@ -89,14 +91,14 @@ export default function ArchitectsFilter({
                     ))}
                   </div>
                 ) : (
-                  <p>Nothing found</p>
+                  <p>{t('map.nothingFound')}</p>
                 )}
               </div>
             ) : (
               <div className={styles.list}>
-                <p>Most popular searches</p>
+                <p>{t('map.mostPopularSearches')}</p>
                 {loadingPopular ? (
-                  <p>Loading...</p>
+                  <p>{t('common.loading')}</p>
                 ) : (
                   <div className={styles.grid}>
                     {popularArchitects?.data.map((a) => (

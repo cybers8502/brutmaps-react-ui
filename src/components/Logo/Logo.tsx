@@ -1,7 +1,10 @@
 import style from './Logo.module.scss';
 import {Link} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 
 export default function Logo() {
+  const {t} = useTranslation();
+
   return (
     <div className={style['logo-wrap']}>
       <Link to='/' className={style.logo}>
@@ -31,7 +34,7 @@ export default function Logo() {
           </svg>
         </picture>
       </Link>
-      <p className={'is-desktop'}>Global guide to the design masterpieces</p>
+      <p className={'is-desktop'}>{t('logo.tagline')}</p>
     </div>
   );
 }

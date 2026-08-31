@@ -23,8 +23,10 @@ import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import MapFilters from '~/components/MapFilters/MapFilters.tsx';
 
 import SightBlogArticle from '~/components/SightBlogArticle/SightBlogArticle';
+import {useTranslation} from 'react-i18next';
 
 export default function CommonMap() {
+  const {t} = useTranslation();
   const isMobileView = useMobileState();
   const {featureCollection, isLoading, isError} = useFetchMapDetails();
   const {viewport, updateViewport} = useMapContext();
@@ -143,12 +145,12 @@ export default function CommonMap() {
     );
   };
 
-  if (isError) return <p>Server Error</p>;
+  if (isError) return <p>{t('common.serverError')}</p>;
 
   const initialViewport = getInitialView();
 
   return (
-    <Suspense fallback={<div>Loading map...</div>}>
+    <Suspense fallback={<div>{t('map.loadingMap')}</div>}>
       <SiteLayout className={styles.commonMap} contentClassName={styles.commonMapContent}>
         <MapFilters mapRef={mapRef} />
 

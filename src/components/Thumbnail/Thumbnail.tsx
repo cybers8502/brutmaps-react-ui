@@ -4,6 +4,7 @@ import {Swiper, SwiperSlide} from 'swiper/react';
 import {Navigation} from 'swiper/modules';
 import {Image} from '../ProductsList/Product.interface.ts';
 import {NavigationOptions} from 'swiper/types';
+import {useTranslation} from 'react-i18next';
 
 interface ThumbnailProps {
   image: Image;
@@ -11,6 +12,7 @@ interface ThumbnailProps {
 }
 
 export default function Thumbnail({image, images}: ThumbnailProps) {
+  const {t} = useTranslation();
   const swiperRef = useRef(null);
 
   const handleThumbnailClick = (index: number) => {
@@ -46,13 +48,13 @@ export default function Thumbnail({image, images}: ThumbnailProps) {
           </SwiperSlide>
         ))}
 
-        <button className={styles.swiperPrev} aria-label='Previous slide'>
+        <button className={styles.swiperPrev} aria-label={t('thumbnail.previousSlide')}>
           <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' aria-hidden='true'>
             <path d='M22,9a1,1,0,0,0,0,1.42l4.6,4.6H3.06a1,1,0,1,0,0,2H26.58L22,21.59A1,1,0,0,0,22,23a1,1,0,0,0,1.41,0l6.36-6.36a.88.88,0,0,0,0-1.27L23.42,9A1,1,0,0,0,22,9Z' />
           </svg>
         </button>
 
-        <button className={styles.swiperNext} aria-label='Next slide'>
+        <button className={styles.swiperNext} aria-label={t('thumbnail.nextSlide')}>
           <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' aria-hidden='true'>
             <path d='M22,9a1,1,0,0,0,0,1.42l4.6,4.6H3.06a1,1,0,1,0,0,2H26.58L22,21.59A1,1,0,0,0,22,23a1,1,0,0,0,1.41,0l6.36-6.36a.88.88,0,0,0,0-1.27L23.42,9A1,1,0,0,0,22,9Z' />
           </svg>

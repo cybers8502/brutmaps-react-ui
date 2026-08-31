@@ -6,6 +6,7 @@ import AddToFavoriteSightButton from '~/components/AddToFavoriteSightButton/AddT
 import Button from '~/components/Button/Button.tsx';
 import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
 import TopGallery from '~/components/SightBlogArticle/TopGallery/TopGallery.tsx';
+import {useTranslation} from 'react-i18next';
 
 interface SightDetailProps {
   sightSlug: string;
@@ -14,10 +15,11 @@ interface SightDetailProps {
 }
 
 export default function SightBlogArticle({sightSlug, onSeeMap, className}: SightDetailProps) {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const {sightDetails, isLoading, isError} = useFetchObjectPost(sightSlug || '');
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p>{t('common.loading')}</p>;
   if (isError) navigate('/404');
 
   if (!sightDetails?.status || sightDetails.status !== 'success') {
@@ -45,7 +47,7 @@ export default function SightBlogArticle({sightSlug, onSeeMap, className}: Sight
 
             <div className={styles.buttonWrapper}>
               <Button variant={'strokeRed'} onClick={seeOnMap}>
-                See on Map
+                {t('common.seeOnMap')}
               </Button>
               {objDetail?.id && <AddToFavoriteSightButton sightId={String(objDetail?.id)} />}
             </div>

@@ -2,6 +2,7 @@ import ObjectsItem from './ObjectItem/ObjectsItem.tsx';
 import styles from './ObjectsList.module.scss';
 import classNames from 'classnames';
 import {GeoJSONFeature} from '~/components/MapLayers/MapLayers.tsx';
+import {useTranslation} from 'react-i18next';
 
 interface ObjectsListProps {
   visibleObjects: GeoJSONFeature[];
@@ -18,6 +19,8 @@ export default function ObjectsList({
   onLeave,
   onClick,
 }: ObjectsListProps) {
+  const {t} = useTranslation();
+
   return (
     <div className={classNames(styles.list, className)}>
       {visibleObjects.length ? (
@@ -31,7 +34,7 @@ export default function ObjectsList({
           />
         ))
       ) : (
-        <p>Drag or zoom the map to see results</p>
+        <p>{t('map.dragOrZoom')}</p>
       )}
     </div>
   );

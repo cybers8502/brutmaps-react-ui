@@ -1,8 +1,8 @@
 import {UseFormRegister, FieldErrors} from 'react-hook-form';
-import errorMessages from '~/constants/errorMessages.const.ts';
 import {EayIcon} from '~/components/Icons/Icons.tsx';
 import {useState} from 'react';
 import styles from './PasswordField.module.scss';
+import {useTranslation} from 'react-i18next';
 
 interface PasswordFieldProps {
   register: UseFormRegister<{password: string}>;
@@ -19,6 +19,7 @@ export default function PasswordField({
   label,
   placeholder,
 }: PasswordFieldProps) {
+  const {t} = useTranslation();
   const [visiblePassword, seVisiblePassword] = useState(false);
 
   return (
@@ -31,15 +32,15 @@ export default function PasswordField({
           placeholder={placeholder}
           defaultValue={defaultValue || ''}
           {...register('password', {
-            required: errorMessages.passwordRequired,
-            minLength: {value: 6, message: errorMessages.enterAtLeast6Characters},
+            required: t('errors.passwordRequired'),
+            minLength: {value: 6, message: t('errors.enterAtLeast6Characters')},
           })}
         />
         <button
           type={'button'}
           className={styles.button}
           onClick={() => seVisiblePassword(!visiblePassword)}
-          aria-label={'show the password'}>
+          aria-label={t('auth.showPassword')}>
           <EayIcon />
         </button>
       </div>

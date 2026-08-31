@@ -1,5 +1,4 @@
 import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
-import errorMessages from '~/constants/errorMessages.const.ts';
 import Button from '~/components/Button/Button.tsx';
 import isEmailValid from '~/util/validationEmail.utility.ts';
 import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
@@ -7,6 +6,7 @@ import {useState} from 'react';
 import useSWRMutation from 'swr/mutation';
 import apiRoutes from '~/util/apiRoutes.ts';
 import {gqlFetch} from '~/util/graphql.ts';
+import {useTranslation} from 'react-i18next';
 
 interface FirstStepProps {
   initialData: {email: string; password: string};
@@ -33,6 +33,7 @@ const checkEmailExists = async (_url: string, {arg}: {arg: {email: string}}) => 
 };
 
 export default function FirstStep({initialData, handleFirstStep}: FirstStepProps) {
+  const {t} = useTranslation();
   const {
     register,
     handleSubmit,
@@ -58,7 +59,7 @@ export default function FirstStep({initialData, handleFirstStep}: FirstStepProps
 
       handleFirstStep(data);
     } catch {
-      setApiError('Something went wrong. Please try again.');
+      setApiError(t('common.somethingWentWrong'));
     }
   };
 
@@ -69,12 +70,12 @@ export default function FirstStep({initialData, handleFirstStep}: FirstStepProps
           <input
             id='email'
             type='email'
-            placeholder='Email*'
+            placeholder={t('auth.emailPlaceholder')}
             defaultValue={initialData.email || ''}
             {...register('email', {
-              required: errorMessages.emailRequired,
+              required: t('errors.emailRequired'),
               validate: {
-                isEmailValid: (value: string) => isEmailValid(value) || errorMessages.enterCorrectEmail,
+                isEmailValid: (value: string) => isEmailValid(value) || t('errors.enterCorrectEmail'),
               },
             })}
           />
@@ -85,13 +86,13 @@ export default function FirstStep({initialData, handleFirstStep}: FirstStepProps
           register={register as unknown as UseFormRegister<{password: string}>}
           errors={errors as FieldErrors<{password: string}>}
           defaultValue={initialData.password}
-          placeholder={'Password*'}
+          placeholder={t('auth.passwordPlaceholder')}
         />
 
         {apiError && <p className='error'>{apiError}</p>}
 
         <Button isSubmit disabled={isMutating}>
-          {!isMutating ? 'Continue' : 'Loading...'}
+          {!isMutating ? t('common.continue') : t('common.loading')}
         </Button>
       </div>
     </form>

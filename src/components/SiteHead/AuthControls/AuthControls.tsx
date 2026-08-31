@@ -4,8 +4,10 @@ import {clearTokens} from '~/util/auth.ts';
 import useProfileData from '~/hooks/fetchApi/useFetchUserProfile.tsx';
 import styles from './AuthControls.module.scss';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
+import {useTranslation} from 'react-i18next';
 
 export default function AuthControls() {
+  const {t} = useTranslation();
   const {data: userProfile} = useProfileData();
   const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ export default function AuthControls() {
     <div className={styles.container}>
       {userProfile?.data?.photo_url && (
         <picture className={styles.picture}>
-          <img src={userProfile?.data?.photo_url} alt='Profile' className='profile-photo' />
+          <img src={userProfile?.data?.photo_url} alt={t('account.profileAlt')} className='profile-photo' />
         </picture>
       )}
       <span className={styles.name}>{userProfile?.data?.first_name}</span>
@@ -31,13 +33,13 @@ export default function AuthControls() {
 
       <ul className={styles.popup}>
         <li>
-          <Link to={routes.myAccount}>My Account</Link>
+          <Link to={routes.myAccount}>{t('siteHead.myAccount')}</Link>
         </li>
         <li>
-          <Link to={routes.favoriteSights}>My Favorite Objects</Link>
+          <Link to={routes.favoriteSights}>{t('siteHead.myFavoriteObjects')}</Link>
         </li>
         <li>
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout}>{t('siteHead.logout')}</button>
         </li>
       </ul>
     </div>

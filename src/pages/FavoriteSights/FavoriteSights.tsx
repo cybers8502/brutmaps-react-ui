@@ -7,6 +7,7 @@ import FavoriteSightItem from '~/pages/FavoriteSights/FavoriteSightItem/Favorite
 import {fetchWithToken} from '~/util/auth.ts';
 import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import apiRoutes from '~/util/apiRoutes.ts';
+import {useTranslation} from 'react-i18next';
 
 const toggleFavorite = async (sightId: number) => {
   return await fetchWithToken(import.meta.env.VITE_SITE_URI + apiRoutes.userToggleFavorites, {
@@ -17,6 +18,7 @@ const toggleFavorite = async (sightId: number) => {
 };
 
 export default function FavoriteSights() {
+  const {t} = useTranslation();
   const {favorites, isLoading, mutate} = useFavorites();
 
   const removeFromFavorites = async (id: string) => {
@@ -35,9 +37,9 @@ export default function FavoriteSights() {
       <div className={styles.container}>
         <div className={styles.frame}>
           <div className={styles.mainBlock}>
-            <PageTitle>My Favorite Objects</PageTitle>
+            <PageTitle>{t('siteHead.myFavoriteObjects')}</PageTitle>
             {isLoading ? (
-              <p>Loading...</p>
+              <p>{t('common.loading')}</p>
             ) : objects && objects?.length > 0 ? (
               <ul className={styles.list}>
                 {objects.map((favorite: string) => (
@@ -46,8 +48,8 @@ export default function FavoriteSights() {
               </ul>
             ) : (
               <p>
-                You don't have any favorites yet. Browse <Link to={routes.commonMap}>Brutmaps</Link> to start
-                adding your favorite objects.
+                {t('favorites.emptyBefore')}{' '}
+                <Link to={routes.commonMap}>{t('favorites.emptyLinkText')}</Link> {t('favorites.emptyAfter')}
               </p>
             )}
           </div>

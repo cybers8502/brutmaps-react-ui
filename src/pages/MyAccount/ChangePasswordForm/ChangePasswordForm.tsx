@@ -1,12 +1,12 @@
 import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
 import useSWRMutation from 'swr/mutation';
 import {fetchWithToken} from '~/util/auth.ts';
-import errorMessages from '~/constants/errorMessages.const.ts';
 import Button from '~/components/Button/Button.tsx';
 import styles from '../MyAccount.module.scss';
 import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import {useState} from 'react';
 import apiRoutes from '~/util/apiRoutes.ts';
+import {useTranslation} from 'react-i18next';
 
 const updatePassword = async (url: string, {arg}: {arg: FormData}) => {
   return await fetchWithToken(url, {
@@ -16,6 +16,7 @@ const updatePassword = async (url: string, {arg}: {arg: FormData}) => {
 };
 
 export default function ChangePasswordForm({setIsChangingPassword}) {
+  const {t} = useTranslation();
   const [apiError, setApiError] = useState('');
   const {trigger: updatePass, isMutating} = useSWRMutation(
     import.meta.env.VITE_SITE_URI + apiRoutes.changePassword,
@@ -44,7 +45,7 @@ export default function ChangePasswordForm({setIsChangingPassword}) {
       if (error instanceof Error) {
         setApiError(error.message);
       } else {
-        setApiError('Unknown error occurred');
+        setApiError(t('common.unknownError'));
       }
     }
   };
@@ -53,15 +54,15 @@ export default function ChangePasswordForm({setIsChangingPassword}) {
     <form className={'form'} onSubmit={handleSubmit(onSubmit)}>
       <div className={'form__fieldsgroup'}>
         <div className='form__fieldset'>
-          <label>Current Password</label>
-          <input type='password' {...register('currentPassword', {required: errorMessages.inputRequired})} />
+          <label>{t('auth.currentPassword')}</label>
+          <input type='password' {...register('currentPassword', {required: t('errors.inputRequired')})} />
           {errors.currentPassword && <p className='error'>{errors.currentPassword.message}</p>}
         </div>
 
         <PasswordField
           register={register as unknown as UseFormRegister<{password: string}>}
           errors={errors as FieldErrors<{password: string}>}
-          label={'New Password'}
+          label={t('auth.newPassword')}
           placeholder={''}
         />
 
@@ -69,9 +70,9 @@ export default function ChangePasswordForm({setIsChangingPassword}) {
 
         <div className={styles.buttonWrapper}>
           <Button isSubmit disabled={isMutating}>
-            {isMutating ? 'Saving...' : 'Change Password'}
+            {isMutating ? t('common.saving') : t('account.changePassword')}
           </Button>
-          <Button onClick={() => setIsChangingPassword(false)}>Cancel</Button>
+          <Button onClick={() => setIsChangingPassword(false)}>{t('common.cancel')}</Button>
         </div>
       </div>
     </form>

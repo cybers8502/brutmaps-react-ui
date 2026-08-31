@@ -7,7 +7,6 @@ import styles from './Login.module.scss';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
 import Button from '~/components/Button/Button.tsx';
-import errorMessages from '~/constants/errorMessages.const.ts';
 import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
 import useSWRMutation from 'swr/mutation';
@@ -17,6 +16,7 @@ import {gqlFetch} from '~/util/graphql.ts';
 import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
+import {useTranslation} from 'react-i18next';
 
 interface LoginInput {
   username: string;
@@ -48,6 +48,7 @@ const loginUser = async (_url: string, {arg}: {arg: LoginInput}): Promise<Respon
 };
 
 export default function LoginUser() {
+  const {t} = useTranslation();
   const [inProgressGoogleAut, setIInProgressGoogleAut] = useState(false);
   const [googleAuthError, setGoogleAuthError] = useState('');
   const {
@@ -76,7 +77,7 @@ export default function LoginUser() {
       if (error instanceof Error) {
         setApiError(error.message);
       } else {
-        setApiError('Unknown error occurred');
+        setApiError(t('common.unknownError'));
       }
     }
   };
@@ -91,14 +92,14 @@ export default function LoginUser() {
         )}
         <div className={styles.frame}>
           <div className={styles.mainBlock}>
-            <PageTitle>Log In</PageTitle>
+            <PageTitle>{t('auth.logIn')}</PageTitle>
             <form className={'form form__fieldsgroup'} onSubmit={handleSubmit(onSubmit)}>
               <div className={'form__fieldset'}>
                 <input
                   id='username'
                   type='text'
-                  placeholder={'Email*'}
-                  {...register('username', {required: errorMessages.emailRequired})}
+                  placeholder={t('auth.emailPlaceholder')}
+                  {...register('username', {required: t('errors.emailRequired')})}
                 />
                 {errors.username && <p className='error'>{errors.username.message}</p>}
               </div>
@@ -106,11 +107,11 @@ export default function LoginUser() {
               <PasswordField
                 register={register as unknown as UseFormRegister<{password: string}>}
                 errors={errors as FieldErrors<{password: string}>}
-                placeholder={'Password*'}
+                placeholder={t('auth.passwordPlaceholder')}
               />
 
               <p style={{textAlign: 'right'}}>
-                <Link to={routes.lostPassword}>Forgot password?</Link>
+                <Link to={routes.lostPassword}>{t('auth.forgotPassword')}</Link>
               </p>
 
               {apiError && <p className='error'>{apiError}</p>}
@@ -118,13 +119,13 @@ export default function LoginUser() {
 
               <div className={styles.buttonWrap}>
                 <Button isSubmit disabled={isMutating}>
-                  {!isMutating ? 'Continue' : 'Loading...'}
+                  {!isMutating ? t('common.continue') : t('common.loading')}
                 </Button>
               </div>
             </form>
 
-            {inProgressGoogleAut && <>Loading...</>}
-            <p style={{textAlign: 'center', margin: '1rem 0'}}>or</p>
+            {inProgressGoogleAut && <>{t('common.loading')}</>}
+            <p style={{textAlign: 'center', margin: '1rem 0'}}>{t('common.or')}</p>
             <GoogleSignUp
               withUserCheckUp={false}
               inProgress={setIInProgressGoogleAut}
@@ -133,7 +134,7 @@ export default function LoginUser() {
           </div>
 
           <p className={styles.footer}>
-            Don't have an account? <Link to={routes.registration}>Sign up</Link>
+            {t('auth.dontHaveAccount')} <Link to={routes.registration}>{t('auth.signUp')}</Link>
           </p>
         </div>
       </AuhServicesLayout>

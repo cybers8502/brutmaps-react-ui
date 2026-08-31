@@ -4,8 +4,10 @@ import styles from './PostsList.module.scss';
 import useSightSearchParams from '~/hooks/useSightSearchParams.ts';
 import PostsFilter from '~/components/PostsList/PostsFilter/PostsFilter.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
+import {useTranslation} from 'react-i18next';
 
 export default function PostsList() {
+  const {t} = useTranslation();
   const query = useSightSearchParams('cat');
 
   const {posts, isLoading, isError} = useFetchPosts(query);
@@ -14,15 +16,15 @@ export default function PostsList() {
   return (
     <>
       <div className={styles.pageHeader}>
-        <PageTitle>Blog</PageTitle>
+        <PageTitle>{t('nav.blog')}</PageTitle>
         <PostsFilter />
       </div>
 
       {isLoading ? (
-        <p>Loading...</p>
+        <p>{t('common.loading')}</p>
       ) : (
         <>
-          {isError && <p>Error loading posts</p>}
+          {isError && <p>{t('blog.errorLoadingPosts')}</p>}
 
           {articles.length > 0 ? (
             <div className={styles['posts-list']}>
@@ -31,7 +33,7 @@ export default function PostsList() {
               ))}
             </div>
           ) : (
-            <p>No posts, try another category</p>
+            <p>{t('blog.noPostsTryAnotherCategory')}</p>
           )}
         </>
       )}

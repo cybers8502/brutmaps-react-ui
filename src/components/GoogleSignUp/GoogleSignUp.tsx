@@ -17,6 +17,7 @@ import {
   RegisterUserResponse,
 } from '~/components/GoogleSignUp/GoogleSignUp.interface.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
+import {useTranslation} from 'react-i18next';
 
 const CHECK_EMAIL_MUTATION = `
   mutation CheckEmail($email: String!) {
@@ -53,6 +54,7 @@ const registerUser = async (_url: string, {arg}: {arg: RegisterUserInput}) => {
 };
 
 export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}: GoogleSignUpProps) {
+  const {t} = useTranslation();
   const navigate = useNavigate();
 
   const {trigger: register} = useSWRMutation<RegisterUserResponse, Error, string, RegisterUserInput>(
@@ -82,7 +84,7 @@ export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}
         const check = await checkEmailExists({email});
 
         if (check.checkEmail.result.exists) {
-          errorMessage('User with this email already exists. Please log in instead.');
+          errorMessage(t('auth.emailAlreadyExists'));
           return;
         }
       }
@@ -99,7 +101,7 @@ export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}
       invalidateMapData();
       navigate(routes.myAccount);
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Google registration failed';
+      const message = error instanceof Error ? error.message : t('auth.googleRegistrationFailed');
       errorMessage(message);
     } finally {
       inProgress(false);
@@ -108,7 +110,7 @@ export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}
 
   return (
     <div className={styles.container}>
-      <GoogleLogin onSuccess={handleSuccess} onError={() => alert('Google login failed')} />
+      <GoogleLogin onSuccess={handleSuccess} onError={() => alert(t('auth.googleLoginFailed'))} />
     </div>
   );
 }

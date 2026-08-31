@@ -2,8 +2,10 @@ import {Link, useLocation} from 'react-router-dom';
 import styles from './Menu.module.scss';
 import classNames from 'classnames';
 import routes from '../../util/routes.ts';
+import {useTranslation} from 'react-i18next';
 
 export default function Menu() {
+  const {t} = useTranslation();
   const location = useLocation();
 
   return (
@@ -12,21 +14,21 @@ export default function Menu() {
         <Link
           to={routes.commonMap}
           className={classNames({[styles['is-active']]: location.pathname === routes.commonMap})}>
-          Map
+          {t('nav.map')}
         </Link>
       </li>
       <li>
         <Link
           to={routes.blog}
           className={classNames({[styles['is-active']]: location.pathname === routes.blog})}>
-          Blog
+          {t('nav.blog')}
         </Link>
       </li>
       <li>
         <Link
           to={routes.shop}
           className={classNames({[styles['is-active']]: location.pathname === routes.shop})}>
-          Shop
+          {t('nav.shop')}
         </Link>
       </li>
     </menu>

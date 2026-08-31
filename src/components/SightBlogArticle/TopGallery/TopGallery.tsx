@@ -8,12 +8,14 @@ import {useEffect, useRef, useState} from 'react';
 import useMobileState from '~/hooks/useMobileState.ts';
 import {Mousewheel, Pagination, Scrollbar} from 'swiper/modules';
 import {Swiper, SwiperSlide} from 'swiper/react';
+import {useTranslation} from 'react-i18next';
 
 interface TopGalleryProps {
   gallery: ImageItem[];
 }
 
 export default function TopGallery({gallery}: TopGalleryProps) {
+  const {t} = useTranslation();
   const isMobileView = useMobileState();
   const contentRef = useRef<HTMLDivElement>(null);
   const [showGallery, setShowGallery] = useState(false);
@@ -89,8 +91,8 @@ export default function TopGallery({gallery}: TopGalleryProps) {
                       <picture>
                         <img
                           src={img.url}
-                          alt={img.alt || `Image`}
-                          title={img.title || `Image`}
+                          alt={img.alt || t('sightPreviewPopup.imageAlt')}
+                          title={img.title || t('sightPreviewPopup.imageAlt')}
                           data-id={img.id}
                         />
                       </picture>
@@ -121,7 +123,12 @@ export default function TopGallery({gallery}: TopGalleryProps) {
             return (
               <figure key={`${img.id}_${index}`} className={styles.picture}>
                 <picture>
-                  <img src={img.url} alt={img.alt || `Image`} title={img.title || `Image`} data-id={img.id} />
+                  <img
+                    src={img.url}
+                    alt={img.alt || t('sightPreviewPopup.imageAlt')}
+                    title={img.title || t('sightPreviewPopup.imageAlt')}
+                    data-id={img.id}
+                  />
                 </picture>
                 <figcaption>
                   {img?.author?.link ? (
@@ -137,7 +144,7 @@ export default function TopGallery({gallery}: TopGalleryProps) {
           })}
           {gallery.slice(4, -1)?.length ? (
             <button className={styles.showMore} onClick={handleShowMore}>
-              Show more {gallery.slice(4, -1)?.length} photos
+              {t('topGallery.showMorePhotos', {count: gallery.slice(4, -1)?.length})}
             </button>
           ) : null}
         </div>

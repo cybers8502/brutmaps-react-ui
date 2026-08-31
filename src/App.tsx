@@ -2,6 +2,7 @@ import {Suspense} from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {GoogleOAuthProvider} from 'react-oauth-google';
 import {ErrorBoundary} from 'react-error-boundary';
+import {useTranslation} from 'react-i18next';
 import routes from './util/routes.ts';
 import {MapProvider} from './context/MapContext.tsx';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage.tsx';
@@ -25,16 +26,19 @@ import Checkout from '~/pages/Checkout/Checkout.tsx';
 import InstagramPage from '~/pages/InstagramPage/InstagramPage.tsx';
 
 function ErrorFallback() {
-  return <div>Something went wrong. Please try again later.</div>;
+  const {t} = useTranslation();
+  return <div>{t('common.somethingWentWrong')}</div>;
 }
 
 export default function App() {
+  const {t} = useTranslation();
+
   return (
     <ErrorBoundary fallback={<ErrorFallback />}>
       <MapProvider>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <BrowserRouter>
-            <Suspense fallback={<div>Loading data</div>}>
+            <Suspense fallback={<div>{t('common.loadingData')}</div>}>
               <Routes>
                 <Route path={routes.commonMap} element={<CommonMap />} />
                 <Route path={`${routes.sightSinglePage}/:slug`} element={<SightPage />} />

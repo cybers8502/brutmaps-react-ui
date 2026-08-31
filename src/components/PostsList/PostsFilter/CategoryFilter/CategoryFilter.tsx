@@ -3,6 +3,7 @@ import styles from './CategoryFilter.module.scss';
 import classNames from 'classnames';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
 import {Fragment} from 'react';
+import {useTranslation} from 'react-i18next';
 
 interface CategoryFilterProps {
   selectedCat: string;
@@ -18,6 +19,7 @@ export type CategoryResponse = {
 };
 
 export default function CategoryFilter({selectedCat, setSelectedCat, className}: CategoryFilterProps) {
+  const {t} = useTranslation();
   const {taxonomies: architectureStyles} = useFetchTaxonomies<CategoryResponse[]>('category');
 
   const handleCancel = () => {
@@ -25,7 +27,9 @@ export default function CategoryFilter({selectedCat, setSelectedCat, className}:
   };
 
   if (!architectureStyles?.length)
-    return <div className={classNames(className, styles.container, styles.loader)}>Loading...</div>;
+    return (
+      <div className={classNames(className, styles.container, styles.loader)}>{t('common.loading')}</div>
+    );
 
   return (
     <div className={classNames(className, styles.container)}>
@@ -33,7 +37,7 @@ export default function CategoryFilter({selectedCat, setSelectedCat, className}:
         value={selectedCat}
         onChange={(e) => setSelectedCat(e.target.value)}
         className={classNames(styles.select, {[styles.selected]: selectedCat})}>
-        <option value=''>All categories</option>
+        <option value=''>{t('map.allCategories')}</option>
         {architectureStyles.map((t) => (
           <Fragment key={t.id}>
             <option value={t.slug}>{t.label}</option>

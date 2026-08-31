@@ -8,8 +8,10 @@ import addToCart from '../../hooks/addToCart.ts';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.tsx';
 import PageTitle from '../../components/PageTitle/PageTitle.tsx';
 import Thumbnail from '../../components/Thumbnail/Thumbnail.tsx';
+import {useTranslation} from 'react-i18next';
 
 export default function ProductPage() {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const {slug} = useParams();
   const {products: fetchedProducts, isLoading, isError} = useFetchProducts();
@@ -20,14 +22,18 @@ export default function ProductPage() {
     window.location.replace('/checkout');
   };
 
-  if (isLoading) return 'Loading...';
-  if (isError) return 'Server Error';
+  if (isLoading) return t('common.loading');
+  if (isError) return t('common.serverError');
 
   const product = fetchedProducts.data.products.find((product) => product.slug === slug);
 
   if (!product) navigate('/404');
 
-  const breadcrumbItems = [{name: 'Home', path: '/'}, {name: 'Store', path: '/shop'}, {name: product.name}];
+  const breadcrumbItems = [
+    {name: t('common.home'), path: '/'},
+    {name: t('shop.store'), path: '/shop'},
+    {name: product.name},
+  ];
 
   return (
     <SiteLayout>
@@ -53,7 +59,7 @@ export default function ProductPage() {
             <div className={styles.buttonsWrap}>
               {product.stripe && (
                 <Link to={product.stripe} target={'_blank'} className={'button button--fill-red'}>
-                  Buy now
+                  {t('common.buyNow')}
                 </Link>
               )}
             </div>

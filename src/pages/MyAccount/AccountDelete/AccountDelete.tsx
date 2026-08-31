@@ -1,10 +1,12 @@
 import Button from '~/components/Button/Button.tsx';
+import {useTranslation} from 'react-i18next';
 
 interface AccountDelete {
   userId: string;
 }
 
 export default function AccountDelete({userId}) {
+  const {t} = useTranslation();
   const deleteRequest = () => {};
 
   return (
@@ -13,7 +15,7 @@ export default function AccountDelete({userId}) {
       {/*TODO delete user"*/}
       {/*TODO transparent type of button color"*/}
       <Button onClick={deleteRequest} variant={'fillDarkShadeGray'}>
-        Delete account
+        {t('account.deleteAccount')}
       </Button>
     </>
   );
