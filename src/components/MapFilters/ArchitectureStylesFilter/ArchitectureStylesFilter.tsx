@@ -1,4 +1,4 @@
-import useFetchTaxonomies from '~/hooks/fetchApi/useFetchTaxonomies.tsx';
+import {useTaxonomy} from '@brutmaps/api';
 import styles from './ArchitectureStylesFilter.module.scss';
 import classNames from 'classnames';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
@@ -11,20 +11,13 @@ interface ArchitectureStylesFilterProps {
   className: string;
 }
 
-export type ArchitectureStylesResponse = {
-  id: string;
-  slug: string;
-  label: string;
-  subcategories?: ArchitectureStylesResponse[];
-};
-
 export default function ArchitectureStylesFilter({
   selectedType,
   setSelectedType,
   className,
 }: ArchitectureStylesFilterProps) {
   const {t} = useTranslation();
-  const {taxonomies: architectureStyles} = useFetchTaxonomies<ArchitectureStylesResponse[]>('taxonomy');
+  const {terms: architectureStyles} = useTaxonomy('taxonomy');
 
   const handleCancel = () => {
     setSelectedType('');

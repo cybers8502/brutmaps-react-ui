@@ -1,4 +1,4 @@
-import useFetchTaxonomies from '~/hooks/fetchApi/useFetchTaxonomies.tsx';
+import {useTaxonomy} from '@brutmaps/api';
 import styles from './CategoryFilter.module.scss';
 import classNames from 'classnames';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
@@ -11,16 +11,9 @@ interface CategoryFilterProps {
   className: string;
 }
 
-export type CategoryResponse = {
-  id: string;
-  slug: string;
-  label: string;
-  subcategories?: CategoryResponse[];
-};
-
 export default function CategoryFilter({selectedCat, setSelectedCat, className}: CategoryFilterProps) {
   const {t} = useTranslation();
-  const {taxonomies: architectureStyles} = useFetchTaxonomies<CategoryResponse[]>('category');
+  const {terms: architectureStyles} = useTaxonomy('category');
 
   const handleCancel = () => {
     setSelectedCat('');
