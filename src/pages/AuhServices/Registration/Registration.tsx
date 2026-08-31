@@ -11,13 +11,13 @@ import FirstStep from '~/pages/AuhServices/Registration/FirstStep.tsx';
 import {ArrowToLeftIcon} from '~/components/Icons/Icons.tsx';
 import classNames from 'classnames';
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
-import useFetchUserCountries from '~/hooks/fetchApi/useFetchUserCountries.tsx';
-import {useRegister, useUploadUserPhoto} from '@brutmaps/api';
+import {useRegister, useUploadUserPhoto, useUserCountries} from '@brutmaps/api';
 import {saveTokens} from '~/util/auth.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
 import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
 import {useTranslation} from 'react-i18next';
+import {fileToBase64} from '~/util/fileToBase64.ts';
 
 interface RegisterUserFrom {
   firstName: string;
@@ -28,14 +28,6 @@ interface RegisterUserFrom {
   agreement: boolean;
   subscribe_to_newsletter: boolean;
 }
-
-const fileToBase64 = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 
 export default function RegisterUser() {
   const {t} = useTranslation();
@@ -51,7 +43,7 @@ export default function RegisterUser() {
   const [inProgressGoogleAut, setIInProgressGoogleAut] = useState(false);
   const [googleAuthError, setGoogleAuthError] = useState('');
 
-  const {data: countriesList, isLoading: isLoadingCountries} = useFetchUserCountries();
+  const {countries, isLoading: isLoadingCountries} = useUserCountries();
 
   const {
     register,
@@ -156,11 +148,11 @@ export default function RegisterUser() {
                     {errors.lastName && <p className='error'>{errors.lastName.message}</p>}
                   </div>
 
-                  {!isLoadingCountries && countriesList && (
+                  {!isLoadingCountries && countries.length > 0 && (
                     <div className='form__fieldset'>
                       <select id='country' {...register('country', {required: t('errors.inputRequired')})}>
                         <option defaultChecked>{t('auth.country')}</option>
-                        {Object.entries(countriesList).map(([code, name]) => (
+                        {countries.map(({code, name}) => (
                           <option key={code} value={code}>
                             {name}
                           </option>

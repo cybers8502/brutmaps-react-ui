@@ -1,14 +1,11 @@
 import {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import useSWRMutation from 'swr/mutation';
 import PhotoUploader from '~/components/PhotoUploader/PhotoUploader.tsx';
-import {fetchWithToken} from '~/util/auth.ts';
 import Button from '~/components/Button/Button.tsx';
 import styles from '../MyAccount.module.scss';
-import useFetchUserCountries from '~/hooks/fetchApi/useFetchUserCountries.tsx';
-import apiRoutes from '~/util/apiRoutes.ts';
+import {useEditProfile, useUploadUserPhoto, useUserCountries, type UserProfile} from '@brutmaps/api';
 import AccountDelete from '~/pages/MyAccount/AccountDelete/AccountDelete.tsx';
-import {IUserData} from '~/pages/MyAccount/UserData.interface.ts';
+import {fileToBase64} from '~/util/fileToBase64.ts';
 import {useTranslation} from 'react-i18next';
 
 interface ProfileEditFrom {
@@ -20,26 +17,17 @@ interface ProfileEditFrom {
 }
 
 interface ProfileFormProps {
-  data: IUserData | null;
-  mutate: (url: string) => Promise<IUserData>;
+  data: UserProfile | null;
+  refetch: () => Promise<unknown>;
   setIsEditing: (isEditing: boolean) => void;
 }
 
-const updateUserProfile = async (url: string, {arg}: {arg: FormData}) => {
-  return await fetchWithToken(url, {
-    method: 'POST',
-    body: arg,
-  });
-};
-
-export default function ProfileForm({data, mutate, setIsEditing}: ProfileFormProps) {
+export default function ProfileForm({data, refetch, setIsEditing}: ProfileFormProps) {
   const {t} = useTranslation();
-  const {trigger: updateProfile, isMutating} = useSWRMutation(
-    import.meta.env.VITE_SITE_URI + apiRoutes.editProfile,
-    updateUserProfile,
-  );
+  const {editProfile, isLoading: isMutating} = useEditProfile();
+  const {uploadUserPhoto} = useUploadUserPhoto();
 
-  const [photoPreview, setPhotoPreview] = useState<string | null>(data?.photo_url || null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(data?.photoUrl || null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
   const {
@@ -49,21 +37,21 @@ export default function ProfileForm({data, mutate, setIsEditing}: ProfileFormPro
     reset,
   } = useForm<ProfileEditFrom>();
 
-  const {data: countriesList, isLoading: isLoadingCountries} = useFetchUserCountries();
+  const {countries, isLoading: isLoadingCountries} = useUserCountries();
 
   useEffect(() => {
-    if (data?.photo_url) {
-      setPhotoPreview(data.photo_url);
+    if (data?.photoUrl) {
+      setPhotoPreview(data.photoUrl);
     }
   }, [data]);
 
   useEffect(() => {
     reset({
-      firstName: data?.first_name,
-      lastName: data?.last_name,
+      firstName: data?.firstName ?? '',
+      lastName: data?.lastName ?? '',
       email: data?.email,
-      country: data?.country,
-      is_subscribed: data?.is_subscribed,
+      country: data?.country ?? '',
+      is_subscribed: data?.isSubscribed ? 'true' : '',
     });
   }, [data, reset]);
 
@@ -74,21 +62,18 @@ export default function ProfileForm({data, mutate, setIsEditing}: ProfileFormPro
 
   const onSubmit = async (formData: ProfileEditFrom) => {
     try {
-      const form = new FormData();
-      form.append('email', formData.email);
-      form.append('first_name', formData.firstName);
-      form.append('last_name', formData.lastName);
-      form.append('country', formData.country);
-      form.append('subscribe_to_newsletter', String(formData.is_subscribed));
+      const photoUrl = photoFile ? await uploadUserPhoto(await fileToBase64(photoFile), photoFile.name) : undefined;
 
-      if (photoFile) {
-        form.append('photo', photoFile);
-      }
+      await editProfile({
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        country: formData.country,
+        photoUrl,
+      });
 
-      await updateProfile(form);
       setIsEditing(false);
-
-      await mutate(import.meta.env.VITE_SITE_URI + apiRoutes.userProfile);
+      await refetch();
     } catch (error) {
       console.error('Profile update failed:', error);
     }
@@ -119,12 +104,12 @@ export default function ProfileForm({data, mutate, setIsEditing}: ProfileFormPro
           {errors.lastName && <p className='error'>{errors.lastName.message}</p>}
         </div>
 
-        {!isLoadingCountries && countriesList && (
+        {!isLoadingCountries && countries.length > 0 && (
           <div className='form__fieldset'>
             <label>{t('auth.country')}</label>
             <select id='country' {...register('country', {required: t('errors.inputRequired')})}>
               <option defaultChecked>{t('auth.country')}</option>
-              {Object.entries(countriesList).map(([code, name]) => (
+              {countries.map(({code, name}) => (
                 <option key={code} value={code} defaultChecked={code === data.country}>
                   {name}
                 </option>
@@ -145,7 +130,7 @@ export default function ProfileForm({data, mutate, setIsEditing}: ProfileFormPro
             {isMutating ? t('common.saving') : t('account.saveChanges')}
           </Button>
           <Button onClick={() => setIsEditing(false)}>{t('common.cancel')}</Button>
-          <AccountDelete userId={data.user_id} />
+          <AccountDelete userId={String(data.databaseId)} />
         </div>
       </div>
     </form>

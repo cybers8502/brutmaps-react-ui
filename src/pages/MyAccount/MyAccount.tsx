@@ -2,25 +2,22 @@ import PageTitle from '../../components/PageTitle/PageTitle.tsx';
 import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
 import styles from './MyAccount.module.scss';
 import {useState} from 'react';
-import useProfileData from '~/hooks/fetchApi/useFetchUserProfile.tsx';
+import {useProfile, useUserCountries} from '@brutmaps/api';
 import Button from '~/components/Button/Button.tsx';
 import ProfileForm from '~/pages/MyAccount/ProfileForm/ProfileForm.tsx';
 import ChangePasswordForm from '~/pages/MyAccount/ChangePasswordForm/ChangePasswordForm.tsx';
-import useFetchUserCountries from '~/hooks/fetchApi/useFetchUserCountries.tsx';
 import {useTranslation} from 'react-i18next';
 
 export default function MyAccount() {
   const {t} = useTranslation();
-  const {data: userData, isError, isLoading, mutate} = useProfileData();
+  const {profile, error, isLoading, refetch} = useProfile();
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 
-  const {data: countriesList, isLoading: isLoadingCountries} = useFetchUserCountries();
+  const {countries, isLoading: isLoadingCountries} = useUserCountries();
 
   if (isLoading) return <p>{t('common.loading')}</p>;
-  if (isError) return <p>{t('account.errorLoadingProfile')}</p>;
-
-  const profile = userData?.data || null;
+  if (error) return <p>{t('account.errorLoadingProfile')}</p>;
 
   return (
     <SitePopupLayout>
@@ -32,16 +29,16 @@ export default function MyAccount() {
             </div>
 
             {isEditing ? (
-              <ProfileForm data={profile} mutate={mutate} setIsEditing={setIsEditing} />
+              <ProfileForm data={profile} refetch={refetch} setIsEditing={setIsEditing} />
             ) : isChangingPassword ? (
               <ChangePasswordForm setIsChangingPassword={setIsChangingPassword} />
             ) : (
               <>
                 <div className={styles.grid}>
                   <div>
-                    {profile?.photo_url ? (
+                    {profile?.photoUrl ? (
                       <picture className={styles.picture}>
-                        <img src={profile.photo_url} alt={t('account.profileAlt')} className='profile-photo' />
+                        <img src={profile.photoUrl} alt={t('account.profileAlt')} className='profile-photo' />
                       </picture>
                     ) : (
                       <div className={styles.picture}>{t('account.noProfilePhoto')}</div>
@@ -54,21 +51,21 @@ export default function MyAccount() {
                     </p>
                     <p>
                       <strong>{t('account.firstNameLabel')}</strong>{' '}
-                      {profile?.first_name || t('account.notAvailable')}
+                      {profile?.firstName || t('account.notAvailable')}
                     </p>
                     <p>
                       <strong>{t('account.lastNameLabel')}</strong>{' '}
-                      {profile?.last_name || t('account.notAvailable')}
+                      {profile?.lastName || t('account.notAvailable')}
                     </p>
-                    {!isLoadingCountries && countriesList && (
+                    {!isLoadingCountries && countries.length > 0 && (
                       <p>
                         <strong>{t('account.countryLabel')}</strong>{' '}
-                        {countriesList[profile?.country || ''] || t('account.notAvailable')}
+                        {countries.find((c) => c.code === profile?.country)?.name || t('account.notAvailable')}
                       </p>
                     )}
                     <p>
                       <strong>{t('account.subscribedToNewsletter')}</strong>{' '}
-                      {profile?.is_subscribed ? t('account.yes') : t('account.no')}
+                      {profile?.isSubscribed ? t('account.yes') : t('account.no')}
                     </p>
                   </div>
                 </div>

@@ -7,7 +7,7 @@ import Button from '~/components/Button/Button.tsx';
 import {useForm} from 'react-hook-form';
 import {useState} from 'react';
 import AuhServicesLayout from '../components/AuhServicesLayout/AuhServicesLayout';
-import apiRoutes from '~/util/apiRoutes.ts';
+import {useLostPassword} from '@brutmaps/api';
 import {useTranslation} from 'react-i18next';
 
 interface LostPasswordInput {
@@ -23,33 +23,18 @@ export default function LostPasswordPage() {
   } = useForm<LostPasswordInput>();
   const [apiError, setApiError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const {lostPassword, isLoading} = useLostPassword();
 
   const onSubmit = async (data: LostPasswordInput) => {
     setApiError('');
     setSuccessMessage('');
-    setIsLoading(true);
 
     try {
-      const response = await fetch(import.meta.env.VITE_SITE_URI + apiRoutes.lostPassword, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({email: data.email}),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || t('auth.passwordRecoveryFailed'));
-      }
-
+      await lostPassword(data.email);
       setSuccessMessage(t('auth.instructionsSent'));
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : t('auth.serverTemporaryUnavailable');
       setApiError(message);
-    } finally {
-      setIsLoading(false);
     }
   };
 

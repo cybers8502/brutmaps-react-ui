@@ -7,7 +7,7 @@ import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
 import {useState} from 'react';
 import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
-import apiRoutes from '~/util/apiRoutes.ts';
+import {useResetPassword} from '@brutmaps/api';
 import routes from '~/util/routes.ts';
 import {useTranslation} from 'react-i18next';
 
@@ -29,7 +29,7 @@ export default function ResetPasswordPage() {
   const key = searchParams.get('key');
   const login = searchParams.get('login');
 
-  const [isLoading, setIsLoading] = useState(false);
+  const {resetPassword, isLoading} = useResetPassword();
   const [apiError, setApiError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [disabledButton, setDisabledButton] = useState(false);
@@ -37,27 +37,19 @@ export default function ResetPasswordPage() {
   const onSubmit = async (data: ResetPasswordInput) => {
     setApiError('');
     setSuccessMessage('');
-    setIsLoading(true);
     setDisabledButton(true);
 
     try {
-      const response = await fetch(import.meta.env.VITE_SITE_URI + apiRoutes.resetPassword, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({key, login, new_password: data.password}),
-      });
+      if (!key || !login) throw new Error(t('auth.couldNotChangePassword'));
 
-      const respData = await response.json();
-      if (!response.ok) throw new Error(respData.message || t('auth.couldNotChangePassword'));
+      await resetPassword(key, login, data.password);
 
-      setSuccessMessage(respData.message || t('auth.passwordChangedRedirect'));
+      setSuccessMessage(t('auth.passwordChangedRedirect'));
       setTimeout(() => navigate(routes.login), 3000);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : t('auth.errorOccurred');
       setApiError(message);
       setDisabledButton(false);
-    } finally {
-      setIsLoading(false);
     }
   };
 

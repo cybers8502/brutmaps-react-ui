@@ -8,12 +8,6 @@ const apiRoutes = {
   architectsStyles: '/wp-json/v1/taxonomies',
   shopProductsList: '/wp-json/v1/shop/products',
   instagramGalleryList: '/wp-json/v1/sights-images',
-  userAvailableCountries: '/wp-json/v1/profile/user-countries',
-  resetPassword: '/wp-json/v1/auth/reset-password',
-  lostPassword: '/wp-json/v1/auth/lost-password',
-  changePassword: '/wp-json/v1/auth/change-password',
-  userProfile: '/wp-json/v1/profile/user-profile',
-  editProfile: '/wp-json/v1/profile/edit-profile',
   userFavorites: '/wp-json/v1/user/favorites',
   userToggleFavorites: '/wp-json/v1/user/favorites/toggle',
 };

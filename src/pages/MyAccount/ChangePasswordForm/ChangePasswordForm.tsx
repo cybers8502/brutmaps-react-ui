@@ -1,27 +1,15 @@
 import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
-import useSWRMutation from 'swr/mutation';
-import {fetchWithToken} from '~/util/auth.ts';
+import {useChangePassword} from '@brutmaps/api';
 import Button from '~/components/Button/Button.tsx';
 import styles from '../MyAccount.module.scss';
 import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import {useState} from 'react';
-import apiRoutes from '~/util/apiRoutes.ts';
 import {useTranslation} from 'react-i18next';
-
-const updatePassword = async (url: string, {arg}: {arg: FormData}) => {
-  return await fetchWithToken(url, {
-    method: 'POST',
-    body: arg,
-  });
-};
 
 export default function ChangePasswordForm({setIsChangingPassword}) {
   const {t} = useTranslation();
   const [apiError, setApiError] = useState('');
-  const {trigger: updatePass, isMutating} = useSWRMutation(
-    import.meta.env.VITE_SITE_URI + apiRoutes.changePassword,
-    updatePassword,
-  );
+  const {changePassword, isLoading: isMutating} = useChangePassword();
 
   const {
     register,
@@ -34,11 +22,7 @@ export default function ChangePasswordForm({setIsChangingPassword}) {
     setApiError('');
 
     try {
-      const form = new FormData();
-      form.append('current_password', data.currentPassword);
-      form.append('new_password', data.password);
-
-      await updatePass(form);
+      await changePassword(data.currentPassword, data.password);
       setIsChangingPassword(false);
       reset();
     } catch (error) {
