@@ -276,6 +276,8 @@
 
 "@brutmaps/api@file:../brutmaps-api":
   version "0.1.0"
+  dependencies:
+    jwt-decode "^4.0.0"
 
 "@emotion/babel-plugin@^11.13.5":
   version "11.13.5"
