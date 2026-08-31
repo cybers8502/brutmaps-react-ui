@@ -1,73 +1,20 @@
-import useSWRMutation from 'swr/mutation';
+import {useCheckEmail, useGoogleAuth} from '@brutmaps/api';
 import {saveTokens} from '~/util/auth.ts';
 import {useNavigate} from 'react-router-dom';
 import {GoogleLogin} from 'react-oauth-google';
 import {jwtDecode} from 'jwt-decode';
 import routes from '~/util/routes.ts';
-import apiRoutes from '~/util/apiRoutes.ts';
 import styles from './GoogleSignUp.module.scss';
-import {gqlFetch} from '~/util/graphql.ts';
-import {
-  CheckEmailExistsResponse,
-  CheckEmailInput,
-  CredentialProps,
-  DecodedCredentialResponse,
-  GoogleSignUpProps,
-  RegisterUserInput,
-  RegisterUserResponse,
-} from '~/components/GoogleSignUp/GoogleSignUp.interface.ts';
+import {CredentialProps, DecodedCredentialResponse, GoogleSignUpProps} from '~/components/GoogleSignUp/GoogleSignUp.interface.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
 import {useTranslation} from 'react-i18next';
-
-const CHECK_EMAIL_MUTATION = `
-  mutation CheckEmail($email: String!) {
-    checkEmail(input: {clientMutationId: "1", email: $email}) {
-      result { exists message }
-    }
-  }
-`;
-
-const GOOGLE_AUTH_MUTATION = `
-  mutation GoogleAuth($email: String!, $firstName: String, $lastName: String, $avatar: String) {
-    googleAuth(input: {
-      clientMutationId: "1"
-      email: $email
-      firstName: $firstName
-      lastName: $lastName
-      avatar: $avatar
-    }) {
-      authPayload {
-        authToken
-        refreshToken
-        user { email }
-      }
-    }
-  }
-`;
-
-const checkEmail = async (_url: string, {arg}: {arg: CheckEmailInput}) => {
-  return gqlFetch<CheckEmailExistsResponse>(CHECK_EMAIL_MUTATION, arg as unknown as Record<string, unknown>);
-};
-
-const registerUser = async (_url: string, {arg}: {arg: RegisterUserInput}) => {
-  return gqlFetch<RegisterUserResponse>(GOOGLE_AUTH_MUTATION, arg as unknown as Record<string, unknown>);
-};
 
 export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}: GoogleSignUpProps) {
   const {t} = useTranslation();
   const navigate = useNavigate();
 
-  const {trigger: register} = useSWRMutation<RegisterUserResponse, Error, string, RegisterUserInput>(
-    import.meta.env.VITE_SITE_URI + apiRoutes.graphql,
-    registerUser,
-  );
-
-  const {trigger: checkEmailExists} = useSWRMutation<
-    CheckEmailExistsResponse,
-    Error,
-    string,
-    CheckEmailInput
-  >(import.meta.env.VITE_SITE_URI + apiRoutes.graphql, checkEmail);
+  const {googleAuth} = useGoogleAuth();
+  const {checkEmail} = useCheckEmail();
 
   const handleSuccess = async (credentialResponse: CredentialProps) => {
     inProgress(true);
@@ -81,23 +28,22 @@ export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}
       const picture = decoded.picture || '';
 
       if (withUserCheckUp) {
-        const check = await checkEmailExists({email});
+        const result = await checkEmail(email);
 
-        if (check.checkEmail.result.exists) {
-          errorMessage(t('auth.emailAlreadyExists'));
+        if (result.exists) {
+          errorMessage(result.message ?? t('auth.emailAlreadyExists'));
           return;
         }
       }
 
-      const result = await register({
+      const authPayload = await googleAuth({
         email,
         firstName,
         lastName,
         avatar: picture,
       });
 
-      const {authToken, refreshToken} = result.googleAuth.authPayload;
-      saveTokens(authToken, refreshToken);
+      saveTokens(authPayload.authToken, authPayload.refreshToken);
       invalidateMapData();
       navigate(routes.myAccount);
     } catch (error: unknown) {

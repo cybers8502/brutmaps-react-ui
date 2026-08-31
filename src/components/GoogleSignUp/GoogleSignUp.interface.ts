@@ -4,22 +4,6 @@ export interface GoogleSignUpProps {
   inProgress: (status: boolean) => void;
 }
 
-export interface CheckEmailExistsResponse {
-  checkEmail: {
-    result: {exists: boolean; message: string};
-  };
-}
-
-export interface RegisterUserResponse {
-  googleAuth: {
-    authPayload: {
-      authToken: string;
-      refreshToken: string;
-      user: {email: string};
-    };
-  };
-}
-
 export interface DecodedCredentialResponse {
   email: string;
   given_name?: string;
@@ -29,15 +13,4 @@ export interface DecodedCredentialResponse {
 
 export interface CredentialProps {
   credential?: string;
-}
-
-export interface CheckEmailInput {
-  email: string;
-}
-
-export interface RegisterUserInput {
-  email: string;
-  firstName: string;
-  lastName: string;
-  avatar: string;
 }

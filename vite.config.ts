@@ -12,6 +12,10 @@ export default defineConfig(({mode}) => {
       alias: {
         '~': path.resolve(__dirname, 'src'),
       },
+      // @brutmaps/api is a `file:` dependency (separate sibling repo, not a
+      // workspace) — without dedupe it can pull in its own nested copies of
+      // these, causing two live React/Apollo instances at runtime.
+      dedupe: ['react', 'react-dom', '@apollo/client', 'graphql'],
     },
     server: {
       open: true,

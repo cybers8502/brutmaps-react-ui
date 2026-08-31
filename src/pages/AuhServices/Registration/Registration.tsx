@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import useSWRMutation from 'swr/mutation';
 import routes from '~/util/routes.ts';
 import {Link, useNavigate} from 'react-router-dom';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
@@ -14,7 +13,7 @@ import classNames from 'classnames';
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
 import useFetchUserCountries from '~/hooks/fetchApi/useFetchUserCountries.tsx';
 import apiRoutes from '~/util/apiRoutes.ts';
-import {gqlFetch} from '~/util/graphql.ts';
+import {useRegister} from '@brutmaps/api';
 import {saveTokens} from '~/util/auth.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
 import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
@@ -32,55 +31,6 @@ interface RegisterUserFrom {
   subscribe_to_newsletter: boolean;
 }
 
-interface RegisterInput {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  country: string;
-  subscribeToNewsletter: boolean;
-  photoFile: File | null;
-}
-
-interface RegisterResponse {
-  register: {
-    authPayload: {
-      authToken: string;
-      refreshToken: string;
-      user: {email: string};
-    };
-  };
-}
-
-const REGISTER_MUTATION = `
-  mutation Register(
-    $email: String!
-    $password: String!
-    $firstName: String
-    $lastName: String
-    $country: String
-    $subscribeToNewsletter: Boolean
-    $photoUrl: String
-  ) {
-    register(input: {
-      clientMutationId: "1"
-      email: $email
-      password: $password
-      firstName: $firstName
-      lastName: $lastName
-      country: $country
-      subscribeToNewsletter: $subscribeToNewsletter
-      photoUrl: $photoUrl
-    }) {
-      authPayload {
-        authToken
-        refreshToken
-        user { email }
-      }
-    }
-  }
-`;
-
 const uploadPhoto = async (photoFile: File): Promise<string> => {
   const formData = new FormData();
   formData.append('photo', photoFile);
@@ -96,13 +46,6 @@ const uploadPhoto = async (photoFile: File): Promise<string> => {
   }
 
   return responseData.data.photo_url;
-};
-
-const registerUser = async (_url: string, {arg}: {arg: RegisterInput}): Promise<RegisterResponse> => {
-  const {photoFile, ...fields} = arg;
-  const photoUrl = photoFile ? await uploadPhoto(photoFile) : null;
-
-  return gqlFetch<RegisterResponse>(REGISTER_MUTATION, {...fields, photoUrl});
 };
 
 export default function RegisterUser() {
@@ -132,10 +75,7 @@ export default function RegisterUser() {
     },
   });
 
-  const {trigger: sendRequest, isMutating} = useSWRMutation(
-    import.meta.env.VITE_SITE_URI + apiRoutes.graphql,
-    registerUser,
-  );
+  const {register: registerUser, isLoading: isMutating} = useRegister();
 
   const handleFirstStep = async (data: {email: string; password: string}) => {
     setUserData(data);
@@ -151,18 +91,19 @@ export default function RegisterUser() {
     setApiError('');
 
     try {
-      const result = await sendRequest({
+      const photoUrl = photoFile ? await uploadPhoto(photoFile) : undefined;
+
+      const authPayload = await registerUser({
         email: userData.email,
         password: userData.password,
         firstName: data.firstName,
         lastName: data.lastName,
         country: data.country,
         subscribeToNewsletter: data.subscribe_to_newsletter,
-        photoFile,
+        photoUrl,
       });
 
-      const {authToken, refreshToken} = result.register.authPayload;
-      saveTokens(authToken, refreshToken);
+      saveTokens(authPayload.authToken, authPayload.refreshToken);
       invalidateMapData();
       navigate(routes.myAccount);
     } catch (error) {

@@ -3,6 +3,12 @@
     "baseUrl": "./",
     "paths": {
       "~/*": ["src/*"],
+      // Same reasoning as vite.config.ts's resolve.dedupe: force @brutmaps/api's
+      // internal imports of these onto this project's copies, not its own
+      // nested node_modules.
+      "@apollo/client": ["./node_modules/@apollo/client"],
+      "@apollo/client/*": ["./node_modules/@apollo/client/*"],
+      "graphql": ["./node_modules/graphql"]
     },
     "target": "ES2020",
     "useDefineForClassFields": true,

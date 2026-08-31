@@ -9,10 +9,8 @@ import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
 import Button from '~/components/Button/Button.tsx';
 import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
-import useSWRMutation from 'swr/mutation';
+import {useLogin} from '@brutmaps/api';
 import {saveTokens} from '~/util/auth.ts';
-import apiRoutes from '~/util/apiRoutes.ts';
-import {gqlFetch} from '~/util/graphql.ts';
 import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
@@ -22,30 +20,6 @@ interface LoginInput {
   username: string;
   password: string;
 }
-
-interface ResponseData {
-  login: {
-    authToken: string;
-    refreshToken: string;
-    user: {
-      email: string;
-    };
-  };
-}
-
-const LOGIN_MUTATION = `
-  mutation Login($username: String!, $password: String!) {
-    login(input: {clientMutationId: "1", username: $username, password: $password}) {
-      authToken
-      refreshToken
-      user { email }
-    }
-  }
-`;
-
-const loginUser = async (_url: string, {arg}: {arg: LoginInput}): Promise<ResponseData> => {
-  return gqlFetch<ResponseData>(LOGIN_MUTATION, arg as unknown as Record<string, unknown>);
-};
 
 export default function LoginUser() {
   const {t} = useTranslation();
@@ -59,18 +33,15 @@ export default function LoginUser() {
   const navigate = useNavigate();
   const [apiError, setApiError] = useState('');
 
-  const {trigger: authTrigger, isMutating} = useSWRMutation<ResponseData, Error, string, LoginInput>(
-    import.meta.env.VITE_SITE_URI + apiRoutes.graphql,
-    loginUser,
-  );
+  const {login, isLoading: isMutating} = useLogin();
 
   const onSubmit = async (data: LoginInput) => {
     setApiError('');
 
     try {
-      const responseData = await authTrigger(data);
+      const authPayload = await login(data.username, data.password);
 
-      saveTokens(responseData.login.authToken, responseData.login.refreshToken);
+      saveTokens(authPayload.authToken, authPayload.refreshToken);
       invalidateMapData();
       navigate(routes.myAccount);
     } catch (error) {

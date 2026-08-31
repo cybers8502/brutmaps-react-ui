@@ -3,34 +3,13 @@ import Button from '~/components/Button/Button.tsx';
 import isEmailValid from '~/util/validationEmail.utility.ts';
 import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import {useState} from 'react';
-import useSWRMutation from 'swr/mutation';
-import apiRoutes from '~/util/apiRoutes.ts';
-import {gqlFetch} from '~/util/graphql.ts';
+import {useCheckEmail} from '@brutmaps/api';
 import {useTranslation} from 'react-i18next';
 
 interface FirstStepProps {
   initialData: {email: string; password: string};
   handleFirstStep: ({email, password}: {email: string; password: string}) => void;
 }
-
-interface CheckEmailResponse {
-  checkEmail: {
-    result: {exists: boolean; message: string};
-  };
-}
-
-const CHECK_EMAIL_MUTATION = `
-  mutation CheckEmail($email: String!) {
-    checkEmail(input: {clientMutationId: "1", email: $email}) {
-      result { exists message }
-    }
-  }
-`;
-
-const checkEmailExists = async (_url: string, {arg}: {arg: {email: string}}) => {
-  const data = await gqlFetch<CheckEmailResponse>(CHECK_EMAIL_MUTATION, arg as Record<string, unknown>);
-  return data.checkEmail.result;
-};
 
 export default function FirstStep({initialData, handleFirstStep}: FirstStepProps) {
   const {t} = useTranslation();
@@ -41,19 +20,16 @@ export default function FirstStep({initialData, handleFirstStep}: FirstStepProps
   } = useForm<{email: string; password: string}>();
 
   const [apiError, setApiError] = useState('');
-  const {trigger: checkEmail, isMutating} = useSWRMutation(
-    import.meta.env.VITE_SITE_URI + apiRoutes.graphql,
-    checkEmailExists,
-  );
+  const {checkEmail, isLoading: isMutating} = useCheckEmail();
 
   const onSubmit = async (data: {email: string; password: string}) => {
     setApiError('');
 
     try {
-      const response = await checkEmail({email: data.email});
+      const response = await checkEmail(data.email);
 
       if (response.exists) {
-        setApiError(response.message);
+        setApiError(response.message ?? t('common.somethingWentWrong'));
         return;
       }
 
