@@ -1,12 +1,9 @@
 import styles from './ArchitectsFilter.module.scss';
-import useFetchPopularArchitects from '~/hooks/fetchApi/useFetchPopularArchitects.tsx';
+import {usePopularArchitects, useSearchArchitects, useArchitect, type Architect} from '@brutmaps/api';
 import {useEffect, useMemo, useState} from 'react';
 import useDebounce from '~/hooks/useDebounce.ts';
-import useSearchArchitects from '~/hooks/fetchApi/useSearchArchitects.tsx';
 import classNames from 'classnames';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
-import useFetchArchitectBySlug from '~/hooks/fetchApi/useFetchArchitectBySlug.tsx';
-import {ArchitectsResponse} from '~/hooks/fetchApi/useFetchArchitects.tsx';
 import {useTranslation} from 'react-i18next';
 
 interface ArchitectsFilterProps {
@@ -26,25 +23,26 @@ export default function ArchitectsFilter({
   const [architectName, setArchitectName] = useState('');
 
   const debouncedSearch = useDebounce(search, 400);
+  const isSearching = debouncedSearch.trim().length >= 2;
 
-  const {architects: searchResults, isLoading: loadingSearch} = useSearchArchitects(debouncedSearch);
-  const {architects: popularArchitects, isLoading: loadingPopular} = useFetchPopularArchitects();
-  const {architect: preselectedArchitect} = useFetchArchitectBySlug(selectedArchitect);
+  const {architects: searchResults, isLoading: loadingSearch} = useSearchArchitects(
+    debouncedSearch,
+    isSearching,
+  );
+  const {architects: popularArchitects, isLoading: loadingPopular} = usePopularArchitects();
+  const {architect: preselectedArchitect} = useArchitect(selectedArchitect);
 
   useEffect(() => {
-    setArchitectName(preselectedArchitect?.data?.full_name || '');
+    setArchitectName(preselectedArchitect?.fullName || '');
   }, [preselectedArchitect]);
 
   const architectOptions = useMemo(() => {
-    if (search.trim().length >= 2) {
-      return searchResults ? searchResults?.data : [];
-    }
-    return popularArchitects?.data || [];
-  }, [search, searchResults, popularArchitects]);
+    return isSearching ? searchResults : popularArchitects;
+  }, [isSearching, searchResults, popularArchitects]);
 
-  const handleLink = (architect: ArchitectsResponse) => {
+  const handleLink = (architect: Architect) => {
     setIsPopupShown(false);
-    setSelectedArchitect(architect.id);
+    setSelectedArchitect(String(architect.id));
   };
 
   const handleCancel = () => {
@@ -84,9 +82,9 @@ export default function ArchitectsFilter({
                     {architectOptions?.map((a) => (
                       <button key={a.id} className={styles.item} onClick={() => handleLink(a)}>
                         <picture>
-                          <img src={a.image?.url} alt={a.image?.name} />
+                          <img src={a.image?.url} alt={a.image?.alt || a.fullName} />
                         </picture>
-                        {a.full_name}
+                        {a.fullName}
                       </button>
                     ))}
                   </div>
@@ -101,12 +99,12 @@ export default function ArchitectsFilter({
                   <p>{t('common.loading')}</p>
                 ) : (
                   <div className={styles.grid}>
-                    {popularArchitects?.data.map((a) => (
+                    {popularArchitects.map((a) => (
                       <button key={a.id} className={styles.item} onClick={() => handleLink(a)}>
                         <picture>
-                          <img src={a.image?.url} alt={a.image?.name} />
+                          <img src={a.image?.url} alt={a.image?.alt || a.fullName} />
                         </picture>
-                        {a.full_name}
+                        {a.fullName}
                       </button>
                     ))}
                   </div>
