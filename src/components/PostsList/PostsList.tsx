@@ -1,4 +1,4 @@
-import useFetchPosts from '~/hooks/fetchApi/useFetchPosts.tsx';
+import {usePosts} from '@brutmaps/api';
 import PostItemPreview from './PostItemPreview/PostItemPreview.tsx';
 import styles from './PostsList.module.scss';
 import useSightSearchParams from '~/hooks/useSightSearchParams.ts';
@@ -8,10 +8,10 @@ import {useTranslation} from 'react-i18next';
 
 export default function PostsList() {
   const {t} = useTranslation();
-  const query = useSightSearchParams('cat');
+  const category = useSightSearchParams('cat');
 
-  const {posts, isLoading, isError} = useFetchPosts(query);
-  const articles = posts?.data?.posts || [];
+  const {result, isLoading, error} = usePosts({categories: category ? [category] : []});
+  const articles = result?.posts || [];
 
   return (
     <>
@@ -24,7 +24,7 @@ export default function PostsList() {
         <p>{t('common.loading')}</p>
       ) : (
         <>
-          {isError && <p>{t('blog.errorLoadingPosts')}</p>}
+          {error && <p>{t('blog.errorLoadingPosts')}</p>}
 
           {articles.length > 0 ? (
             <div className={styles['posts-list']}>

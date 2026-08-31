@@ -1,6 +1,6 @@
 import {Fragment} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import useFetchBlogArticle from '~/hooks/fetchApi/useFetchBlogArticle.tsx';
+import {usePost} from '@brutmaps/api';
 import parse from 'html-react-parser';
 import classNames from 'classnames';
 import styles from './BlogArticle.module.scss';
@@ -14,12 +14,10 @@ export default function BlogArticle() {
   const {t} = useTranslation();
   const {slug} = useParams();
   const navigate = useNavigate();
-  const {article, isLoading, isError} = useFetchBlogArticle(slug || '');
+  const {post: articleDetail, isLoading, error} = usePost(slug || '');
 
   if (isLoading) return <p>{t('common.loading')}</p>;
-  if (isError) navigate('/404');
-
-  const articleDetail = article?.data;
+  if (error) navigate('/404');
 
   if (!articleDetail) {
     navigate('/404');

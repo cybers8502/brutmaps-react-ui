@@ -4,11 +4,11 @@ import 'swiper/scss';
 import 'swiper/scss/a11y';
 import styles from './BlogGallery.module.scss';
 import {Link} from 'react-router-dom';
-import {ImageItem} from '~/hooks/fetchApi/useFetchObjectPost.tsx';
+import type {GalleryImage} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
 import {useRef} from 'react';
 
 interface BlogGalleryProps {
-  gallery: ImageItem[];
+  gallery: GalleryImage[];
   initialIndex: number;
 }
 

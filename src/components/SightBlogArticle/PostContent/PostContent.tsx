@@ -1,12 +1,15 @@
 import styles from './PostContent.module.scss';
 import classNames from 'classnames';
 import parse from 'html-react-parser';
-import {ObjectPost} from '~/hooks/fetchApi/useFetchObjectPost.tsx';
+import type {GalleryImage} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
 import BlogGallery from '~/components/SightBlogArticle/BlogGallery/BlogGallery.tsx';
 import {useEffect, useRef, useState} from 'react';
 import PopupLayout from '~/layouts/PopupLayout/PopupLayout.tsx';
 
-type PostContentProps = Partial<ObjectPost>;
+interface PostContentProps {
+  description?: string;
+  gallery?: GalleryImage[];
+}
 
 export default function PostContent({description, gallery}: PostContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);

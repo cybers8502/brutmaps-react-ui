@@ -1,5 +1,4 @@
 const apiRoutes = {
-  blogPost: '/wp-json/v1/blog/posts',
   objectsPost: '/wp-json/v1/map/sights',
   architectsList: '/wp-json/v1/architects',
   architectByID: '/wp-json/v1/architects',
