@@ -8,8 +8,6 @@ const apiRoutes = {
   architectsStyles: '/wp-json/v1/taxonomies',
   shopProductsList: '/wp-json/v1/shop/products',
   instagramGalleryList: '/wp-json/v1/sights-images',
-  userFavorites: '/wp-json/v1/user/favorites',
-  userToggleFavorites: '/wp-json/v1/user/favorites/toggle',
 };
 
 export default apiRoutes;
