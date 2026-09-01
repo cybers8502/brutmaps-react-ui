@@ -19,6 +19,7 @@ const translation = {
   },
   nav: {
     map: 'Map',
+    objects: 'Objects',
     blog: 'Blog',
     shop: 'Shop',
     about: 'About',
@@ -110,6 +111,15 @@ const translation = {
   blog: {
     errorLoadingPosts: 'Error loading posts',
     noPostsTryAnotherCategory: 'No posts, try another category',
+  },
+  objects: {
+    title: 'Objects',
+    count: '{{shown}} of {{total}} buildings',
+    allCountries: 'All countries',
+    sortRecent: 'Sort by: Recently added first',
+    sortOldest: 'Sort by: Earliest added first',
+    loadMore: 'Load more',
+    noResults: 'No objects match these filters',
   },
   about: {
     title: 'About',

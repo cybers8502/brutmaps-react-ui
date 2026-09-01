@@ -19,6 +19,13 @@ export default function Menu() {
       </li>
       <li>
         <Link
+          to={routes.objects}
+          className={classNames({[styles['is-active']]: location.pathname === routes.objects})}>
+          {t('nav.objects')}
+        </Link>
+      </li>
+      <li>
+        <Link
           to={routes.blog}
           className={classNames({[styles['is-active']]: location.pathname === routes.blog})}>
           {t('nav.blog')}

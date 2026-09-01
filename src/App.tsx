@@ -29,6 +29,7 @@ import OrderReceived from '~/pages/OrderReceived/OrderReceived.tsx';
 import Checkout from '~/pages/Checkout/Checkout.tsx';
 import InstagramPage from '~/pages/InstagramPage/InstagramPage.tsx';
 import AboutPage from '~/pages/AboutPage/AboutPage.tsx';
+import ObjectsPage from '~/pages/ObjectsPage/ObjectsPage.tsx';
 
 function ErrorFallback() {
   const {t} = useTranslation();
@@ -49,6 +50,7 @@ export default function App() {
                   <Route element={<RootLayout />}>
                     <Route path={routes.commonMap} element={<CommonMap />} />
                     <Route path={`${routes.sightSinglePage}/:slug`} element={<SightPage />} />
+                    <Route path={routes.objects} element={<ObjectsPage />} />
                     <Route path={routes.blog} element={<BlogRootPage />} />
                     <Route path={routes.instagram} element={<InstagramPage />} />
                     <Route path={`${routes.blog}/:slug`} element={<BlogArticle />} />

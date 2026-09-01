@@ -1,0 +1,33 @@
+@import '~/styles/helpers/mixins';
+
+.filters {
+  display: grid;
+  gap: 10px;
+
+  @include lg {
+    grid-auto-flow: column;
+    grid-auto-columns: 200px;
+    justify-content: flex-end;
+  }
+}
+
+.select,
+.filter {
+  position: relative;
+  block-size: 40px;
+  padding-inline: 17px;
+  border: 2px solid #2d2d2d;
+  background-color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+
+  select {
+    inline-size: 100%;
+    block-size: 100%;
+    border: none;
+    background-color: transparent;
+    font: inherit;
+    color: inherit;
+  }
+}

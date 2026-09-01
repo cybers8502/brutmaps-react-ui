@@ -1,0 +1,80 @@
+@import '~/styles/helpers/mixins';
+
+.item {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  background-color: var(--primary-white);
+  color: inherit;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+    .title {
+      color: var(--primary-red);
+    }
+
+    .picture img {
+      transform: scale(1.06);
+    }
+  }
+}
+
+.picture {
+  display: block;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+  }
+}
+
+.pictureFallback {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  background-color: var(--second-background);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
+  padding: 16px;
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-block-size: 2.4em;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+.meta {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.architects {
+  overflow: hidden;
+  margin-block-start: auto;
+  padding-block-start: 4px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.6;
+}

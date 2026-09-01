@@ -1,0 +1,21 @@
+@import '~/styles/helpers/mixins';
+
+.container {
+  position: relative;
+
+  .select {
+    inline-size: 100%;
+    block-size: 100%;
+    padding-inline: 0;
+    border: none;
+    background-color: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+  }
+
+  &.loader {
+    display: flex;
+    align-items: center;
+  }
+}

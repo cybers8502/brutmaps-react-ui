@@ -21,6 +21,7 @@ const translation: Translation = {
   },
   nav: {
     map: 'Карта',
+    objects: 'Об’єкти',
     blog: 'Блог',
     shop: 'Магазин',
     about: 'Про нас',
@@ -112,6 +113,15 @@ const translation: Translation = {
   blog: {
     errorLoadingPosts: 'Помилка завантаження публікацій',
     noPostsTryAnotherCategory: 'Немає публікацій, спробуйте іншу категорію',
+  },
+  objects: {
+    title: 'Об’єкти',
+    count: '{{shown}} з {{total}} будівель',
+    allCountries: 'Всі країни',
+    sortRecent: 'Сортувати: спочатку нові',
+    sortOldest: 'Сортувати: спочатку старі',
+    loadMore: 'Показати ще',
+    noResults: 'Немає об’єктів за цими фільтрами',
   },
   about: {
     title: 'Про нас',
