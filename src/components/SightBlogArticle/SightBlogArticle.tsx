@@ -7,6 +7,7 @@ import Button from '~/components/Button/Button.tsx';
 import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
 import TopGallery from '~/components/SightBlogArticle/TopGallery/TopGallery.tsx';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 interface SightDetailProps {
   sightSlug: string;
@@ -19,7 +20,9 @@ export default function SightBlogArticle({sightSlug, onSeeMap, className}: Sight
   const navigate = useNavigate();
   const {sight, isLoading, isError} = useFetchObjectPost(sightSlug || '');
 
-  if (isLoading) return <p>{t('common.loading')}</p>;
+  useSetPageLoading(isLoading);
+
+  if (isLoading) return null;
   if (isError) {
     navigate('/404');
     return null;

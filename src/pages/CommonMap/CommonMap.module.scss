@@ -5,12 +5,11 @@ body:has(.commonMap) {
 }
 
 .commonMap {
-  display: grid;
-  grid-template-rows: auto 1fr;
   position: relative;
-  block-size: 100dvh;
+  block-size: 100%;
 
   .commonMapContent {
+    block-size: 100%;
     padding: 0;
   }
 

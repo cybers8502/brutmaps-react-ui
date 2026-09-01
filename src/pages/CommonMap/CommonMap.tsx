@@ -24,11 +24,14 @@ import MapFilters from '~/components/MapFilters/MapFilters.tsx';
 
 import SightBlogArticle from '~/components/SightBlogArticle/SightBlogArticle';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function CommonMap() {
   const {t} = useTranslation();
   const isMobileView = useMobileState();
   const {featureCollection, isLoading, isError} = useFetchMapDetails();
+
+  useSetPageLoading(isLoading);
   const {viewport, updateViewport} = useMapContext();
   const searchParams = useSightSearchParams('sight');
 

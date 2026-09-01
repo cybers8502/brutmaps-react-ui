@@ -1,0 +1,9 @@
+.root {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-block-size: 100dvh;
+}
+
+.main {
+  min-block-size: 0;
+}

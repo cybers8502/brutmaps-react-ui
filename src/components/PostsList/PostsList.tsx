@@ -5,6 +5,7 @@ import useSightSearchParams from '~/hooks/useSightSearchParams.ts';
 import PostsFilter from '~/components/PostsList/PostsFilter/PostsFilter.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function PostsList() {
   const {t} = useTranslation();
@@ -13,6 +14,8 @@ export default function PostsList() {
   const {result, isLoading, error} = usePosts({categories: category ? [category] : []});
   const articles = result?.posts || [];
 
+  useSetPageLoading(isLoading);
+
   return (
     <>
       <div className={styles.pageHeader}>
@@ -20,9 +23,7 @@ export default function PostsList() {
         <PostsFilter />
       </div>
 
-      {isLoading ? (
-        <p>{t('common.loading')}</p>
-      ) : (
+      {!isLoading && (
         <>
           {error && <p>{t('blog.errorLoadingPosts')}</p>}
 

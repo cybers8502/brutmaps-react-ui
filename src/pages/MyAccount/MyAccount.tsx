@@ -7,6 +7,7 @@ import Button from '~/components/Button/Button.tsx';
 import ProfileForm from '~/pages/MyAccount/ProfileForm/ProfileForm.tsx';
 import ChangePasswordForm from '~/pages/MyAccount/ChangePasswordForm/ChangePasswordForm.tsx';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function MyAccount() {
   const {t} = useTranslation();
@@ -16,7 +17,9 @@ export default function MyAccount() {
 
   const {countries, isLoading: isLoadingCountries} = useUserCountries();
 
-  if (isLoading) return <p>{t('common.loading')}</p>;
+  useSetPageLoading(isLoading);
+
+  if (isLoading) return null;
   if (error) return <p>{t('account.errorLoadingProfile')}</p>;
 
   return (
@@ -60,7 +63,8 @@ export default function MyAccount() {
                     {!isLoadingCountries && countries.length > 0 && (
                       <p>
                         <strong>{t('account.countryLabel')}</strong>{' '}
-                        {countries.find((c) => c.code === profile?.country)?.name || t('account.notAvailable')}
+                        {countries.find((c) => c.code === profile?.country)?.name ||
+                          t('account.notAvailable')}
                       </p>
                     )}
                     <p>

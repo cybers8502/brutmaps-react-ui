@@ -9,6 +9,7 @@ import apolloClient from './apolloClient.ts';
 import {MapProvider} from './context/MapContext.tsx';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage.tsx';
 import AuthRedirect from '~/routes/AuthRedirect.tsx';
+import RootLayout from '~/layouts/RootLayout/RootLayout.tsx';
 
 import CommonMap from '~/pages/CommonMap/CommonMap.tsx';
 import SightPage from '~/pages/SightPage/SightPage.tsx';
@@ -44,66 +45,68 @@ export default function App() {
             <BrowserRouter>
               <Suspense fallback={<div>{t('common.loadingData')}</div>}>
                 <Routes>
-                  <Route path={routes.commonMap} element={<CommonMap />} />
-                  <Route path={`${routes.sightSinglePage}/:slug`} element={<SightPage />} />
-                  <Route path={routes.blog} element={<BlogRootPage />} />
-                  <Route path={routes.instagram} element={<InstagramPage />} />
-                  <Route path={`${routes.blog}/:slug`} element={<BlogArticle />} />
-                  <Route path={routes.shop} element={<ShopPage />} />
-                  <Route path={`${routes.productSinglePage}/:slug`} element={<ProductPage />} />
-                  <Route path={routes.cart} element={<CartPage />} />
-                  <Route path={routes.checkout} element={<Checkout />} />
-                  <Route path={routes.termsNConditions} element={<TermsNConditions />} />
-                  <Route path='/checkout/order-received/:orderId' element={<OrderReceived />} />
-                  <Route
-                    path={routes.login}
-                    element={
-                      <AuthRedirect>
-                        <Login />
-                      </AuthRedirect>
-                    }
-                  />
-                  <Route
-                    path={routes.registration}
-                    element={
-                      <AuthRedirect>
-                        <Registration />
-                      </AuthRedirect>
-                    }
-                  />
-                  <Route
-                    path={routes.lostPassword}
-                    element={
-                      <AuthRedirect>
-                        <LostPasswordPage />
-                      </AuthRedirect>
-                    }
-                  />
-                  <Route
-                    path={routes.resetPassword}
-                    element={
-                      <AuthRedirect>
-                        <ResetPasswordPage />
-                      </AuthRedirect>
-                    }
-                  />
-                  <Route
-                    path={routes.myAccount}
-                    element={
-                      <AuthRedirect privateRoute>
-                        <MyAccount />
-                      </AuthRedirect>
-                    }
-                  />
-                  <Route
-                    path={routes.favoriteSights}
-                    element={
-                      <AuthRedirect privateRoute>
-                        <FavoriteSights />
-                      </AuthRedirect>
-                    }
-                  />
-                  <Route path='*' element={<NotFoundPage />} />
+                  <Route element={<RootLayout />}>
+                    <Route path={routes.commonMap} element={<CommonMap />} />
+                    <Route path={`${routes.sightSinglePage}/:slug`} element={<SightPage />} />
+                    <Route path={routes.blog} element={<BlogRootPage />} />
+                    <Route path={routes.instagram} element={<InstagramPage />} />
+                    <Route path={`${routes.blog}/:slug`} element={<BlogArticle />} />
+                    <Route path={routes.shop} element={<ShopPage />} />
+                    <Route path={`${routes.productSinglePage}/:slug`} element={<ProductPage />} />
+                    <Route path={routes.cart} element={<CartPage />} />
+                    <Route path={routes.checkout} element={<Checkout />} />
+                    <Route path={routes.termsNConditions} element={<TermsNConditions />} />
+                    <Route path='/checkout/order-received/:orderId' element={<OrderReceived />} />
+                    <Route
+                      path={routes.login}
+                      element={
+                        <AuthRedirect>
+                          <Login />
+                        </AuthRedirect>
+                      }
+                    />
+                    <Route
+                      path={routes.registration}
+                      element={
+                        <AuthRedirect>
+                          <Registration />
+                        </AuthRedirect>
+                      }
+                    />
+                    <Route
+                      path={routes.lostPassword}
+                      element={
+                        <AuthRedirect>
+                          <LostPasswordPage />
+                        </AuthRedirect>
+                      }
+                    />
+                    <Route
+                      path={routes.resetPassword}
+                      element={
+                        <AuthRedirect>
+                          <ResetPasswordPage />
+                        </AuthRedirect>
+                      }
+                    />
+                    <Route
+                      path={routes.myAccount}
+                      element={
+                        <AuthRedirect privateRoute>
+                          <MyAccount />
+                        </AuthRedirect>
+                      }
+                    />
+                    <Route
+                      path={routes.favoriteSights}
+                      element={
+                        <AuthRedirect privateRoute>
+                          <FavoriteSights />
+                        </AuthRedirect>
+                      }
+                    />
+                    <Route path='*' element={<NotFoundPage />} />
+                  </Route>
                 </Routes>
               </Suspense>
             </BrowserRouter>

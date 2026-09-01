@@ -9,6 +9,7 @@ import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.tsx';
 import routes from '~/util/routes.ts';
 import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function BlogArticle() {
   const {t} = useTranslation();
@@ -16,7 +17,9 @@ export default function BlogArticle() {
   const navigate = useNavigate();
   const {post: articleDetail, isLoading, error} = usePost(slug || '');
 
-  if (isLoading) return <p>{t('common.loading')}</p>;
+  useSetPageLoading(isLoading);
+
+  if (isLoading) return null;
   if (error) navigate('/404');
 
   if (!articleDetail) {

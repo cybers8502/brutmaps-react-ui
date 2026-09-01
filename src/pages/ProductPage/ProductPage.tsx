@@ -10,6 +10,7 @@ import Thumbnail from '../../components/Thumbnail/Thumbnail.tsx';
 import Button from '~/components/Button/Button.tsx';
 import routes from '~/util/routes.ts';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function ProductPage() {
   const {t} = useTranslation();
@@ -18,13 +19,15 @@ export default function ProductPage() {
   const {product, isLoading, error} = useProduct(slug ?? '');
   const {addToCart, isLoading: isAdding} = useAddToCart();
 
+  useSetPageLoading(isLoading);
+
   const handleAddToCart = async () => {
     if (!product) return;
     await addToCart(product.databaseId, 1);
     navigate(routes.cart);
   };
 
-  if (isLoading) return t('common.loading');
+  if (isLoading) return null;
   if (error) return t('common.serverError');
 
   if (!product) {
@@ -43,7 +46,9 @@ export default function ProductPage() {
       <PageTitle className={styles.title}>{product.name}</PageTitle>
       <Breadcrumbs items={breadcrumbItems} />
       <div className={styles.grid}>
-        {product.image && <Thumbnail image={product.image} images={product.galleryImages.nodes.slice(0, 2)} />}
+        {product.image && (
+          <Thumbnail image={product.image} images={product.galleryImages.nodes.slice(0, 2)} />
+        )}
 
         <div className={styles.information}>
           <div className={classNames(styles.description, 'article')}>

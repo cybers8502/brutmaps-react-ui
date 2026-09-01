@@ -6,11 +6,14 @@ import routes from '~/util/routes.ts';
 import FavoriteSightItem from '~/pages/FavoriteSights/FavoriteSightItem/FavoriteSightItem.tsx';
 import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function FavoriteSights() {
   const {t} = useTranslation();
   const {favorites, isLoading, refetch} = useFavorites();
   const {toggleFavorite} = useToggleFavorite();
+
+  useSetPageLoading(isLoading);
 
   const removeFromFavorites = async (id: string) => {
     try {
@@ -29,9 +32,7 @@ export default function FavoriteSights() {
         <div className={styles.frame}>
           <div className={styles.mainBlock}>
             <PageTitle>{t('siteHead.myFavoriteObjects')}</PageTitle>
-            {isLoading ? (
-              <p>{t('common.loading')}</p>
-            ) : objects.length > 0 ? (
+            {isLoading ? null : objects.length > 0 ? (
               <ul className={styles.list}>
                 {objects.map((id) => (
                   <FavoriteSightItem key={id} id={String(id)} removeFromFavorites={removeFromFavorites} />
@@ -39,8 +40,8 @@ export default function FavoriteSights() {
               </ul>
             ) : (
               <p>
-                {t('favorites.emptyBefore')}{' '}
-                <Link to={routes.commonMap}>{t('favorites.emptyLinkText')}</Link> {t('favorites.emptyAfter')}
+                {t('favorites.emptyBefore')} <Link to={routes.commonMap}>{t('favorites.emptyLinkText')}</Link>{' '}
+                {t('favorites.emptyAfter')}
               </p>
             )}
           </div>

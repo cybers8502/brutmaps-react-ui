@@ -1,0 +1,8 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background-color: rgba(223, 221, 217, 0.6);
+  color: var(--primary-red);
+  pointer-events: none;
+}

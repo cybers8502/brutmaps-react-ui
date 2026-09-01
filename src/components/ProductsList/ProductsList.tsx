@@ -2,12 +2,15 @@ import styles from './ProductsList.module.scss';
 import {useProducts} from '@brutmaps/api';
 import ProductItem from './ProductItem/ProductItem.tsx';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function ProductsList() {
   const {t} = useTranslation();
   const {products, isLoading, error} = useProducts();
 
-  if (isLoading) return t('common.loading');
+  useSetPageLoading(isLoading);
+
+  if (isLoading) return null;
   if (error) return t('common.serverError');
 
   return (
