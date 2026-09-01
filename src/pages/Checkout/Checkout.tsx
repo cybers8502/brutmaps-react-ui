@@ -1,22 +1,22 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
 import PageTitle from '../../components/PageTitle/PageTitle.tsx';
 import Button from '~/components/Button/Button.tsx';
+import styles from './Checkout.module.scss';
 import {useCart, useCheckout, usePaymentGateways, useProfile} from '@brutmaps/api';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import CardFieldsForm, {CardFieldsFormHandle} from '~/components/CardFieldsForm/CardFieldsForm.tsx';
+
+const CARD_PAYMENT_METHOD = 'card';
 
 interface CheckoutForm {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  address1: string;
-  city: string;
-  state: string;
-  postcode: string;
-  country: string;
   paymentMethod: string;
   createAccount: boolean;
   username: string;
@@ -32,7 +32,11 @@ export default function Checkout() {
   const {paymentGateways, isLoading: isLoadingGateways} = usePaymentGateways();
   const {checkout, isLoading: isSubmitting, error} = useCheckout();
 
+  useSetPageLoading(isCartLoading);
+
   const [showCreateAccount, setShowCreateAccount] = useState(false);
+  const [cardError, setCardError] = useState<string | null>(null);
+  const cardFieldsRef = useRef<CardFieldsFormHandle>(null);
 
   const {
     register,
@@ -47,7 +51,6 @@ export default function Checkout() {
       firstName: profile?.firstName ?? '',
       lastName: profile?.lastName ?? '',
       email: profile?.email ?? '',
-      country: profile?.country ?? '',
     });
   }, [profile, reset]);
 
@@ -57,10 +60,27 @@ export default function Checkout() {
     }
   }, [isLoadingGateways, paymentGateways, reset]);
 
-  const isEmpty = !isCartLoading && (cart?.contents.nodes.length ?? 0) === 0;
+  const items = cart?.contents.nodes ?? [];
+  const isEmpty = !isCartLoading && items.length === 0;
+  const selectedPaymentMethod = watch('paymentMethod');
 
   const onSubmit = async (formData: CheckoutForm) => {
+    setCardError(null);
+
     try {
+      let transactionId: string | undefined;
+
+      if (formData.paymentMethod === CARD_PAYMENT_METHOD) {
+        try {
+          transactionId = await cardFieldsRef.current?.submit();
+        } catch (cardSubmitError) {
+          setCardError(
+            cardSubmitError instanceof Error ? cardSubmitError.message : t('checkout.cardPaymentFailed'),
+          );
+          return;
+        }
+      }
+
       const {order, redirect} = await checkout({
         paymentMethod: formData.paymentMethod,
         billing: {
@@ -68,17 +88,14 @@ export default function Checkout() {
           lastName: formData.lastName,
           email: formData.email,
           phone: formData.phone,
-          address1: formData.address1,
-          city: formData.city,
-          state: formData.state,
-          postcode: formData.postcode,
-          country: formData.country,
         },
         account:
           showCreateAccount && formData.username && formData.password
             ? {username: formData.username, password: formData.password}
             : undefined,
         customerNote: formData.customerNote,
+        isPaid: transactionId ? true : undefined,
+        transactionId,
       });
 
       // For gateways that need an external confirmation step (PayPal, hosted
@@ -86,7 +103,8 @@ export default function Checkout() {
       // the shopper there. Otherwise (COD, etc.) it's WooCommerce's own
       // thank-you page on our backend domain, which isn't the SPA route —
       // go to our own order-received page instead.
-      const isExternalRedirect = redirect && new URL(redirect).origin !== new URL(import.meta.env.VITE_SITE_URI).origin;
+      const isExternalRedirect =
+        redirect && new URL(redirect).origin !== new URL(import.meta.env.VITE_SITE_URI).origin;
 
       if (isExternalRedirect) {
         window.location.href = redirect;
@@ -106,71 +124,89 @@ export default function Checkout() {
       {isEmpty ? (
         <p>{t('checkout.cartEmpty')}</p>
       ) : (
-        <form className='form' onSubmit={handleSubmit(onSubmit)}>
-          <div className='form__fieldsgroup'>
-            <p>{t('checkout.billingDetails')}</p>
+        <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
+          <div className='form'>
+            <div className='form__fieldsgroup'>
+              <p className={styles.sectionTitle}>{t('checkout.billingDetails')}</p>
 
-            <div className='form__fieldset'>
-              <label>{t('auth.firstName')}</label>
-              <input type='text' {...register('firstName', {required: t('errors.inputRequired')})} />
-              {errors.firstName && <p className='error'>{errors.firstName.message}</p>}
-            </div>
+              <div className='form__fieldset'>
+                <label>{t('auth.firstName')}</label>
+                <input type='text' {...register('firstName', {required: t('errors.inputRequired')})} />
+                {errors.firstName && <p className='error'>{errors.firstName.message}</p>}
+              </div>
 
-            <div className='form__fieldset'>
-              <label>{t('auth.lastName')}</label>
-              <input type='text' {...register('lastName', {required: t('errors.inputRequired')})} />
-              {errors.lastName && <p className='error'>{errors.lastName.message}</p>}
-            </div>
+              <div className='form__fieldset'>
+                <label>{t('auth.lastName')}</label>
+                <input type='text' {...register('lastName', {required: t('errors.inputRequired')})} />
+                {errors.lastName && <p className='error'>{errors.lastName.message}</p>}
+              </div>
 
-            <div className='form__fieldset'>
-              <label>{t('auth.email')}</label>
-              <input type='email' {...register('email', {required: t('errors.emailRequired')})} />
-              {errors.email && <p className='error'>{errors.email.message}</p>}
-            </div>
+              <div className='form__fieldset'>
+                <label>{t('auth.email')}</label>
+                <input type='email' {...register('email', {required: t('errors.emailRequired')})} />
+                {errors.email && <p className='error'>{errors.email.message}</p>}
+              </div>
 
-            <div className='form__fieldset'>
-              <label>{t('checkout.address1')}</label>
-              <input type='text' {...register('address1', {required: t('errors.inputRequired')})} />
-              {errors.address1 && <p className='error'>{errors.address1.message}</p>}
-            </div>
-
-            <div className='form__fieldset'>
-              <label>{t('checkout.city')}</label>
-              <input type='text' {...register('city', {required: t('errors.inputRequired')})} />
-              {errors.city && <p className='error'>{errors.city.message}</p>}
-            </div>
-
-            <div className='form__fieldset'>
-              <label>{t('checkout.state')}</label>
-              <input type='text' {...register('state')} />
-            </div>
-
-            <div className='form__fieldset'>
-              <label>{t('checkout.postcode')}</label>
-              <input type='text' {...register('postcode', {required: t('errors.inputRequired')})} />
-              {errors.postcode && <p className='error'>{errors.postcode.message}</p>}
-            </div>
-
-            <div className='form__fieldset'>
-              <label>{t('auth.country')}</label>
-              <input type='text' {...register('country', {required: t('errors.inputRequired')})} />
-              {errors.country && <p className='error'>{errors.country.message}</p>}
+              <div className='form__fieldset'>
+                <label>{t('checkout.phone')}</label>
+                <input type='tel' {...register('phone')} />
+              </div>
             </div>
 
             {!isLoadingGateways && paymentGateways.length > 0 && (
-              <div className='form__fieldset'>
-                <label>{t('checkout.paymentMethod')}</label>
-                {paymentGateways.map((gateway) => (
-                  <label key={gateway.id} className='checkbox'>
-                    <input type='radio' value={gateway.id} {...register('paymentMethod', {required: true})} />
-                    <span>{gateway.title}</span>
+              <div className={styles.section}>
+                <p className={styles.sectionTitle}>{t('checkout.paymentMethod')}</p>
+                <div className={styles.paymentOptions}>
+                  {paymentGateways.map((gateway) => (
+                    <label
+                      key={gateway.id}
+                      className={
+                        selectedPaymentMethod === gateway.id
+                          ? styles.paymentOptionActive
+                          : styles.paymentOption
+                      }>
+                      <input
+                        type='radio'
+                        value={gateway.id}
+                        {...register('paymentMethod', {required: true})}
+                      />
+                      <span className={styles.radioDot} />
+                      <span>
+                        <span className={styles.paymentTitle}>{gateway.title || gateway.id}</span>
+                        {gateway.description && (
+                          <span className={styles.paymentDescription}>{gateway.description}</span>
+                        )}
+                      </span>
+                    </label>
+                  ))}
+
+                  <label
+                    className={
+                      selectedPaymentMethod === CARD_PAYMENT_METHOD
+                        ? styles.paymentOptionActive
+                        : styles.paymentOption
+                    }>
+                    <input
+                      type='radio'
+                      value={CARD_PAYMENT_METHOD}
+                      {...register('paymentMethod', {required: true})}
+                    />
+                    <span className={styles.radioDot} />
+                    <span className={styles.paymentTitle}>{t('checkout.card')}</span>
                   </label>
-                ))}
+                </div>
+
+                {selectedPaymentMethod === CARD_PAYMENT_METHOD && (
+                  <>
+                    <CardFieldsForm ref={cardFieldsRef} onError={setCardError} />
+                    {cardError && <p className='error'>{cardError}</p>}
+                  </>
+                )}
               </div>
             )}
 
             {!profile && (
-              <>
+              <div className={styles.section}>
                 <label className='checkbox'>
                   <input
                     type='checkbox'
@@ -181,7 +217,7 @@ export default function Checkout() {
                 </label>
 
                 {showCreateAccount && (
-                  <>
+                  <div className={styles.accountFields}>
                     <div className='form__fieldset'>
                       <label>{t('checkout.username')}</label>
                       <input
@@ -198,19 +234,46 @@ export default function Checkout() {
                       />
                       {errors.password && <p className='error'>{errors.password.message}</p>}
                     </div>
-                  </>
+                  </div>
                 )}
-              </>
+              </div>
             )}
 
-            <div className='form__fieldset'>
-              <label>{t('checkout.orderNote')}</label>
-              <textarea {...register('customerNote')} />
+            <div className={styles.section}>
+              <div className='form__fieldset'>
+                <label>{t('checkout.orderNote')}</label>
+                <textarea {...register('customerNote')} />
+              </div>
             </div>
 
             {error && <p className='error'>{t('common.somethingWentWrong')}</p>}
+          </div>
 
-            <Button isSubmit disabled={isSubmitting || !watch('paymentMethod')}>
+          <div className={styles.summary}>
+            <p className={styles.sectionTitle}>{t('cart.cart')}</p>
+
+            <ul className={styles.summaryList}>
+              {items.map((item) => (
+                <li key={item.key} className={styles.summaryItem}>
+                  <span>{item.product?.node?.name ?? t('cart.productUnavailable')}</span>
+                  <span>{item.total}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className={styles.summaryRow}>
+              <span>{t('cart.subtotal')}</span>
+              <span>{cart?.subtotal}</span>
+            </div>
+            <div className={styles.summaryRow}>
+              <span>{t('cart.total')}</span>
+              <strong>{cart?.total}</strong>
+            </div>
+
+            <Button
+              isSubmit
+              disabled={isSubmitting || !selectedPaymentMethod}
+              className={styles.submitButton}>
               {isSubmitting ? t('common.loading') : t('checkout.placeOrder')}
             </Button>
           </div>

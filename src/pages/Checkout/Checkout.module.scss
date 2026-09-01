@@ -1,1 +1,146 @@
 @import '~/styles/helpers/mixins';
+
+.wrapper {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+
+  @include lg {
+    grid-template-columns: 1fr 340px;
+    gap: 40px;
+  }
+}
+
+.section {
+  margin-block-start: 24px;
+
+  textarea {
+    inline-size: 100%;
+    min-block-size: 96px;
+    padding: 12px;
+    border: 2px solid #2d2d2d;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+  }
+}
+
+.sectionTitle {
+  margin-block-end: 14px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.paymentOptions {
+  display: grid;
+  gap: 10px;
+}
+
+.paymentOption,
+.paymentOptionActive {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  align-items: start;
+  gap: 13px;
+  padding: 14px 16px;
+  background-color: #fff;
+  border: 2px solid #2d2d2d;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+
+  input {
+    display: none;
+  }
+}
+
+.paymentOptionActive {
+  border-color: var(--primary-red);
+}
+
+.radioDot {
+  display: block;
+  inline-size: 16px;
+  block-size: 16px;
+  margin-block-start: 2px;
+  border: 2px solid #2d2d2d;
+  border-radius: 50%;
+
+  .paymentOptionActive & {
+    position: relative;
+    border-color: var(--primary-red);
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      background-color: var(--primary-red);
+      border-radius: 50%;
+    }
+  }
+}
+
+.paymentTitle {
+  display: block;
+  font-weight: 700;
+}
+
+.paymentDescription {
+  display: block;
+  margin-block-start: 4px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.accountFields {
+  display: grid;
+  gap: 16px;
+  margin-block-start: 16px;
+}
+
+.summary {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: 24px;
+  background-color: #fff;
+  border: 2px solid #2d2d2d;
+
+  @include lg {
+    position: sticky;
+    inset-block-start: 24px;
+  }
+}
+
+.summaryList {
+  display: grid;
+  gap: 10px;
+  padding-block-end: 14px;
+  border-block-end: 2px solid #2d2d2d;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+
+  &:last-of-type {
+    padding-block-start: 14px;
+    border-block-start: 2px solid #2d2d2d;
+    font-size: 18px;
+  }
+}
+
+.submitButton {
+  inline-size: 100%;
+  margin-block-start: 6px;
+}

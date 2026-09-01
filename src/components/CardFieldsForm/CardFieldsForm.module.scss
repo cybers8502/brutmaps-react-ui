@@ -1,0 +1,24 @@
+.wrapper {
+  display: grid;
+  gap: 16px;
+  margin-block-start: 16px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  inline-size: 100%;
+  block-size: 44px;
+  padding: 10px 12px;
+  border: 2px solid #2d2d2d;
+  background-color: #fff;
+}
+
+.loading {
+  opacity: 0.6;
+  font-size: 13px;
+}
