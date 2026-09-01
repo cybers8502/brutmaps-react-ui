@@ -16,6 +16,7 @@ import BlogRootPage from '~/pages/BlogRootPage/BlogRootPage.tsx';
 import BlogArticle from '~/pages/BlogArticle/BlogArticle.tsx';
 import ShopPage from '~/pages/ShopPage/ShopPage.tsx';
 import ProductPage from '~/pages/ProductPage/ProductPage.tsx';
+import CartPage from '~/pages/CartPage/CartPage.tsx';
 import MyAccount from '~/pages/MyAccount/MyAccount.tsx';
 import Login from '~/pages/AuhServices/Login/Login.tsx';
 import Registration from '~/pages/AuhServices/Registration/Registration.tsx';
@@ -50,6 +51,7 @@ export default function App() {
                   <Route path={`${routes.blog}/:slug`} element={<BlogArticle />} />
                   <Route path={routes.shop} element={<ShopPage />} />
                   <Route path={`${routes.productSinglePage}/:slug`} element={<ProductPage />} />
+                  <Route path={routes.cart} element={<CartPage />} />
                   <Route path={routes.checkout} element={<Checkout />} />
                   <Route path={routes.termsNConditions} element={<TermsNConditions />} />
                   <Route path='/checkout/order-received/:orderId' element={<OrderReceived />} />

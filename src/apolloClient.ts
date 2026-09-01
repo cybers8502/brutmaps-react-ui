@@ -1,5 +1,6 @@
 import {createApolloClient} from '@brutmaps/api';
 import {clearTokens, getAccessToken, getRefreshToken, setAccessToken} from '~/util/tokenStorage.ts';
+import {getWcSessionToken, saveWcSessionToken} from '~/util/wcSession.ts';
 
 const {
   client: apolloClient,
@@ -15,6 +16,10 @@ const {
       setAccessToken(token);
     },
     onRefreshFailure: () => clearTokens(),
+  },
+  getSessionToken: () => getWcSessionToken(),
+  saveSessionToken: (token) => {
+    saveWcSessionToken(token);
   },
 });
 

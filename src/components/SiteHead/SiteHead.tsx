@@ -10,6 +10,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import routes from '~/util/routes.ts';
 import {clearTokens, getAccessToken} from '~/util/auth.ts';
 import AuthControls from '~/components/SiteHead/AuthControls/AuthControls.tsx';
+import CartLink from '~/components/SiteHead/CartLink/CartLink.tsx';
 import SocialLinks from '~/components/SiteHead/SocialLinks/SocialLinks.tsx';
 import LanguageSwitcher from '~/components/LanguageSwitcher/LanguageSwitcher.tsx';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
@@ -49,6 +50,8 @@ export default function SiteHead({className}: SiteHeadProps) {
 
           <LanguageSwitcher />
 
+          <CartLink />
+
           <div className={styles.authControls}>
             {getAccessToken() ? (
               <AuthControls />
@@ -78,6 +81,8 @@ export default function SiteHead({className}: SiteHeadProps) {
             </button>
           </div>
           <Menu />
+
+          <CartLink />
 
           <div className={styles.authControls}>
             {getAccessToken() ? (

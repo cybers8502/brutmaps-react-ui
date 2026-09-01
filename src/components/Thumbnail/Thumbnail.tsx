@@ -37,13 +37,13 @@ export default function Thumbnail({image, images}: ThumbnailProps) {
         slidesPerView={1}>
         <SwiperSlide key='main-image' data-index={0}>
           <picture>
-            <img src={image.src} alt={image.name} />
+            <img src={image.sourceUrl} alt={image.altText ?? ''} />
           </picture>
         </SwiperSlide>
         {images.slice(0, 2).map((image, index) => (
           <SwiperSlide key={index} data-index={index + 1}>
             <picture>
-              <img src={image.src} alt={image.name} />
+              <img src={image.sourceUrl} alt={image.altText ?? ''} />
             </picture>
           </SwiperSlide>
         ))}
@@ -62,11 +62,11 @@ export default function Thumbnail({image, images}: ThumbnailProps) {
       </Swiper>
 
       <picture onClick={() => handleThumbnailClick(0)} className={styles.pagination}>
-        <img src={image.src} alt={image.name} />
+        <img src={image.sourceUrl} alt={image.altText ?? ''} />
       </picture>
       {images.slice(0, 2).map((image, index) => (
         <picture key={index} onClick={() => handleThumbnailClick(index + 1)} className={styles.pagination}>
-          <img src={image.src} alt={image.name} />
+          <img src={image.sourceUrl} alt={image.altText ?? ''} />
         </picture>
       ))}
     </div>

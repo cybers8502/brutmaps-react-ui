@@ -1,25 +1,28 @@
 import type {Product} from '@brutmaps/api';
+import {useAddToCart} from '@brutmaps/api';
 import parse from 'html-react-parser';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import styles from './Product.module.scss';
 import classNames from 'classnames';
-import addToCart from '../../../hooks/addToCart.ts';
+import Button from '~/components/Button/Button.tsx';
+import routes from '~/util/routes.ts';
 import {useTranslation} from 'react-i18next';
 
 export default function ProductItem(props: Product) {
   const {t} = useTranslation();
+  const navigate = useNavigate();
+  const {addToCart, isLoading} = useAddToCart();
 
-  //TODO: докрутить с корзиной
-  const handleAddToCart = async (productId) => {
-    await addToCart(productId, 1);
-    window.location.replace('/checkout');
+  const handleAddToCart = async () => {
+    await addToCart(props.databaseId, 1);
+    navigate(routes.cart);
   };
 
   return (
     <div className={styles.item}>
       <picture className={styles.picture}>
         <Link to={`/product/${props.slug}`}>
-          <img src={props.image.src} alt={props.image.name} />
+          {props.image && <img src={props.image.sourceUrl} alt={props.image.altText ?? ''} />}
         </Link>
       </picture>
       <div className={styles.rightColl}>
@@ -27,22 +30,22 @@ export default function ProductItem(props: Product) {
           <h3 className={styles.title}>
             <Link to={`/product/${props.slug}`}>{props.name}</Link>
           </h3>
-          <div className={classNames(styles.description, 'article')}>{parse(props.shortDescription)}</div>
+          <div className={classNames(styles.description, 'article')}>
+            {props.shortDescription && parse(props.shortDescription)}
+          </div>
         </div>
 
         <div className={styles.footer}>
           {props.salePrice && (
             <p className={styles['regular-price']}>
-              <span>${props.regularPrice}</span>
+              <span>{props.regularPrice}</span>
             </p>
           )}
-          <p className={styles.price}>${props.salePrice ? props.salePrice : props.regularPrice}</p>
+          <p className={styles.price}>{props.salePrice ? props.salePrice : props.regularPrice}</p>
           <div className={styles.buttonsWrap}>
-            {props.stripe && (
-              <Link to={props.stripe} className={'button button--fill-red'}>
-                {t('common.buyNow')}
-              </Link>
-            )}
+            <Button onClick={handleAddToCart} disabled={isLoading} variant={'fillRed'}>
+              {t('common.buyNow')}
+            </Button>
             <Link to={`/product/${props.slug}`} className={'button button--fill-dark-shade-gray'}>
               {t('common.readMore')}
             </Link>

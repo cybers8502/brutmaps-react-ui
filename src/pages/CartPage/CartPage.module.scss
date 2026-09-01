@@ -1,0 +1,55 @@
+@import '~/styles/helpers/mixins';
+
+.wrapper {
+  display: grid;
+  gap: 24px;
+
+  @include lg {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+.list {
+  display: grid;
+  gap: 20px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.image {
+  inline-size: 80px;
+  block-size: 80px;
+  object-fit: cover;
+}
+
+.details {
+  display: grid;
+  gap: 8px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  input {
+    inline-size: 64px;
+  }
+}
+
+.itemTotal {
+  font-weight: 700;
+}
+
+.summary {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 22px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
