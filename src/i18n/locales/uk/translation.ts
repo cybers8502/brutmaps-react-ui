@@ -23,6 +23,7 @@ const translation: Translation = {
     map: 'Карта',
     blog: 'Блог',
     shop: 'Магазин',
+    about: 'Про нас',
   },
   siteHead: {
     logIn: 'Увійти',
@@ -110,6 +111,14 @@ const translation: Translation = {
   blog: {
     errorLoadingPosts: 'Помилка завантаження публікацій',
     noPostsTryAnotherCategory: 'Немає публікацій, спробуйте іншу категорію',
+  },
+  about: {
+    title: 'Про нас',
+    buildings: 'будівель',
+    countries: 'країн',
+    architects: 'архітекторів',
+    launched: 'рік запуску',
+    exploreMap: 'Досліджувати карту',
   },
   favorites: {
     emptyBefore: 'У вас поки немає обраних об’єктів. Перегляньте',

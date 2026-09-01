@@ -21,6 +21,7 @@ const translation = {
     map: 'Map',
     blog: 'Blog',
     shop: 'Shop',
+    about: 'About',
   },
   siteHead: {
     logIn: 'Log In',
@@ -108,6 +109,14 @@ const translation = {
   blog: {
     errorLoadingPosts: 'Error loading posts',
     noPostsTryAnotherCategory: 'No posts, try another category',
+  },
+  about: {
+    title: 'About',
+    buildings: 'buildings',
+    countries: 'countries',
+    architects: 'architects',
+    launched: 'project launched',
+    exploreMap: 'Explore the map',
   },
   favorites: {
     emptyBefore: "You don't have any favorites yet. Browse",

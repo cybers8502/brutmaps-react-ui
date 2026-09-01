@@ -1,0 +1,89 @@
+@import '~/styles/helpers/mixins';
+
+.grid {
+  display: grid;
+  gap: 24px;
+  margin-block-end: 32px;
+
+  @include pre-lg {
+    grid-auto-flow: row;
+  }
+
+  @include lg {
+    grid-template-columns: 320px 1fr;
+  }
+}
+
+.portrait {
+  inline-size: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+
+  @include lg {
+    inline-size: 320px;
+  }
+}
+
+.information {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  background-color: rgba(255, 255, 255, 0.8);
+
+  @include lg {
+    padding: 44px;
+  }
+}
+
+.name {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.role {
+  margin-block-end: 16px;
+  opacity: 0.7;
+}
+
+.body {
+  display: grid;
+  gap: 12px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-block-end: 32px;
+
+  @include lg {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  background-color: #fff;
+  border: 2px solid #2d2d2d;
+  text-align: center;
+
+  strong {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  span {
+    opacity: 0.7;
+  }
+}
+
+.cta {
+  inline-size: 100%;
+
+  @include lg {
+    inline-size: 260px;
+  }
+}

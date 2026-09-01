@@ -3,6 +3,7 @@ const routes = {
   sightSinglePage: '/sight',
   blog: '/blog',
   shop: '/shop',
+  about: '/about',
   productSinglePage: '/product',
   cart: '/cart',
   checkout: '/checkout',

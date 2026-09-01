@@ -31,6 +31,13 @@ export default function Menu() {
           {t('nav.shop')}
         </Link>
       </li>
+      <li>
+        <Link
+          to={routes.about}
+          className={classNames({[styles['is-active']]: location.pathname === routes.about})}>
+          {t('nav.about')}
+        </Link>
+      </li>
     </menu>
   );
 }

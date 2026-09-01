@@ -28,6 +28,7 @@ import TermsNConditions from '~/pages/TermsNConditions/TermsNConditions.tsx';
 import OrderReceived from '~/pages/OrderReceived/OrderReceived.tsx';
 import Checkout from '~/pages/Checkout/Checkout.tsx';
 import InstagramPage from '~/pages/InstagramPage/InstagramPage.tsx';
+import AboutPage from '~/pages/AboutPage/AboutPage.tsx';
 
 function ErrorFallback() {
   const {t} = useTranslation();
@@ -52,6 +53,7 @@ export default function App() {
                     <Route path={routes.instagram} element={<InstagramPage />} />
                     <Route path={`${routes.blog}/:slug`} element={<BlogArticle />} />
                     <Route path={routes.shop} element={<ShopPage />} />
+                    <Route path={routes.about} element={<AboutPage />} />
                     <Route path={`${routes.productSinglePage}/:slug`} element={<ProductPage />} />
                     <Route path={routes.cart} element={<CartPage />} />
                     <Route path={routes.checkout} element={<Checkout />} />
