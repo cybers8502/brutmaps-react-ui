@@ -2,9 +2,11 @@ import {useLocation, useParams} from 'react-router-dom';
 import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
 import PageTitle from '../../components/PageTitle/PageTitle.tsx';
 import Button from '~/components/Button/Button.tsx';
+import styles from './OrderReceived.module.scss';
 import routes from '~/util/routes.ts';
 import {useOrder} from '@brutmaps/api';
 import {useTranslation} from 'react-i18next';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 interface CheckoutOrderSummary {
   databaseId: number;
@@ -26,42 +28,55 @@ export default function OrderReceived() {
 
   const summary = stateOrder ?? fetchedOrder;
 
+  useSetPageLoading(!stateOrder && isLoading);
+
   return (
     <SiteLayout>
-      <PageTitle>{t('orderReceived.title')}</PageTitle>
-
-      {!stateOrder && isLoading && <p>{t('common.loading')}</p>}
+      <div className={styles.header}>
+        <span className={styles.badge}>✓</span>
+        <PageTitle className={styles.title}>{t('orderReceived.title')}</PageTitle>
+      </div>
 
       {summary && (
-        <div>
-          <p>
-            {t('orderReceived.orderNumber')}: <strong>{summary.orderNumber}</strong>
-          </p>
-          {fetchedOrder && (
-            <p>
-              {t('orderReceived.orderDate')}: <strong>{fetchedOrder.date}</strong>
-            </p>
-          )}
-          <p>
-            {t('orderReceived.orderStatus')}: <strong>{summary.status}</strong>
-          </p>
-          <p>
-            {t('orderReceived.orderTotal')}: <strong>{summary.total}</strong>
-          </p>
+        <div className={styles.card}>
+          <dl className={styles.meta}>
+            <div className={styles.metaRow}>
+              <dt>{t('orderReceived.orderNumber')}</dt>
+              <dd>{summary.orderNumber}</dd>
+            </div>
+            {fetchedOrder && (
+              <div className={styles.metaRow}>
+                <dt>{t('orderReceived.orderDate')}</dt>
+                <dd>{fetchedOrder.date}</dd>
+              </div>
+            )}
+            <div className={styles.metaRow}>
+              <dt>{t('orderReceived.orderStatus')}</dt>
+              <dd>{summary.status}</dd>
+            </div>
+          </dl>
 
-          {fetchedOrder && (
-            <ul>
+          {fetchedOrder && fetchedOrder.lineItems.nodes.length > 0 && (
+            <ul className={styles.items}>
               {fetchedOrder.lineItems.nodes.map((item, index) => (
-                <li key={index}>
-                  {item.product?.node?.name} × {item.quantity} — {item.total}
+                <li key={index} className={styles.item}>
+                  <span>{item.product?.node?.name}</span>
+                  <span>{item.total}</span>
                 </li>
               ))}
             </ul>
           )}
+
+          <div className={styles.totalRow}>
+            <span>{t('orderReceived.orderTotal')}</span>
+            <strong>{summary.total}</strong>
+          </div>
         </div>
       )}
 
-      <Button href={routes.shop}>{t('orderReceived.backToShop')}</Button>
+      <div className={styles.footer}>
+        <Button href={routes.shop}>{t('orderReceived.backToShop')}</Button>
+      </div>
     </SiteLayout>
   );
 }
