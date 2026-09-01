@@ -1,0 +1,40 @@
+@import '~/styles/helpers/mixins';
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-white);
+  font-size: 16px;
+  line-height: 18px;
+  transition: color 0.3s ease;
+
+  @include pre-lg {
+    padding-block: 22px;
+    padding-inline: 35px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 100%;
+  }
+
+  @include lg {
+    &:hover {
+      color: var(--primary-red);
+    }
+  }
+}
+
+.count {
+  display: grid;
+  place-items: center;
+  min-inline-size: 20px;
+  block-size: 20px;
+  padding-inline: 4px;
+  background-color: var(--primary-red);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 50%;
+}

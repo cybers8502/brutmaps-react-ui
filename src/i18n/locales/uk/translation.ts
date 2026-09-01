@@ -139,8 +139,8 @@ const translation: Translation = {
   cart: {
     cart: 'Кошик',
     empty: 'Ваш кошик порожній',
-    quantity: 'Кількість',
     remove: 'Прибрати',
+    productUnavailable: 'Товар більше недоступний',
     subtotal: 'Проміжний підсумок',
     total: 'Разом',
     goToCheckout: 'Перейти до оформлення',

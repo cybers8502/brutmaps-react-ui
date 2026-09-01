@@ -137,8 +137,8 @@ const translation = {
   cart: {
     cart: 'Cart',
     empty: 'Your cart is empty',
-    quantity: 'Quantity',
     remove: 'Remove',
+    productUnavailable: 'Product no longer available',
     subtotal: 'Subtotal',
     total: 'Total',
     goToCheckout: 'Go to checkout',
