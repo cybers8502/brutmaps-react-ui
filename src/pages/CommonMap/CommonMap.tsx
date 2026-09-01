@@ -21,6 +21,7 @@ import MapPointPopup from '~/components/MapPointPopup/MapPointPopup.tsx';
 import SightPreviewPopup from '~/components/SightPreviewPopup/SightPreviewPopup.tsx';
 import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import MapFilters from '~/components/MapFilters/MapFilters.tsx';
+import MapObjectsBadge from '~/components/MapObjectsBadge/MapObjectsBadge.tsx';
 
 import SightBlogArticle from '~/components/SightBlogArticle/SightBlogArticle';
 import {useTranslation} from 'react-i18next';
@@ -177,6 +178,8 @@ export default function CommonMap() {
               </MapPointPopup>
             ))}
         </Map>
+
+        <MapObjectsBadge />
 
         {sightSlug && (
           <SightBlogArticle

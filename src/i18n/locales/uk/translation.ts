@@ -107,6 +107,7 @@ const translation: Translation = {
     searchLocation: 'Пошук локації',
     dragOrZoom: 'Перетягніть або збільште карту, щоб побачити результати',
     loadingMap: 'Завантаження карти...',
+    objectsCount: '{{count}} бруталістських будівель на карті',
   },
   blog: {
     errorLoadingPosts: 'Помилка завантаження публікацій',

@@ -105,6 +105,7 @@ const translation = {
     searchLocation: 'Search location',
     dragOrZoom: 'Drag or zoom the map to see results',
     loadingMap: 'Loading map...',
+    objectsCount: '{{count}} brutalist buildings on the map',
   },
   blog: {
     errorLoadingPosts: 'Error loading posts',
