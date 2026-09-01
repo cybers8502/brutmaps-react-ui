@@ -1,10 +1,10 @@
-import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
 import {useChangePassword} from '@brutmaps/api';
-import Button from '~/components/Button/Button.tsx';
-import styles from '../MyAccount.module.scss';
-import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import {useState} from 'react';
+import {type FieldErrors, type UseFormRegister, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
+import Button from '~/components/Button/Button.tsx';
+import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
+import styles from '../MyAccount.module.scss';
 
 export default function ChangePasswordForm({setIsChangingPassword}) {
   const {t} = useTranslation();

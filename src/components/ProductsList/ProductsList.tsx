@@ -1,8 +1,8 @@
-import styles from './ProductsList.module.scss';
 import {useProducts} from '@brutmaps/api';
-import ProductItem from './ProductItem/ProductItem.tsx';
 import {useTranslation} from 'react-i18next';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import ProductItem from './ProductItem/ProductItem.tsx';
+import styles from './ProductsList.module.scss';
 
 export default function ProductsList() {
   const {t} = useTranslation();

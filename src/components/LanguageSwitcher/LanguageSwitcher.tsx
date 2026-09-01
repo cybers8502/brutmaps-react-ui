@@ -1,7 +1,7 @@
-import {useTranslation} from 'react-i18next';
 import classNames from 'classnames';
-import styles from './LanguageSwitcher.module.scss';
+import {useTranslation} from 'react-i18next';
 import {supportedLanguages} from '~/i18n/index.ts';
+import styles from './LanguageSwitcher.module.scss';
 
 interface LanguageSwitcherProps {
   className?: string;

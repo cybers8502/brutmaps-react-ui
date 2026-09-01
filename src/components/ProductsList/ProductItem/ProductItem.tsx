@@ -1,12 +1,12 @@
 import type {Product} from '@brutmaps/api';
 import {useAddToCart} from '@brutmaps/api';
-import parse from 'html-react-parser';
-import {Link, useNavigate} from 'react-router-dom';
-import styles from './Product.module.scss';
 import classNames from 'classnames';
+import parse from 'html-react-parser';
+import {useTranslation} from 'react-i18next';
+import {Link, useNavigate} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
 import routes from '~/util/routes.ts';
-import {useTranslation} from 'react-i18next';
+import styles from './Product.module.scss';
 
 export default function ProductItem(props: Product) {
   const {t} = useTranslation();

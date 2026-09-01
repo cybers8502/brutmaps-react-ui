@@ -1,4 +1,4 @@
-import {ButtonProps} from './Button.interface';
+import type {ButtonProps} from './Button.interface';
 import './_button.scss';
 import classNames from 'classnames';
 import {Link} from 'react-router-dom';

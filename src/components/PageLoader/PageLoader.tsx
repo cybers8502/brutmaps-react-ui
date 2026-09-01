@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
-import {useIsPageLoading} from '~/context/PageLoadingContext.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
+import {useIsPageLoading} from '~/context/PageLoadingContext.tsx';
 import styles from './PageLoader.module.scss';
 
 // Only show once loading has run long enough to matter, and once shown never

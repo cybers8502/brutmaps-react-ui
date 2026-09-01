@@ -1,10 +1,10 @@
-import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
-import Button from '~/components/Button/Button.tsx';
-import isEmailValid from '~/util/validationEmail.utility.ts';
-import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
-import {useState} from 'react';
 import {useCheckEmail} from '@brutmaps/api';
+import {useState} from 'react';
+import {type FieldErrors, type UseFormRegister, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
+import Button from '~/components/Button/Button.tsx';
+import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
+import isEmailValid from '~/util/validationEmail.utility.ts';
 
 interface FirstStepProps {
   initialData: {email: string; password: string};

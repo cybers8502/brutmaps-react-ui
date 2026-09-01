@@ -1,10 +1,18 @@
 import type {SightListItem} from '@brutmaps/api';
-import {Link} from 'react-router-dom';
 import {useState} from 'react';
-import styles from './ObjectItem.module.scss';
+import {Link} from 'react-router-dom';
 import routes from '~/util/routes.ts';
+import styles from './ObjectItem.module.scss';
 
-export default function ObjectItem({slug, title, image, country, address, establishedYear, architects}: SightListItem) {
+export default function ObjectItem({
+  slug,
+  title,
+  image,
+  country,
+  address,
+  establishedYear,
+  architects,
+}: SightListItem) {
   const [imageFailed, setImageFailed] = useState(false);
 
   const location = country || address;

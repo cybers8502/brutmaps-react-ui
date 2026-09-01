@@ -1,17 +1,21 @@
+import {type FavoriteCategory, type Favorites, useFavorites, useToggleFavorite} from '@brutmaps/api';
 import {useState} from 'react';
-import {getAccessToken} from '~/util/auth.ts';
-import Button from '~/components/Button/Button.tsx';
-import {useFavorites, useToggleFavorite, type FavoriteCategory, type Favorites} from '@brutmaps/api';
-import routes from '~/util/routes.ts';
-import {invalidateMapData} from '~/util/mutateMapData.ts';
 import {useTranslation} from 'react-i18next';
+import Button from '~/components/Button/Button.tsx';
+import {getAccessToken} from '~/util/auth.ts';
+import {invalidateMapData} from '~/util/mutateMapData.ts';
+import routes from '~/util/routes.ts';
 
 const useCategories = () => {
   const {t} = useTranslation();
 
   return [
     {key: 'favorite' as FavoriteCategory, field: 'favorite' as const, label: t('favorites.categoryFavorite')},
-    {key: 'want_to_go' as FavoriteCategory, field: 'wantToGo' as const, label: t('favorites.categoryWantToGo')},
+    {
+      key: 'want_to_go' as FavoriteCategory,
+      field: 'wantToGo' as const,
+      label: t('favorites.categoryWantToGo'),
+    },
     {key: 'visited' as FavoriteCategory, field: 'visited' as const, label: t('favorites.categoryVisited')},
     {key: 'hidden' as FavoriteCategory, field: 'hidden' as const, label: t('favorites.categoryHidden')},
   ];

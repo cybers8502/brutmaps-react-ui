@@ -1,6 +1,6 @@
-import style from './Logo.module.scss';
-import {Link} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
+import {Link} from 'react-router-dom';
+import style from './Logo.module.scss';
 
 export default function Logo() {
   const {t} = useTranslation();

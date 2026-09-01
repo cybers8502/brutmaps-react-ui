@@ -1,8 +1,8 @@
-import {Link, useLocation} from 'react-router-dom';
-import styles from './Menu.module.scss';
 import classNames from 'classnames';
-import routes from '../../util/routes.ts';
 import {useTranslation} from 'react-i18next';
+import {Link, useLocation} from 'react-router-dom';
+import routes from '../../util/routes.ts';
+import styles from './Menu.module.scss';
 
 export default function Menu() {
   const {t} = useTranslation();

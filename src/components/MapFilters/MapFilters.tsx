@@ -1,16 +1,16 @@
-import {RefObject, useEffect, useState} from 'react';
-import {useSearchParams} from 'react-router-dom';
-import styles from './MapFilters.module.scss';
-import {mapboxToken} from '~/configs/map.configs.ts';
-import GeocoderControl from '~/components/GeocoderControl/GeocoderControl.tsx';
+import classNames from 'classnames';
+import {type RefObject, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import type {MapRef} from 'react-map-gl';
+import {useSearchParams} from 'react-router-dom';
+import Button from '~/components/Button/Button.tsx';
+import GeocoderControl from '~/components/GeocoderControl/GeocoderControl.tsx';
+import {CancelIcon, FilterIcon} from '~/components/Icons/Icons.tsx';
 import ArchitectsFilter from '~/components/MapFilters/ArchitectsFilter/ArchitectsFilter.tsx';
 import ArchitectureStylesFilter from '~/components/MapFilters/ArchitectureStylesFilter/ArchitectureStylesFilter.tsx';
-import classNames from 'classnames';
-import Button from '~/components/Button/Button.tsx';
-import {CancelIcon, FilterIcon} from '~/components/Icons/Icons.tsx';
+import {mapboxToken} from '~/configs/map.configs.ts';
 import useMobileState from '~/hooks/useMobileState.ts';
-import {useTranslation} from 'react-i18next';
+import styles from './MapFilters.module.scss';
 
 interface MapFiltersProps {
   mapRef: RefObject<MapRef>;

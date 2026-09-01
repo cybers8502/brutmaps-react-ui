@@ -1,7 +1,7 @@
-import styles from './CancelButton.module.scss';
-import {CancelIcon} from '~/components/Icons/Icons.tsx';
 import classNames from 'classnames';
 import {useTranslation} from 'react-i18next';
+import {CancelIcon} from '~/components/Icons/Icons.tsx';
+import styles from './CancelButton.module.scss';
 
 interface CancelButtonProps {
   className?: string;

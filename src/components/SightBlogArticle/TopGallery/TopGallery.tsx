@@ -1,14 +1,14 @@
 import classNames from 'classnames';
-import styles from './TopGallery.module.scss';
-import {Link} from 'react-router-dom';
-import PopupLayout from '~/layouts/PopupLayout/PopupLayout.tsx';
-import BlogGallery from '~/components/SightBlogArticle/BlogGallery/BlogGallery.tsx';
-import type {GalleryImage as ImageItem} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
 import {useEffect, useRef, useState} from 'react';
-import useMobileState from '~/hooks/useMobileState.ts';
+import {useTranslation} from 'react-i18next';
+import {Link} from 'react-router-dom';
 import {Mousewheel, Pagination, Scrollbar} from 'swiper/modules';
 import {Swiper, SwiperSlide} from 'swiper/react';
-import {useTranslation} from 'react-i18next';
+import BlogGallery from '~/components/SightBlogArticle/BlogGallery/BlogGallery.tsx';
+import type {GalleryImage as ImageItem} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
+import useMobileState from '~/hooks/useMobileState.ts';
+import PopupLayout from '~/layouts/PopupLayout/PopupLayout.tsx';
+import styles from './TopGallery.module.scss';
 
 interface TopGalleryProps {
   gallery: ImageItem[];

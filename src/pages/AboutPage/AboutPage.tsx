@@ -1,13 +1,13 @@
 import {useAboutPage} from '@brutmaps/api';
-import parse from 'html-react-parser';
 import classNames from 'classnames';
-import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
-import PageTitle from '~/components/PageTitle/PageTitle.tsx';
+import parse from 'html-react-parser';
+import {useTranslation} from 'react-i18next';
 import Button from '~/components/Button/Button.tsx';
+import PageTitle from '~/components/PageTitle/PageTitle.tsx';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import routes from '~/util/routes.ts';
 import styles from './AboutPage.module.scss';
-import {useTranslation} from 'react-i18next';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function AboutPage() {
   const {t} = useTranslation();
@@ -41,7 +41,9 @@ export default function AboutPage() {
         <div className={styles.information}>
           {aboutPage.founderName && <p className={styles.name}>{aboutPage.founderName}</p>}
           {aboutPage.founderRole && <p className={styles.role}>{aboutPage.founderRole}</p>}
-          {aboutPage.body && <div className={classNames(styles.body, 'article')}>{parse(aboutPage.body)}</div>}
+          {aboutPage.body && (
+            <div className={classNames(styles.body, 'article')}>{parse(aboutPage.body)}</div>
+          )}
         </div>
       </div>
 

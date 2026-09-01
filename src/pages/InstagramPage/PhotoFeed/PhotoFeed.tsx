@@ -1,9 +1,9 @@
-import useFetchInstagramGallery, {PhotoPost} from '~/hooks/fetchApi/useFetchInstagramGallery.tsx';
-import PhotoItem from '~/pages/InstagramPage/PhotoItem/PhotoItem.tsx';
-import styles from './PhotoFeed.module.scss';
-import {useInfiniteScroll} from '~/pages/InstagramPage/PhotoFeed/useInfiniteScroll.ts';
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import useFetchInstagramGallery, {type PhotoPost} from '~/hooks/fetchApi/useFetchInstagramGallery.tsx';
+import {useInfiniteScroll} from '~/pages/InstagramPage/PhotoFeed/useInfiniteScroll.ts';
+import PhotoItem from '~/pages/InstagramPage/PhotoItem/PhotoItem.tsx';
+import styles from './PhotoFeed.module.scss';
 
 export default function PhotoFeed() {
   const {t} = useTranslation();
@@ -25,7 +25,9 @@ export default function PhotoFeed() {
 
   return (
     <div className={styles.feed}>
-      {postList?.map((post) => <PhotoItem key={post.postId} {...post} />)}
+      {postList?.map((post) => (
+        <PhotoItem key={post.postId} {...post} />
+      ))}
 
       {isLoading && <p>{t('common.loading')}</p>}
       {isError && <p>{t('common.error')}</p>}

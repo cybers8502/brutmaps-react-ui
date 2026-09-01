@@ -1,6 +1,6 @@
-import CategoryFilter from '~/components/PostsList/PostsFilter/CategoryFilter/CategoryFilter.tsx';
 import {useEffect, useState} from 'react';
 import {useSearchParams} from 'react-router-dom';
+import CategoryFilter from '~/components/PostsList/PostsFilter/CategoryFilter/CategoryFilter.tsx';
 import styles from './PostsFilter.module.scss';
 
 export default function PostsFilter() {

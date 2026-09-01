@@ -1,8 +1,8 @@
-import PageTitle from '../../components/PageTitle/PageTitle.tsx';
-import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
+import {useTranslation} from 'react-i18next';
 import Button from '~/components/Button/Button.tsx';
 import routes from '~/util/routes.ts';
-import {useTranslation} from 'react-i18next';
+import PageTitle from '../../components/PageTitle/PageTitle.tsx';
+import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
 
 export default function NotFoundPage() {
   const {t} = useTranslation();

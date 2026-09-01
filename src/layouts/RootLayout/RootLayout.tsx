@@ -1,6 +1,6 @@
 import {Outlet} from 'react-router-dom';
-import SiteHead from '~/components/SiteHead/SiteHead.tsx';
 import PageLoader from '~/components/PageLoader/PageLoader.tsx';
+import SiteHead from '~/components/SiteHead/SiteHead.tsx';
 import {PageLoadingProvider} from '~/context/PageLoadingContext.tsx';
 import styles from './RootLayout.module.scss';
 

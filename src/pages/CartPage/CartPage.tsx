@@ -1,13 +1,13 @@
 import {useCart, useRemoveFromCart} from '@brutmaps/api';
+import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
-import styles from './CartPage.module.scss';
-import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
-import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import Button from '~/components/Button/Button.tsx';
 import {CancelIcon} from '~/components/Icons/Icons.tsx';
-import routes from '~/util/routes.ts';
-import {useTranslation} from 'react-i18next';
+import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
+import routes from '~/util/routes.ts';
+import styles from './CartPage.module.scss';
 
 export default function CartPage() {
   const {t} = useTranslation();

@@ -1,10 +1,10 @@
-import {useRef} from 'react';
-import styles from './Thumbnail.module.scss';
-import {Swiper, SwiperSlide} from 'swiper/react';
-import {Navigation} from 'swiper/modules';
 import type {ProductImage} from '@brutmaps/api';
-import {NavigationOptions} from 'swiper/types';
+import {useRef} from 'react';
 import {useTranslation} from 'react-i18next';
+import {Navigation} from 'swiper/modules';
+import {Swiper, SwiperSlide} from 'swiper/react';
+import type {NavigationOptions} from 'swiper/types';
+import styles from './Thumbnail.module.scss';
 
 interface ThumbnailProps {
   image: ProductImage;

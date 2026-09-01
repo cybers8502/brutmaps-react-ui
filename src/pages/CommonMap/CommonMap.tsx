@@ -1,31 +1,27 @@
-import {useRef, useState, useCallback, useEffect, Suspense} from 'react';
+import {Suspense, useCallback, useEffect, useRef, useState} from 'react';
 import {Map, NavigationControl} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import type {MapRef} from 'react-map-gl';
 import debounce from 'lodash.debounce';
-import styles from './CommonMap.module.scss';
-import {clusterLayer, unclutteredPointLayer} from '~/components/MapLayers/layers.ts';
-import {mapboxToken} from '~/configs/map.configs.ts';
-import {useLocation, useNavigate} from 'react-router-dom';
-
-import useMobileState from '~/hooks/useMobileState.ts';
-import {useMapContext} from '~/context/MapContext.tsx';
-import useFetchMapDetails from '~/hooks/fetchApi/useFetchMap.tsx';
-import useSightSearchParams from '~/hooks/useSightSearchParams.ts';
-import useMapInteractions from '~/hooks/useMapInteractions.ts';
-
-import {PopupInterface} from '~/pages/CommonMap/CommonMap.interface.ts';
-
-import MapLayers from '~/components/MapLayers/MapLayers.tsx';
-import MapPointPopup from '~/components/MapPointPopup/MapPointPopup.tsx';
-import SightPreviewPopup from '~/components/SightPreviewPopup/SightPreviewPopup.tsx';
-import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
-import MapFilters from '~/components/MapFilters/MapFilters.tsx';
-import MapObjectsBadge from '~/components/MapObjectsBadge/MapObjectsBadge.tsx';
-
-import SightBlogArticle from '~/components/SightBlogArticle/SightBlogArticle';
 import {useTranslation} from 'react-i18next';
+import type {MapRef} from 'react-map-gl';
+import {useLocation, useNavigate} from 'react-router-dom';
+import MapFilters from '~/components/MapFilters/MapFilters.tsx';
+import {clusterLayer, unclutteredPointLayer} from '~/components/MapLayers/layers.ts';
+import MapLayers from '~/components/MapLayers/MapLayers.tsx';
+import MapObjectsBadge from '~/components/MapObjectsBadge/MapObjectsBadge.tsx';
+import MapPointPopup from '~/components/MapPointPopup/MapPointPopup.tsx';
+import SightBlogArticle from '~/components/SightBlogArticle/SightBlogArticle';
+import SightPreviewPopup from '~/components/SightPreviewPopup/SightPreviewPopup.tsx';
+import {mapboxToken} from '~/configs/map.configs.ts';
+import {useMapContext} from '~/context/MapContext.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import useFetchMapDetails from '~/hooks/fetchApi/useFetchMap.tsx';
+import useMapInteractions from '~/hooks/useMapInteractions.ts';
+import useMobileState from '~/hooks/useMobileState.ts';
+import useSightSearchParams from '~/hooks/useSightSearchParams.ts';
+import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
+import type {PopupInterface} from '~/pages/CommonMap/CommonMap.interface.ts';
+import styles from './CommonMap.module.scss';
 
 export default function CommonMap() {
   const {t} = useTranslation();

@@ -1,20 +1,19 @@
-import {useState} from 'react';
-import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
-import {Link, useNavigate} from 'react-router-dom';
-import routes from '~/util/routes.ts';
-import styles from './Login.module.scss';
-
-import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
-import Button from '~/components/Button/Button.tsx';
-import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
-import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
 import {useLogin} from '@brutmaps/api';
-import {saveTokens} from '~/util/auth.ts';
+import {useState} from 'react';
+import {type FieldErrors, type UseFormRegister, useForm} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
+import {Link, useNavigate} from 'react-router-dom';
+import Button from '~/components/Button/Button.tsx';
 import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
+import PageTitle from '~/components/PageTitle/PageTitle.tsx';
+import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
+import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
+import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
+import {saveTokens} from '~/util/auth.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
-import {useTranslation} from 'react-i18next';
+import routes from '~/util/routes.ts';
+import styles from './Login.module.scss';
 
 interface LoginInput {
   username: string;

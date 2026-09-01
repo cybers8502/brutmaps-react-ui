@@ -1,11 +1,11 @@
 import {usePosts} from '@brutmaps/api';
+import {useTranslation} from 'react-i18next';
+import PageTitle from '~/components/PageTitle/PageTitle.tsx';
+import PostsFilter from '~/components/PostsList/PostsFilter/PostsFilter.tsx';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import useSightSearchParams from '~/hooks/useSightSearchParams.ts';
 import PostItemPreview from './PostItemPreview/PostItemPreview.tsx';
 import styles from './PostsList.module.scss';
-import useSightSearchParams from '~/hooks/useSightSearchParams.ts';
-import PostsFilter from '~/components/PostsList/PostsFilter/PostsFilter.tsx';
-import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import {useTranslation} from 'react-i18next';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 
 export default function PostsList() {
   const {t} = useTranslation();

@@ -1,5 +1,5 @@
-import {ReactNode} from 'react';
 import classNames from 'classnames';
+import type {ReactNode} from 'react';
 import styles from './SitePopupLayout.module.scss';
 
 // The site header lives in RootLayout now (rendered once, outside the routed

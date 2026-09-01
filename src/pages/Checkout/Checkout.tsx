@@ -1,14 +1,14 @@
+import {useCart, useCheckout, usePaymentGateways, useProfile} from '@brutmaps/api';
 import {useEffect, useRef, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {useNavigate} from 'react-router-dom';
-import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
-import PageTitle from '../../components/PageTitle/PageTitle.tsx';
-import Button from '~/components/Button/Button.tsx';
-import styles from './Checkout.module.scss';
-import {useCart, useCheckout, usePaymentGateways, useProfile} from '@brutmaps/api';
 import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router-dom';
+import Button from '~/components/Button/Button.tsx';
+import CardFieldsForm, {type CardFieldsFormHandle} from '~/components/CardFieldsForm/CardFieldsForm.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
-import CardFieldsForm, {CardFieldsFormHandle} from '~/components/CardFieldsForm/CardFieldsForm.tsx';
+import PageTitle from '../../components/PageTitle/PageTitle.tsx';
+import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
+import styles from './Checkout.module.scss';
 
 const CARD_PAYMENT_METHOD = 'card';
 

@@ -1,9 +1,9 @@
-import styles from './SightPreviewPopup.module.scss';
-import {GeoJSONFeature} from '../MapLayers/MapLayers.tsx';
-import {CanselIconButton} from '../Icons/Icons.tsx';
 import classNames from 'classnames';
-import getJsonObject from '~/util/getImagesArray.ts';
 import {useTranslation} from 'react-i18next';
+import getJsonObject from '~/util/getImagesArray.ts';
+import {CanselIconButton} from '../Icons/Icons.tsx';
+import type {GeoJSONFeature} from '../MapLayers/MapLayers.tsx';
+import styles from './SightPreviewPopup.module.scss';
 
 interface SightPreviewPopupProps {
   popupInfo: {

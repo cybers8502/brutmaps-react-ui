@@ -1,10 +1,10 @@
-import {Link, useNavigate} from 'react-router-dom';
-import routes from '~/util/routes.ts';
-import {clearTokens} from '~/util/auth.ts';
 import {useProfile} from '@brutmaps/api';
-import styles from './AuthControls.module.scss';
-import {invalidateMapData} from '~/util/mutateMapData.ts';
 import {useTranslation} from 'react-i18next';
+import {Link, useNavigate} from 'react-router-dom';
+import {clearTokens} from '~/util/auth.ts';
+import {invalidateMapData} from '~/util/mutateMapData.ts';
+import routes from '~/util/routes.ts';
+import styles from './AuthControls.module.scss';
 
 export default function AuthControls() {
   const {t} = useTranslation();

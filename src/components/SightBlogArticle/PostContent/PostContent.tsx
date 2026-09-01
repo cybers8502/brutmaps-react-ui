@@ -1,10 +1,10 @@
-import styles from './PostContent.module.scss';
 import classNames from 'classnames';
 import parse from 'html-react-parser';
-import type {GalleryImage} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
-import BlogGallery from '~/components/SightBlogArticle/BlogGallery/BlogGallery.tsx';
 import {useEffect, useRef, useState} from 'react';
+import BlogGallery from '~/components/SightBlogArticle/BlogGallery/BlogGallery.tsx';
+import type {GalleryImage} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
 import PopupLayout from '~/layouts/PopupLayout/PopupLayout.tsx';
+import styles from './PostContent.module.scss';
 
 interface PostContentProps {
   description?: string;

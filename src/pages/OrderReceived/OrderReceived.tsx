@@ -1,12 +1,12 @@
-import {useLocation, useParams} from 'react-router-dom';
-import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
-import PageTitle from '../../components/PageTitle/PageTitle.tsx';
-import Button from '~/components/Button/Button.tsx';
-import styles from './OrderReceived.module.scss';
-import routes from '~/util/routes.ts';
 import {useOrder} from '@brutmaps/api';
 import {useTranslation} from 'react-i18next';
+import {useLocation, useParams} from 'react-router-dom';
+import Button from '~/components/Button/Button.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import routes from '~/util/routes.ts';
+import PageTitle from '../../components/PageTitle/PageTitle.tsx';
+import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
+import styles from './OrderReceived.module.scss';
 
 interface CheckoutOrderSummary {
   databaseId: number;

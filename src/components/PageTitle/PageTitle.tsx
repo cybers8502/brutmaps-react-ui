@@ -1,6 +1,6 @@
-import styles from './PageTitle.module.scss';
 import classNames from 'classnames';
-import {ReactNode} from 'react';
+import type {ReactNode} from 'react';
+import styles from './PageTitle.module.scss';
 
 interface PageTitleProps {
   className?: string;

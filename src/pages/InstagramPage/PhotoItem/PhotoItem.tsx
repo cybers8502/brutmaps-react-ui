@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import {PhotoPost} from '~/hooks/fetchApi/useFetchInstagramGallery.tsx';
+import type {PhotoPost} from '~/hooks/fetchApi/useFetchInstagramGallery.tsx';
 import styles from './PhotoItem.module.scss';
 
 type PhotoItemProps = PhotoPost;

@@ -1,12 +1,12 @@
-import styles from './FavoriteSights.module.scss';
-import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import {useFavorites, useToggleFavorite} from '@brutmaps/api';
-import {Link} from 'react-router-dom';
-import routes from '~/util/routes.ts';
-import FavoriteSightItem from '~/pages/FavoriteSights/FavoriteSightItem/FavoriteSightItem.tsx';
-import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import {useTranslation} from 'react-i18next';
+import {Link} from 'react-router-dom';
+import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
+import FavoriteSightItem from '~/pages/FavoriteSights/FavoriteSightItem/FavoriteSightItem.tsx';
+import routes from '~/util/routes.ts';
+import styles from './FavoriteSights.module.scss';
 
 export default function FavoriteSights() {
   const {t} = useTranslation();

@@ -1,10 +1,10 @@
-import {Fragment} from 'react';
-import classNames from 'classnames';
-import {Link} from 'react-router-dom';
 import type {BlogPostSummary} from '@brutmaps/api';
-import styles from './PostItem.module.scss';
-import routes from '~/util/routes.ts';
+import classNames from 'classnames';
+import {Fragment} from 'react';
 import {useTranslation} from 'react-i18next';
+import {Link} from 'react-router-dom';
+import routes from '~/util/routes.ts';
+import styles from './PostItem.module.scss';
 
 export default function PostItemPreview({...props}: BlogPostSummary) {
   const {t} = useTranslation();

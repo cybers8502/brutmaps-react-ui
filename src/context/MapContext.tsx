@@ -1,5 +1,5 @@
-import {createContext, ReactNode, useContext, useState} from 'react';
-import {PopupInterface, ViewportInterface} from '~/pages/CommonMap/CommonMap.interface.ts';
+import {createContext, type ReactNode, useContext, useState} from 'react';
+import type {PopupInterface, ViewportInterface} from '~/pages/CommonMap/CommonMap.interface.ts';
 
 interface MapContextValue {
   viewport: ViewportInterface | null;

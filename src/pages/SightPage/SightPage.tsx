@@ -1,6 +1,6 @@
-import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
-import SightBlogArticle from '~/components/SightBlogArticle/SightBlogArticle.tsx';
 import {useNavigate, useParams} from 'react-router-dom';
+import SightBlogArticle from '~/components/SightBlogArticle/SightBlogArticle.tsx';
+import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 
 export default function SightPage() {
   const {slug} = useParams();

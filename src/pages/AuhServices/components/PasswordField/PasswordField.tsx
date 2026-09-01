@@ -1,8 +1,8 @@
-import {UseFormRegister, FieldErrors} from 'react-hook-form';
-import {EayIcon} from '~/components/Icons/Icons.tsx';
 import {useState} from 'react';
-import styles from './PasswordField.module.scss';
+import type {FieldErrors, UseFormRegister} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
+import {EayIcon} from '~/components/Icons/Icons.tsx';
+import styles from './PasswordField.module.scss';
 
 interface PasswordFieldProps {
   register: UseFormRegister<{password: string}>;

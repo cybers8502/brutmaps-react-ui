@@ -1,9 +1,9 @@
-import useFetchObjectPost from '~/hooks/fetchApi/useFetchObjectPost.tsx';
-import AddToFavoriteSightButton from '~/components/AddToFavoriteSightButton/AddToFavoriteSightButton.tsx';
-import styles from './FavoriteSightItem.module.scss';
-import Button from '~/components/Button/Button.tsx';
-import routes from '~/util/routes.ts';
 import {useTranslation} from 'react-i18next';
+import AddToFavoriteSightButton from '~/components/AddToFavoriteSightButton/AddToFavoriteSightButton.tsx';
+import Button from '~/components/Button/Button.tsx';
+import useFetchObjectPost from '~/hooks/fetchApi/useFetchObjectPost.tsx';
+import routes from '~/util/routes.ts';
+import styles from './FavoriteSightItem.module.scss';
 
 interface FavoriteSightItemProps {
   id: string;

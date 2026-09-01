@@ -1,7 +1,7 @@
-import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {useCardPayment} from '@brutmaps/api';
-import {usePayPalSdk, PayPalCardFieldsInstance} from '~/hooks/usePayPalSdk.ts';
+import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {type PayPalCardFieldsInstance, usePayPalSdk} from '~/hooks/usePayPalSdk.ts';
 import styles from './CardFieldsForm.module.scss';
 
 export interface CardFieldsFormHandle {

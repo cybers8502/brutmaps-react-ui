@@ -1,10 +1,10 @@
-import {RefObject, useEffect, useRef, useState} from 'react';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import styles from './GeocoderControl.module.scss';
-import {MapRef} from 'react-map-gl';
-import {ArrowLeftIcon} from '../Icons/Icons.tsx';
 import classNames from 'classnames';
+import {type RefObject, useEffect, useRef, useState} from 'react';
+import type {MapRef} from 'react-map-gl';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
+import {ArrowLeftIcon} from '../Icons/Icons.tsx';
+import styles from './GeocoderControl.module.scss';
 
 interface GeocoderControlResult {
   bbox?: [number, number, number, number];

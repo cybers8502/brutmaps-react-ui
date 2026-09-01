@@ -1,12 +1,12 @@
+import {type UserProfile, useEditProfile, useUploadUserPhoto, useUserCountries} from '@brutmaps/api';
 import {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import PhotoUploader from '~/components/PhotoUploader/PhotoUploader.tsx';
+import {useTranslation} from 'react-i18next';
 import Button from '~/components/Button/Button.tsx';
-import styles from '../MyAccount.module.scss';
-import {useEditProfile, useUploadUserPhoto, useUserCountries, type UserProfile} from '@brutmaps/api';
+import PhotoUploader from '~/components/PhotoUploader/PhotoUploader.tsx';
 import AccountDelete from '~/pages/MyAccount/AccountDelete/AccountDelete.tsx';
 import {fileToBase64} from '~/util/fileToBase64.ts';
-import {useTranslation} from 'react-i18next';
+import styles from '../MyAccount.module.scss';
 
 interface ProfileEditFrom {
   firstName: string;
@@ -62,7 +62,9 @@ export default function ProfileForm({data, refetch, setIsEditing}: ProfileFormPr
 
   const onSubmit = async (formData: ProfileEditFrom) => {
     try {
-      const photoUrl = photoFile ? await uploadUserPhoto(await fileToBase64(photoFile), photoFile.name) : undefined;
+      const photoUrl = photoFile
+        ? await uploadUserPhoto(await fileToBase64(photoFile), photoFile.name)
+        : undefined;
 
       await editProfile({
         email: formData.email,

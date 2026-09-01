@@ -1,11 +1,11 @@
-import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useTranslation} from 'react-i18next';
 import {useDeleteAccount} from '@brutmaps/api';
+import {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
-import routes from '~/util/routes.ts';
 import {clearTokens} from '~/util/auth.ts';
 import {invalidateMapData} from '~/util/mutateMapData.ts';
+import routes from '~/util/routes.ts';
 
 export default function AccountDelete() {
   const {t} = useTranslation();

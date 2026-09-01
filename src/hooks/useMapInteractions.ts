@@ -1,9 +1,8 @@
-import {MutableRefObject, RefObject, useCallback} from 'react';
-import type {MapRef} from 'react-map-gl';
-import type {GeoJSONFeature} from '~/components/MapLayers/MapLayers';
-import type {MapLayerMouseEvent} from 'react-map-gl';
+import {type MutableRefObject, type RefObject, useCallback} from 'react';
+import type {MapLayerMouseEvent, MapRef} from 'react-map-gl';
 import type {NavigateFunction} from 'react-router-dom';
-import {PopupInterface} from '~/pages/CommonMap/CommonMap.interface.ts';
+import type {GeoJSONFeature} from '~/components/MapLayers/MapLayers';
+import type {PopupInterface} from '~/pages/CommonMap/CommonMap.interface.ts';
 
 interface UseMapInteractionsProps {
   mapRef: RefObject<MapRef>;

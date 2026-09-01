@@ -1,8 +1,8 @@
 import {useCart} from '@brutmaps/api';
-import {Link} from 'react-router-dom';
-import styles from './CartLink.module.scss';
-import routes from '~/util/routes.ts';
 import {useTranslation} from 'react-i18next';
+import {Link} from 'react-router-dom';
+import routes from '~/util/routes.ts';
+import styles from './CartLink.module.scss';
 
 export default function CartLink() {
   const {t} = useTranslation();

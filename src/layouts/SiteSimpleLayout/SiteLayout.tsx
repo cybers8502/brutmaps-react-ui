@@ -1,6 +1,6 @@
-import styles from './SiteSimpleLayout.module.scss';
-import {ReactNode} from 'react';
 import classNames from 'classnames';
+import type {ReactNode} from 'react';
+import styles from './SiteSimpleLayout.module.scss';
 
 interface SiteLayoutProps {
   className?: string;

@@ -1,10 +1,10 @@
-import {useEffect, useState} from 'react';
-import {useSearchParams} from 'react-router-dom';
 import type {SightsListSortBy} from '@brutmaps/api';
-import styles from './ObjectsFilters.module.scss';
-import CountryFilter from './CountryFilter/CountryFilter.tsx';
-import ArchitectsFilter from '~/components/MapFilters/ArchitectsFilter/ArchitectsFilter.tsx';
+import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {useSearchParams} from 'react-router-dom';
+import ArchitectsFilter from '~/components/MapFilters/ArchitectsFilter/ArchitectsFilter.tsx';
+import CountryFilter from './CountryFilter/CountryFilter.tsx';
+import styles from './ObjectsFilters.module.scss';
 
 export default function ObjectsFilters() {
   const {t} = useTranslation();

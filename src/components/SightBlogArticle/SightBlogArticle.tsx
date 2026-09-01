@@ -1,13 +1,13 @@
-import styles from './SightBlogArticle.module.scss';
 import classNames from 'classnames';
+import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
-import useFetchObjectPost from '~/hooks/fetchApi/useFetchObjectPost.tsx';
 import AddToFavoriteSightButton from '~/components/AddToFavoriteSightButton/AddToFavoriteSightButton.tsx';
 import Button from '~/components/Button/Button.tsx';
 import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
 import TopGallery from '~/components/SightBlogArticle/TopGallery/TopGallery.tsx';
-import {useTranslation} from 'react-i18next';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import useFetchObjectPost from '~/hooks/fetchApi/useFetchObjectPost.tsx';
+import styles from './SightBlogArticle.module.scss';
 
 interface SightDetailProps {
   sightSlug: string;

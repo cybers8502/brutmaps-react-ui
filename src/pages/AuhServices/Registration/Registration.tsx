@@ -1,23 +1,23 @@
+import {useRegister, useUploadUserPhoto, useUserCountries} from '@brutmaps/api';
+import classNames from 'classnames';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import routes from '~/util/routes.ts';
-import {Link, useNavigate} from 'react-router-dom';
-import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
-import styles from '~/pages/AuhServices/Login/Login.module.scss';
-import Button from '~/components/Button/Button.tsx';
-import PhotoUploader from '~/components/PhotoUploader/PhotoUploader.tsx';
-import FirstStep from '~/pages/AuhServices/Registration/FirstStep.tsx';
-import {ArrowToLeftIcon} from '~/components/Icons/Icons.tsx';
-import classNames from 'classnames';
-import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
-import {useRegister, useUploadUserPhoto, useUserCountries} from '@brutmaps/api';
-import {saveTokens} from '~/util/auth.ts';
-import {invalidateMapData} from '~/util/mutateMapData.ts';
-import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
-import Loader from '~/components/Loader/Loader.tsx';
 import {useTranslation} from 'react-i18next';
+import {Link, useNavigate} from 'react-router-dom';
+import Button from '~/components/Button/Button.tsx';
+import GoogleSignUp from '~/components/GoogleSignUp/GoogleSignUp.tsx';
+import {ArrowToLeftIcon} from '~/components/Icons/Icons.tsx';
+import Loader from '~/components/Loader/Loader.tsx';
+import PageTitle from '~/components/PageTitle/PageTitle.tsx';
+import PhotoUploader from '~/components/PhotoUploader/PhotoUploader.tsx';
+import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
+import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
+import styles from '~/pages/AuhServices/Login/Login.module.scss';
+import FirstStep from '~/pages/AuhServices/Registration/FirstStep.tsx';
+import {saveTokens} from '~/util/auth.ts';
 import {fileToBase64} from '~/util/fileToBase64.ts';
+import {invalidateMapData} from '~/util/mutateMapData.ts';
+import routes from '~/util/routes.ts';
 
 interface RegisterUserFrom {
   firstName: string;
@@ -170,7 +170,7 @@ export default function RegisterUser() {
                       />
                       <span>
                         {t('auth.agreeTerms')}{' '}
-                        <a href={'https://brutmaps.com/terms-conditions'} target={'_blank'}>
+                        <a href={'https://brutmaps.com/terms-conditions'} target={'_blank'} rel='noopener'>
                           {t('auth.termsAndConditions')}
                         </a>
                       </span>

@@ -1,11 +1,11 @@
-import {Swiper, SwiperSlide, SwiperRef} from 'swiper/react';
 import {Mousewheel, Pagination, Scrollbar} from 'swiper/modules';
+import {Swiper, type SwiperRef, SwiperSlide} from 'swiper/react';
 import 'swiper/scss';
 import 'swiper/scss/a11y';
-import styles from './BlogGallery.module.scss';
+import {useRef} from 'react';
 import {Link} from 'react-router-dom';
 import type {GalleryImage} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
-import {useRef} from 'react';
+import styles from './BlogGallery.module.scss';
 
 interface BlogGalleryProps {
   gallery: GalleryImage[];

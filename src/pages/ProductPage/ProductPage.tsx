@@ -1,16 +1,16 @@
 import {useAddToCart, useProduct} from '@brutmaps/api';
-import styles from './ProductPage.module.scss';
-import {useNavigate, useParams} from 'react-router-dom';
-import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
-import parse from 'html-react-parser';
 import classNames from 'classnames';
+import parse from 'html-react-parser';
+import {useTranslation} from 'react-i18next';
+import {useNavigate, useParams} from 'react-router-dom';
+import Button from '~/components/Button/Button.tsx';
+import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import routes from '~/util/routes.ts';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.tsx';
 import PageTitle from '../../components/PageTitle/PageTitle.tsx';
 import Thumbnail from '../../components/Thumbnail/Thumbnail.tsx';
-import Button from '~/components/Button/Button.tsx';
-import routes from '~/util/routes.ts';
-import {useTranslation} from 'react-i18next';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
+import styles from './ProductPage.module.scss';
 
 export default function ProductPage() {
   const {t} = useTranslation();

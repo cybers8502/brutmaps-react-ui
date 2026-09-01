@@ -1,13 +1,13 @@
-import PageTitle from '../../components/PageTitle/PageTitle.tsx';
-import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
-import styles from './MyAccount.module.scss';
-import {useState} from 'react';
 import {useProfile, useUserCountries} from '@brutmaps/api';
-import Button from '~/components/Button/Button.tsx';
-import ProfileForm from '~/pages/MyAccount/ProfileForm/ProfileForm.tsx';
-import ChangePasswordForm from '~/pages/MyAccount/ChangePasswordForm/ChangePasswordForm.tsx';
+import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import Button from '~/components/Button/Button.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
+import ChangePasswordForm from '~/pages/MyAccount/ChangePasswordForm/ChangePasswordForm.tsx';
+import ProfileForm from '~/pages/MyAccount/ProfileForm/ProfileForm.tsx';
+import PageTitle from '../../components/PageTitle/PageTitle.tsx';
+import styles from './MyAccount.module.scss';
 
 export default function MyAccount() {
   const {t} = useTranslation();

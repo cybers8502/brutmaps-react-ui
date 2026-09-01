@@ -1,8 +1,8 @@
-import {ReactNode, useEffect} from 'react';
-import {AnimatePresence, motion} from 'framer-motion';
 import classNames from 'classnames';
-import styles from './PopupLayout.module.scss';
+import {AnimatePresence, motion} from 'framer-motion';
+import {type ReactNode, useEffect} from 'react';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
+import styles from './PopupLayout.module.scss';
 
 const getStyle = (position?: PopupLayoutProps['position']): React.CSSProperties => {
   if (typeof position === 'object') {

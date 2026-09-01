@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
-import styles from './SocialLinks.module.scss';
-import {socialLinks} from '~/util/routes.ts';
 import {FacebookIcon, InstagramIcon} from '~/components/Icons/Icons.tsx';
+import {socialLinks} from '~/util/routes.ts';
+import styles from './SocialLinks.module.scss';
 
 export default function SocialLinks() {
   return (

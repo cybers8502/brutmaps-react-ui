@@ -1,8 +1,8 @@
 import {useTaxonomy} from '@brutmaps/api';
-import styles from './CountryFilter.module.scss';
 import classNames from 'classnames';
-import CancelButton from '~/components/CancelButton/CancelButton.tsx';
 import {useTranslation} from 'react-i18next';
+import CancelButton from '~/components/CancelButton/CancelButton.tsx';
+import styles from './CountryFilter.module.scss';
 
 interface CountryFilterProps {
   selectedCountry: string;

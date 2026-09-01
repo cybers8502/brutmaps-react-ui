@@ -1,15 +1,15 @@
-import {Fragment} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
 import {usePost} from '@brutmaps/api';
-import parse from 'html-react-parser';
 import classNames from 'classnames';
-import styles from './BlogArticle.module.scss';
-import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
-import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.tsx';
-import routes from '~/util/routes.ts';
-import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
+import parse from 'html-react-parser';
+import {Fragment} from 'react';
 import {useTranslation} from 'react-i18next';
+import {useNavigate, useParams} from 'react-router-dom';
+import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import routes from '~/util/routes.ts';
+import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.tsx';
+import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
+import styles from './BlogArticle.module.scss';
 
 export default function BlogArticle() {
   const {t} = useTranslation();

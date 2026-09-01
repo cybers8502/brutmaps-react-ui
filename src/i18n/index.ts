@@ -1,6 +1,6 @@
 import i18n from 'i18next';
-import {initReactI18next} from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import {initReactI18next} from 'react-i18next';
 import en from '~/i18n/locales/en/translation.ts';
 import uk from '~/i18n/locales/uk/translation.ts';
 

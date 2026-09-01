@@ -1,15 +1,15 @@
-import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
-import styles from './PasswordRecovery.module.scss';
+import {useResetPassword} from '@brutmaps/api';
+import {useState} from 'react';
+import {type FieldErrors, type UseFormRegister, useForm} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
-import {FieldErrors, useForm, UseFormRegister} from 'react-hook-form';
-import {useState} from 'react';
-import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
+import PageTitle from '~/components/PageTitle/PageTitle.tsx';
+import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
 import AuhServicesLayout from '~/pages/AuhServices/components/AuhServicesLayout/AuhServicesLayout.tsx';
-import {useResetPassword} from '@brutmaps/api';
+import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import routes from '~/util/routes.ts';
-import {useTranslation} from 'react-i18next';
+import styles from './PasswordRecovery.module.scss';
 
 interface ResetPasswordInput {
   password: string;

@@ -1,13 +1,13 @@
+import {type SightListItem, type SightsListSortBy, useSightsCount, useSightsList} from '@brutmaps/api';
 import {useEffect, useState} from 'react';
-import {useSearchParams} from 'react-router-dom';
-import {useSightsCount, useSightsList, type SightListItem, type SightsListSortBy} from '@brutmaps/api';
-import styles from './ObjectsList.module.scss';
-import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import ObjectsFilters from './ObjectsFilters/ObjectsFilters.tsx';
-import ObjectItem from './ObjectItem/ObjectItem.tsx';
-import Button from '~/components/Button/Button.tsx';
 import {useTranslation} from 'react-i18next';
+import {useSearchParams} from 'react-router-dom';
+import Button from '~/components/Button/Button.tsx';
+import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import ObjectItem from './ObjectItem/ObjectItem.tsx';
+import ObjectsFilters from './ObjectsFilters/ObjectsFilters.tsx';
+import styles from './ObjectsList.module.scss';
 
 const PER_PAGE = 24;
 

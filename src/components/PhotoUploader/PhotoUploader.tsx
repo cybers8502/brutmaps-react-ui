@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
 import classNames from 'classnames';
-import styles from './PhotoUploader.module.scss';
-import {CancelBolderIcon, PenIcon} from '~/components/Icons/Icons.tsx';
+import type React from 'react';
+import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {CancelBolderIcon, PenIcon} from '~/components/Icons/Icons.tsx';
+import styles from './PhotoUploader.module.scss';
 
 interface PhotoUploaderProps {
   onPhotoChange: (file: File | null) => void;

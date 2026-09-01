@@ -1,10 +1,10 @@
-import styles from './ArchitectsFilter.module.scss';
-import {usePopularArchitects, useSearchArchitects, useArchitect, type Architect} from '@brutmaps/api';
-import {useEffect, useMemo, useState} from 'react';
-import useDebounce from '~/hooks/useDebounce.ts';
+import {type Architect, useArchitect, usePopularArchitects, useSearchArchitects} from '@brutmaps/api';
 import classNames from 'classnames';
-import CancelButton from '~/components/CancelButton/CancelButton.tsx';
+import {useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import CancelButton from '~/components/CancelButton/CancelButton.tsx';
+import useDebounce from '~/hooks/useDebounce.ts';
+import styles from './ArchitectsFilter.module.scss';
 
 interface ArchitectsFilterProps {
   className: string;

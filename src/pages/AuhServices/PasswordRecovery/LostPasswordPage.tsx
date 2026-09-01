@@ -1,14 +1,14 @@
+import {useLostPassword} from '@brutmaps/api';
+import {useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
+import {Link} from 'react-router-dom';
+import Button from '~/components/Button/Button.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import SitePopupLayout from '~/layouts/SitePopupLayout/SitePopupLayout.tsx';
-import styles from './PasswordRecovery.module.scss';
-import {Link} from 'react-router-dom';
 import routes from '~/util/routes.ts';
-import Button from '~/components/Button/Button.tsx';
-import {useForm} from 'react-hook-form';
-import {useState} from 'react';
 import AuhServicesLayout from '../components/AuhServicesLayout/AuhServicesLayout';
-import {useLostPassword} from '@brutmaps/api';
-import {useTranslation} from 'react-i18next';
+import styles from './PasswordRecovery.module.scss';
 
 interface LostPasswordInput {
   email: string;

@@ -1,7 +1,7 @@
+import type {ReactNode} from 'react';
 import {Navigate} from 'react-router-dom';
-import routes from '~/util/routes.ts';
 import {getAccessToken} from '~/util/auth.ts';
-import {ReactNode} from 'react';
+import routes from '~/util/routes.ts';
 
 interface AuthRedirectProps {
   privateRoute?: boolean;

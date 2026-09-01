@@ -1,13 +1,17 @@
 import {useCheckEmail, useGoogleAuth} from '@brutmaps/api';
-import {saveTokens} from '~/util/auth.ts';
-import {useNavigate} from 'react-router-dom';
-import {GoogleLogin} from 'react-oauth-google';
 import {jwtDecode} from 'jwt-decode';
+import {useTranslation} from 'react-i18next';
+import {GoogleLogin} from 'react-oauth-google';
+import {useNavigate} from 'react-router-dom';
+import type {
+  CredentialProps,
+  DecodedCredentialResponse,
+  GoogleSignUpProps,
+} from '~/components/GoogleSignUp/GoogleSignUp.interface.ts';
+import {saveTokens} from '~/util/auth.ts';
+import {invalidateMapData} from '~/util/mutateMapData.ts';
 import routes from '~/util/routes.ts';
 import styles from './GoogleSignUp.module.scss';
-import {CredentialProps, DecodedCredentialResponse, GoogleSignUpProps} from '~/components/GoogleSignUp/GoogleSignUp.interface.ts';
-import {invalidateMapData} from '~/util/mutateMapData.ts';
-import {useTranslation} from 'react-i18next';
 
 export default function GoogleSignUp({withUserCheckUp, errorMessage, inProgress}: GoogleSignUpProps) {
   const {t} = useTranslation();

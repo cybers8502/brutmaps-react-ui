@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import {Popup} from 'react-map-gl';
 import styles from './MapPointPopup.module.scss';
 

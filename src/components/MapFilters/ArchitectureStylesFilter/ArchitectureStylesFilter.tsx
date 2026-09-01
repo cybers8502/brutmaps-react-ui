@@ -1,9 +1,9 @@
 import {useTaxonomy} from '@brutmaps/api';
-import styles from './ArchitectureStylesFilter.module.scss';
 import classNames from 'classnames';
-import CancelButton from '~/components/CancelButton/CancelButton.tsx';
 import {Fragment} from 'react';
 import {useTranslation} from 'react-i18next';
+import CancelButton from '~/components/CancelButton/CancelButton.tsx';
+import styles from './ArchitectureStylesFilter.module.scss';
 
 interface ArchitectureStylesFilterProps {
   selectedType: string;

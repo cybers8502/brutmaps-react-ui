@@ -1,7 +1,7 @@
-import {Source, Layer} from 'react-map-gl';
-import {clusterLayer, clusterCountLayer, unclutteredPointLayer} from './layers.ts';
-import useFetchMapDetails from '~/hooks/fetchApi/useFetchMap.tsx';
 import type {SightFeature, SightsFeatureCollection} from '@brutmaps/api';
+import {Layer, Source} from 'react-map-gl';
+import useFetchMapDetails from '~/hooks/fetchApi/useFetchMap.tsx';
+import {clusterCountLayer, clusterLayer, unclutteredPointLayer} from './layers.ts';
 
 export type GeoJSONFeature = SightFeature;
 export type IMapLayers = SightsFeatureCollection;
