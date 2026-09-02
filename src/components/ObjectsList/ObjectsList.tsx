@@ -2,6 +2,7 @@ import {type SightListItem, type SightsListSortBy, useSightsCount, useSightsList
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSearchParams} from 'react-router-dom';
+import Loader from '~/components/Loader/Loader.tsx';
 import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import {useInfiniteScroll} from '~/hooks/useInfiniteScroll.ts';
@@ -71,7 +72,11 @@ export default function ObjectsList() {
 
       {!isLoading && !error && items.length === 0 && <p>{t('objects.noResults')}</p>}
 
-      {isLoading && page > 1 && <p>{t('common.loading')}</p>}
+      {isLoading && page > 1 && (
+        <div className={styles.loadingMore}>
+          <Loader />
+        </div>
+      )}
 
       {hasMore && <div ref={loaderRef} style={{height: 1}} />}
     </>

@@ -28,3 +28,9 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+.loadingMore {
+  position: relative;
+  min-height: 80px;
+  margin-block-start: 24px;
+}
