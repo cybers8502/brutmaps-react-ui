@@ -27,6 +27,11 @@ export default defineConfig(({mode}) => {
       open: true,
       port: 3033,
     },
+    // The app is served from a WP theme subdirectory, not the domain root —
+    // without this, Vite bakes "/" as the base for lazy-chunk CSS/preload
+    // URLs, which 404s (dynamic import() of the JS itself is unaffected
+    // since it resolves relative to the importing module's own URL).
+    base: '/wp-content/themes/brutmaps/publish/',
     build: {
       outDir: '../wp-brutmaps/wp-content/themes/brutmaps/publish',
       // Vite doesn't empty outDir by default when it's outside the project
