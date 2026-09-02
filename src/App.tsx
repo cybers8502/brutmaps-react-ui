@@ -1,34 +1,38 @@
 import {ApolloProvider} from '@apollo/client/react';
-import {Suspense} from 'react';
+import {lazy, Suspense} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 import {useTranslation} from 'react-i18next';
 import {GoogleOAuthProvider} from 'react-oauth-google';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import RootLayout from '~/layouts/RootLayout/RootLayout.tsx';
-import AboutPage from '~/pages/AboutPage/AboutPage.tsx';
-import Login from '~/pages/AuhServices/Login/Login.tsx';
-import LostPasswordPage from '~/pages/AuhServices/PasswordRecovery/LostPasswordPage.tsx';
-import ResetPasswordPage from '~/pages/AuhServices/PasswordRecovery/ResetPasswordPage.tsx';
-import Registration from '~/pages/AuhServices/Registration/Registration.tsx';
-import BlogArticle from '~/pages/BlogArticle/BlogArticle.tsx';
-import BlogRootPage from '~/pages/BlogRootPage/BlogRootPage.tsx';
-import CartPage from '~/pages/CartPage/CartPage.tsx';
-import Checkout from '~/pages/Checkout/Checkout.tsx';
+// CommonMap stays eager: it's the "/" landing route, and lazy-loading it
+// would add a fetch waterfall (entry chunk -> route chunk) on the page
+// that gets hit the most.
 import CommonMap from '~/pages/CommonMap/CommonMap.tsx';
-import FavoriteSights from '~/pages/FavoriteSights/FavoriteSights.tsx';
-import InstagramPage from '~/pages/InstagramPage/InstagramPage.tsx';
-import MyAccount from '~/pages/MyAccount/MyAccount.tsx';
-import ObjectsPage from '~/pages/ObjectsPage/ObjectsPage.tsx';
-import OrderReceived from '~/pages/OrderReceived/OrderReceived.tsx';
-import ProductPage from '~/pages/ProductPage/ProductPage.tsx';
-import ShopPage from '~/pages/ShopPage/ShopPage.tsx';
-import SightPage from '~/pages/SightPage/SightPage.tsx';
-import TermsNConditions from '~/pages/TermsNConditions/TermsNConditions.tsx';
 import AuthRedirect from '~/routes/AuthRedirect.tsx';
 import apolloClient from './apolloClient.ts';
 import {MapProvider} from './context/MapContext.tsx';
-import NotFoundPage from './pages/NotFoundPage/NotFoundPage.tsx';
 import routes from './util/routes.ts';
+
+const AboutPage = lazy(() => import('~/pages/AboutPage/AboutPage.tsx'));
+const Login = lazy(() => import('~/pages/AuhServices/Login/Login.tsx'));
+const LostPasswordPage = lazy(() => import('~/pages/AuhServices/PasswordRecovery/LostPasswordPage.tsx'));
+const ResetPasswordPage = lazy(() => import('~/pages/AuhServices/PasswordRecovery/ResetPasswordPage.tsx'));
+const Registration = lazy(() => import('~/pages/AuhServices/Registration/Registration.tsx'));
+const BlogArticle = lazy(() => import('~/pages/BlogArticle/BlogArticle.tsx'));
+const BlogRootPage = lazy(() => import('~/pages/BlogRootPage/BlogRootPage.tsx'));
+const CartPage = lazy(() => import('~/pages/CartPage/CartPage.tsx'));
+const Checkout = lazy(() => import('~/pages/Checkout/Checkout.tsx'));
+const FavoriteSights = lazy(() => import('~/pages/FavoriteSights/FavoriteSights.tsx'));
+const InstagramPage = lazy(() => import('~/pages/InstagramPage/InstagramPage.tsx'));
+const MyAccount = lazy(() => import('~/pages/MyAccount/MyAccount.tsx'));
+const ObjectsPage = lazy(() => import('~/pages/ObjectsPage/ObjectsPage.tsx'));
+const OrderReceived = lazy(() => import('~/pages/OrderReceived/OrderReceived.tsx'));
+const ProductPage = lazy(() => import('~/pages/ProductPage/ProductPage.tsx'));
+const ShopPage = lazy(() => import('~/pages/ShopPage/ShopPage.tsx'));
+const SightPage = lazy(() => import('~/pages/SightPage/SightPage.tsx'));
+const TermsNConditions = lazy(() => import('~/pages/TermsNConditions/TermsNConditions.tsx'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage/NotFoundPage.tsx'));
 
 function ErrorFallback() {
   const {t} = useTranslation();

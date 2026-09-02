@@ -29,6 +29,9 @@ export default defineConfig(({mode}) => {
     },
     build: {
       outDir: '../wp-brutmaps/wp-content/themes/brutmaps/publish',
+      // WP's AssetManager reads this to enqueue the current hashed
+      // filenames instead of hardcoding them.
+      manifest: true,
     },
     define: {
       'import.meta.env.VITE_SITE_URI': JSON.stringify(env.VITE_SITE_URI),
