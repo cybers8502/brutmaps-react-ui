@@ -29,6 +29,9 @@ export default defineConfig(({mode}) => {
     },
     build: {
       outDir: '../wp-brutmaps/wp-content/themes/brutmaps/publish',
+      // Vite doesn't empty outDir by default when it's outside the project
+      // root, so stale hashed files from previous builds pile up otherwise.
+      emptyOutDir: true,
       // WP's AssetManager reads this to enqueue the current hashed
       // filenames instead of hardcoding them.
       manifest: true,
