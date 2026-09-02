@@ -2,9 +2,9 @@ import {type SightListItem, type SightsListSortBy, useSightsCount, useSightsList
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSearchParams} from 'react-router-dom';
-import Button from '~/components/Button/Button.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import {useInfiniteScroll} from '~/hooks/useInfiniteScroll.ts';
 import ObjectItem from './ObjectItem/ObjectItem.tsx';
 import ObjectsFilters from './ObjectsFilters/ObjectsFilters.tsx';
 import styles from './ObjectsList.module.scss';
@@ -44,6 +44,9 @@ export default function ObjectsList() {
   useSetPageLoading(isLoading && page === 1);
 
   const hasMore = Boolean(result && result.currentPage < result.totalPages);
+  const loaderRef = useInfiniteScroll(() => {
+    setPage((prev) => prev + 1);
+  }, hasMore && !isLoading);
 
   return (
     <>
@@ -68,13 +71,9 @@ export default function ObjectsList() {
 
       {!isLoading && !error && items.length === 0 && <p>{t('objects.noResults')}</p>}
 
-      {hasMore && (
-        <div className={styles.loadMoreWrap}>
-          <Button onClick={() => setPage((prev) => prev + 1)} disabled={isLoading}>
-            {isLoading ? t('common.loading') : t('objects.loadMore')}
-          </Button>
-        </div>
-      )}
+      {isLoading && page > 1 && <p>{t('common.loading')}</p>}
+
+      {hasMore && <div ref={loaderRef} style={{height: 1}} />}
     </>
   );
 }
