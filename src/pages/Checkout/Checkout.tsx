@@ -5,7 +5,6 @@ import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
 import CardFieldsForm, {type CardFieldsFormHandle} from '~/components/CardFieldsForm/CardFieldsForm.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 import PageTitle from '../../components/PageTitle/PageTitle.tsx';
 import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
 import styles from './Checkout.module.scss';
@@ -31,8 +30,6 @@ export default function Checkout() {
   const {profile} = useProfile();
   const {paymentGateways, isLoading: isLoadingGateways} = usePaymentGateways();
   const {checkout, isLoading: isSubmitting, error} = useCheckout();
-
-  useSetPageLoading(isCartLoading);
 
   const [showCreateAccount, setShowCreateAccount] = useState(false);
   const [cardError, setCardError] = useState<string | null>(null);

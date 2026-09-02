@@ -3,8 +3,8 @@ import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
 import {CancelIcon} from '~/components/Icons/Icons.tsx';
+import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import routes from '~/util/routes.ts';
 import styles from './CartPage.module.scss';
@@ -14,13 +14,13 @@ export default function CartPage() {
   const {cart, isLoading} = useCart();
   const {removeFromCart} = useRemoveFromCart();
 
-  useSetPageLoading(isLoading);
-
   const items = cart?.contents.nodes ?? [];
 
   return (
     <SiteLayout>
       <PageTitle>{t('cart.cart')}</PageTitle>
+
+      {isLoading && <PageContentLoader />}
 
       {!isLoading && items.length === 0 && (
         <div className={styles.empty}>

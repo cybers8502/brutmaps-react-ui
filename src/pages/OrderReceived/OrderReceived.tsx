@@ -2,7 +2,7 @@ import {useOrder} from '@brutmaps/api';
 import {useTranslation} from 'react-i18next';
 import {useLocation, useParams} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import routes from '~/util/routes.ts';
 import PageTitle from '../../components/PageTitle/PageTitle.tsx';
 import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
@@ -27,8 +27,7 @@ export default function OrderReceived() {
   const {order: fetchedOrder, isLoading} = useOrder(stateOrder ? 0 : Number(orderId));
 
   const summary = stateOrder ?? fetchedOrder;
-
-  useSetPageLoading(!stateOrder && isLoading);
+  const showLoader = !stateOrder && isLoading;
 
   return (
     <SiteLayout>
@@ -36,6 +35,8 @@ export default function OrderReceived() {
         <span className={styles.badge}>✓</span>
         <PageTitle className={styles.title}>{t('orderReceived.title')}</PageTitle>
       </div>
+
+      {showLoader && <PageContentLoader />}
 
       {summary && (
         <div className={styles.card}>

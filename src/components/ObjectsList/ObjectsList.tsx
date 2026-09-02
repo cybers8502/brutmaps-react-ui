@@ -2,8 +2,8 @@ import {type SightListItem, type SightsListSortBy, useSightsCount, useSightsList
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSearchParams} from 'react-router-dom';
+import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 import {useInfiniteScroll} from '~/hooks/useInfiniteScroll.ts';
 import ObjectItem from './ObjectItem/ObjectItem.tsx';
 import ObjectsFilters from './ObjectsFilters/ObjectsFilters.tsx';
@@ -41,8 +41,6 @@ export default function ObjectsList() {
     setItems((prev) => (page === 1 ? result.items : [...prev, ...result.items]));
   }, [result, page]);
 
-  useSetPageLoading(isLoading && page === 1);
-
   const hasMore = Boolean(result && result.currentPage < result.totalPages);
   const loaderRef = useInfiniteScroll(() => {
     setPage((prev) => prev + 1);
@@ -60,6 +58,8 @@ export default function ObjectsList() {
       </p>
 
       {error && <p>{t('common.serverError')}</p>}
+
+      {isLoading && page === 1 && <PageContentLoader />}
 
       {!error && items.length > 0 && (
         <div className={styles.grid}>

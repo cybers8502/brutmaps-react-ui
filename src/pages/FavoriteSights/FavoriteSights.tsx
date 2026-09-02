@@ -1,8 +1,8 @@
 import {useFavorites, useToggleFavorite} from '@brutmaps/api';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
+import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import FavoriteSightItem from '~/pages/FavoriteSights/FavoriteSightItem/FavoriteSightItem.tsx';
 import routes from '~/util/routes.ts';
@@ -12,8 +12,6 @@ export default function FavoriteSights() {
   const {t} = useTranslation();
   const {favorites, isLoading, refetch} = useFavorites();
   const {toggleFavorite} = useToggleFavorite();
-
-  useSetPageLoading(isLoading);
 
   const removeFromFavorites = async (id: string) => {
     try {
@@ -32,7 +30,9 @@ export default function FavoriteSights() {
         <div className={styles.frame}>
           <div className={styles.mainBlock}>
             <PageTitle>{t('siteHead.myFavoriteObjects')}</PageTitle>
-            {isLoading ? null : objects.length > 0 ? (
+            {isLoading ? (
+              <PageContentLoader />
+            ) : objects.length > 0 ? (
               <ul className={styles.list}>
                 {objects.map((id) => (
                   <FavoriteSightItem key={id} id={String(id)} removeFromFavorites={removeFromFavorites} />

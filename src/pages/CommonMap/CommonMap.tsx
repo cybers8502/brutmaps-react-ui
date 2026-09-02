@@ -14,13 +14,13 @@ import SightBlogArticle from '~/components/SightBlogArticle/SightBlogArticle';
 import SightPreviewPopup from '~/components/SightPreviewPopup/SightPreviewPopup.tsx';
 import {mapboxToken} from '~/configs/map.configs.ts';
 import {useMapContext} from '~/context/MapContext.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 import useFetchMapDetails from '~/hooks/fetchApi/useFetchMap.tsx';
 import useMapInteractions from '~/hooks/useMapInteractions.ts';
 import useMobileState from '~/hooks/useMobileState.ts';
 import useSightSearchParams from '~/hooks/useSightSearchParams.ts';
 import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import type {PopupInterface} from '~/pages/CommonMap/CommonMap.interface.ts';
+import routes from '~/util/routes.ts';
 import styles from './CommonMap.module.scss';
 
 export default function CommonMap() {
@@ -28,7 +28,6 @@ export default function CommonMap() {
   const isMobileView = useMobileState();
   const {featureCollection, isLoading, isError} = useFetchMapDetails();
 
-  useSetPageLoading(isLoading);
   const {viewport, updateViewport} = useMapContext();
   const searchParams = useSightSearchParams('sight');
 
@@ -52,7 +51,7 @@ export default function CommonMap() {
   }, []);
 
   useEffect(() => {
-    if (!location.pathname.startsWith('/sight/')) setSightSlug(null);
+    if (!location.pathname.startsWith(`${routes.sightSinglePage}/`)) setSightSlug(null);
   }, [location.pathname]);
 
   useEffect(() => {

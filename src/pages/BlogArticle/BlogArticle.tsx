@@ -4,8 +4,8 @@ import parse from 'html-react-parser';
 import {Fragment} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate, useParams} from 'react-router-dom';
+import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 import routes from '~/util/routes.ts';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.tsx';
 import SiteLayout from '../../layouts/SiteSimpleLayout/SiteLayout.tsx';
@@ -17,9 +17,14 @@ export default function BlogArticle() {
   const navigate = useNavigate();
   const {post: articleDetail, isLoading, error} = usePost(slug || '');
 
-  useSetPageLoading(isLoading);
+  if (isLoading) {
+    return (
+      <SiteLayout className={styles.layout}>
+        <PageContentLoader />
+      </SiteLayout>
+    );
+  }
 
-  if (isLoading) return null;
   if (error) navigate('/404');
 
   if (!articleDetail) {

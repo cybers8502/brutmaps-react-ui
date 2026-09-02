@@ -3,9 +3,9 @@ import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
 import AddToFavoriteSightButton from '~/components/AddToFavoriteSightButton/AddToFavoriteSightButton.tsx';
 import Button from '~/components/Button/Button.tsx';
+import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PostContent from '~/components/SightBlogArticle/PostContent/PostContent.tsx';
 import TopGallery from '~/components/SightBlogArticle/TopGallery/TopGallery.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 import useFetchObjectPost from '~/hooks/fetchApi/useFetchObjectPost.tsx';
 import styles from './SightBlogArticle.module.scss';
 
@@ -20,9 +20,7 @@ export default function SightBlogArticle({sightSlug, onSeeMap, className}: Sight
   const navigate = useNavigate();
   const {sight, isLoading, isError} = useFetchObjectPost(sightSlug || '');
 
-  useSetPageLoading(isLoading);
-
-  if (isLoading) return null;
+  if (isLoading) return <PageContentLoader />;
   if (isError) {
     navigate('/404');
     return null;

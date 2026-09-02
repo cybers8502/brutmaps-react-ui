@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import parse from 'html-react-parser';
 import {useTranslation} from 'react-i18next';
 import Button from '~/components/Button/Button.tsx';
+import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
 import SiteLayout from '~/layouts/SiteSimpleLayout/SiteLayout.tsx';
 import routes from '~/util/routes.ts';
 import styles from './AboutPage.module.scss';
@@ -13,10 +13,21 @@ export default function AboutPage() {
   const {t} = useTranslation();
   const {aboutPage, isLoading, error} = useAboutPage();
 
-  useSetPageLoading(isLoading);
+  if (isLoading) {
+    return (
+      <SiteLayout>
+        <PageContentLoader />
+      </SiteLayout>
+    );
+  }
 
-  if (isLoading) return null;
-  if (error || !aboutPage) return <p>{t('common.serverError')}</p>;
+  if (error || !aboutPage) {
+    return (
+      <SiteLayout>
+        <p>{t('common.serverError')}</p>
+      </SiteLayout>
+    );
+  }
 
   const stats = [
     {value: aboutPage.buildingsCount, label: t('about.buildings')},

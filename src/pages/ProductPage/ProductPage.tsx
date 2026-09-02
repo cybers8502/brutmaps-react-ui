@@ -4,7 +4,7 @@ import parse from 'html-react-parser';
 import {useTranslation} from 'react-i18next';
 import {useNavigate, useParams} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
-import {useSetPageLoading} from '~/context/PageLoadingContext.tsx';
+import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import routes from '~/util/routes.ts';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs.tsx';
 import PageTitle from '../../components/PageTitle/PageTitle.tsx';
@@ -19,16 +19,27 @@ export default function ProductPage() {
   const {product, isLoading, error} = useProduct(slug ?? '');
   const {addToCart, isLoading: isAdding} = useAddToCart();
 
-  useSetPageLoading(isLoading);
-
   const handleAddToCart = async () => {
     if (!product) return;
     await addToCart(product.databaseId, 1);
     navigate(routes.cart);
   };
 
-  if (isLoading) return null;
-  if (error) return t('common.serverError');
+  if (isLoading) {
+    return (
+      <SiteLayout>
+        <PageContentLoader />
+      </SiteLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <SiteLayout>
+        <p>{t('common.serverError')}</p>
+      </SiteLayout>
+    );
+  }
 
   if (!product) {
     navigate('/404');
