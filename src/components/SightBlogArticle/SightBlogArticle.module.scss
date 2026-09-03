@@ -1,4 +1,4 @@
-@import '~/styles/helpers/mixins';
+@use '~/styles/helpers/mixins' as *;
 
 .section {
 
@@ -50,7 +50,8 @@
     display: grid;
     grid-template-areas:
       'title button'
-      'info info';
+      'info info'
+      'favorites favorites';
     grid-template-columns: 1fr 230px;
     grid-auto-rows: min-content;
     margin-block-end: 34px;
@@ -62,21 +63,27 @@
   }
 }
 
-.buttonWrapper {
-  display: grid;
-  grid-auto-rows: min-content;
+.mapButton {
   gap: 8px;
+  block-size: 44px;
+  padding-inline: 20px;
 
   @include lg {
     grid-area: button;
+    justify-self: end;
+    align-self: start;
   }
+}
 
-  :global(.button) {
-    block-size: 50px;
-    padding-inline: 22px;
+.favoriteRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-block-start: 10px;
 
-    @include lg {
-      padding-inline: 30px;
-    }
+  @include lg {
+    grid-area: favorites;
+    margin-block-start: 0;
   }
 }

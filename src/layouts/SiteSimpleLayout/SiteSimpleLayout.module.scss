@@ -1,4 +1,4 @@
-@import '~/styles/helpers/mixins';
+@use '~/styles/helpers/mixins' as *;
 
 .content {
   padding-block: 24px 30px;

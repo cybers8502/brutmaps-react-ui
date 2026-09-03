@@ -1,4 +1,4 @@
-@import '~/styles/helpers/mixins';
+@use '~/styles/helpers/mixins' as *;
 
 .container {
   inline-size: min(572px, 100%);

@@ -1,11 +1,21 @@
 import {type MutableRefObject, type RefObject, useCallback} from 'react';
-import type {MapLayerMouseEvent, MapRef} from 'react-map-gl';
+import type {MapMouseEvent, MapRef} from 'react-map-gl/mapbox';
 import type {NavigateFunction} from 'react-router-dom';
-import type {GeoJSONFeature} from '~/components/MapLayers/MapLayers';
+import type {GeoJSONFeature} from '~/components/MapLayers/MapLayers.tsx';
 import type {PopupInterface} from '~/pages/CommonMap/CommonMap.interface.ts';
 
+function toPopupInfo(feature: {
+  geometry: GeoJSON.Geometry;
+  properties: GeoJSON.GeoJsonProperties;
+}): PopupInterface {
+  return {
+    coordinates: (feature.geometry as GeoJSON.Point).coordinates as [number, number],
+    properties: feature.properties as unknown as GeoJSONFeature['properties'],
+  };
+}
+
 interface UseMapInteractionsProps {
-  mapRef: RefObject<MapRef>;
+  mapRef: RefObject<MapRef | null>;
   popupInfo: PopupInterface[];
   setPopupInfo: (info: PopupInterface[]) => void;
   popupInfoRef: MutableRefObject<PopupInterface[]>;
@@ -44,7 +54,7 @@ export default function useMapInteractions({
   );
 
   const handleMapClick = useCallback(
-    (event: MapLayerMouseEvent) => {
+    (event: MapMouseEvent) => {
       const map = mapRef.current;
       const mapInstance = map?.getMap();
       const feature = event.features?.[0];
@@ -53,24 +63,28 @@ export default function useMapInteractions({
         return;
       }
 
-      if (feature.layer.id === 'clusters') {
+      if (feature.layer?.id === 'clusters') {
         const clusterId = feature?.properties?.cluster_id;
         const source = map?.getSource('earthquakes') as any;
         source.getClusterExpansionZoom(clusterId, (err: never, zoom: number) => {
           if (!err) {
-            map?.easeTo({center: feature?.geometry?.coordinates, zoom, duration: 500});
+            map?.easeTo({
+              center: (feature.geometry as GeoJSON.Point).coordinates as [number, number],
+              zoom,
+              duration: 500,
+            });
           }
         });
-      } else if (feature.layer.id === 'sight-points') {
+      } else if (feature.layer?.id === 'sight-points' && feature.id !== undefined) {
         const id = feature.id;
         mapInstance.setFeatureState({source: 'earthquakes', id}, {isActive: true});
-        const info = {coordinates: feature.geometry.coordinates, properties: feature.properties};
+        const info = toPopupInfo(feature);
 
         if (isMobileView) {
           cleanActivePoint(mapInstance);
           setPopupInfo([info]);
         } else {
-          handleOpenSingleSightArticle(feature?.properties?.slug);
+          handleOpenSingleSightArticle(info.properties.slug);
         }
       }
     },
@@ -78,17 +92,17 @@ export default function useMapInteractions({
   );
 
   const handlePointMouseEnter = useCallback(
-    (event: MapLayerMouseEvent) => {
+    (event: MapMouseEvent) => {
       if (isMobileView) return;
       hidePopup();
-      const feature = event.features?.[0] as GeoJSONFeature;
+      const feature = event.features?.[0];
       console.log('feature?.layer?.id ', feature?.layer?.id);
-      if (feature?.layer?.id === 'sight-points') {
+      if (feature?.layer?.id === 'sight-points' && feature.id !== undefined) {
         const map = mapRef.current?.getMap();
         map?.setFeatureState({source: 'earthquakes', id: feature.id}, {hover: true});
         map?.getCanvas().style.setProperty('cursor', 'pointer');
 
-        setPopupInfo([{coordinates: feature.geometry.coordinates, properties: feature.properties}]);
+        setPopupInfo([toPopupInfo(feature)]);
       }
     },
     [isMobileView],

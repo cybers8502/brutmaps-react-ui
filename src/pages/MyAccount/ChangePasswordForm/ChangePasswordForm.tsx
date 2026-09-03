@@ -6,7 +6,16 @@ import Button from '~/components/Button/Button.tsx';
 import PasswordField from '~/pages/AuhServices/components/PasswordField/PasswordField.tsx';
 import styles from '../MyAccount.module.scss';
 
-export default function ChangePasswordForm({setIsChangingPassword}) {
+interface ChangePasswordFormValues {
+  currentPassword: string;
+  password: string;
+}
+
+interface ChangePasswordFormProps {
+  setIsChangingPassword: (isChangingPassword: boolean) => void;
+}
+
+export default function ChangePasswordForm({setIsChangingPassword}: ChangePasswordFormProps) {
   const {t} = useTranslation();
   const [apiError, setApiError] = useState('');
   const {changePassword, isLoading: isMutating} = useChangePassword();
@@ -16,9 +25,9 @@ export default function ChangePasswordForm({setIsChangingPassword}) {
     handleSubmit,
     formState: {errors},
     reset,
-  } = useForm();
+  } = useForm<ChangePasswordFormValues>();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: ChangePasswordFormValues) => {
     setApiError('');
 
     try {

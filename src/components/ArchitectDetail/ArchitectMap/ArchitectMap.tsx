@@ -1,8 +1,8 @@
 import type {SightsFeatureCollection} from '@brutmaps/api';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {useRef} from 'react';
-import type {MapRef} from 'react-map-gl';
-import {Map, Marker, NavigationControl} from 'react-map-gl';
+import type {MapRef} from 'react-map-gl/mapbox';
+import {Map, Marker, NavigationControl} from 'react-map-gl/mapbox';
 import {mapboxToken} from '~/configs/map.configs.ts';
 import styles from './ArchitectMap.module.scss';
 

@@ -1,14 +1,10 @@
-@import './helpers/mixins';
+@use './helpers/mixins' as *;
+@use './base/reset';
+@use './base/form';
+@use './base/buttons';
+@use './base/article';
 
 @layer state;
-
-@layer state {
-  @import './base/reset';
-  @import './base/form';
-  @import './base/buttons';
-}
-
-@import './base/article';
 
 input {
   font-family: 'Poppins', sans-serif;

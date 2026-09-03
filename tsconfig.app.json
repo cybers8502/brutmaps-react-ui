@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"],
+      "~/*": ["./src/*"],
       // Same reasoning as vite.config.ts's resolve.dedupe: force @brutmaps/api's
       // internal imports of these onto this project's copies, not its own
       // nested node_modules.

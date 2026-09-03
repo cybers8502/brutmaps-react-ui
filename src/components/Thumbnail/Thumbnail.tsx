@@ -2,7 +2,7 @@ import type {ProductImage} from '@brutmaps/api';
 import {useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Navigation} from 'swiper/modules';
-import {Swiper, SwiperSlide} from 'swiper/react';
+import {Swiper, type SwiperRef, SwiperSlide} from 'swiper/react';
 import type {NavigationOptions} from 'swiper/types';
 import styles from './Thumbnail.module.scss';
 
@@ -13,7 +13,7 @@ interface ThumbnailProps {
 
 export default function Thumbnail({image, images}: ThumbnailProps) {
   const {t} = useTranslation();
-  const swiperRef = useRef(null);
+  const swiperRef = useRef<SwiperRef>(null);
 
   const handleThumbnailClick = (index: number) => {
     if (swiperRef.current && swiperRef.current.swiper) {

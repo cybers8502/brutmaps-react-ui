@@ -1,7 +1,8 @@
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import classNames from 'classnames';
+import type {Map as MapboxMap} from 'mapbox-gl';
 import {type RefObject, useEffect, useRef, useState} from 'react';
-import type {MapRef} from 'react-map-gl';
+import type {MapRef} from 'react-map-gl/mapbox';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
 import {ArrowLeftIcon} from '../Icons/Icons.tsx';
 import styles from './GeocoderControl.module.scss';
@@ -15,7 +16,7 @@ interface GeocoderControlResult {
 interface GeocoderControlProps {
   className?: string;
   accessToken: string;
-  mapRef?: RefObject<MapRef>;
+  mapRef?: RefObject<MapRef | null>;
   placeholder?: string;
   withButton?: boolean;
   onResult?: (result: GeocoderControlResult) => void;
@@ -52,7 +53,7 @@ export default function GeocoderControl({
     });
 
     if ('appendChild' in containerRef.current) {
-      containerRef.current.appendChild(geocoder.onAdd(map));
+      containerRef.current.appendChild(geocoder.onAdd(map as MapboxMap));
     }
     setGeocoderInstance(geocoder);
 

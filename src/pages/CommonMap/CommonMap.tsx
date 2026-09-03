@@ -1,9 +1,9 @@
 import {Suspense, useCallback, useEffect, useRef, useState} from 'react';
-import {GeolocateControl, Map, NavigationControl} from 'react-map-gl';
+import {GeolocateControl, Map, Marker, NavigationControl} from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import debounce from 'lodash.debounce';
 import {useTranslation} from 'react-i18next';
-import type {MapRef} from 'react-map-gl';
+import type {MapRef} from 'react-map-gl/mapbox';
 import {useLocation, useNavigate} from 'react-router-dom';
 import MapFilters from '~/components/MapFilters/MapFilters.tsx';
 import {clusterLayer, unclutteredPointLayer} from '~/components/MapLayers/layers.ts';
@@ -58,38 +58,26 @@ export default function CommonMap() {
     if (!location.pathname.startsWith(`${routes.sightSinglePage}/`)) setSightSlug(null);
   }, [location.pathname]);
 
-  // Визначаємо геолокацію користувача до першого рендеру мапи, щоб одразу
-  // показати її з місця користувача — без анімованого доцентрування після завантаження.
-  // hadInitialViewport зафіксований разово при монтуванні: якщо в'юпорт вже був
-  // збережений у контексті, геолокацію взагалі не запитуємо.
-  const hadInitialViewport = useRef(!!viewport).current;
-
+  // Стежимо за геолокацією користувача постійно: перше визначення використовуємо
+  // для початкового в'юпорта мапи (якщо той ще не збережений у контексті), а далі
+  // просто оновлюємо позначку користувача на мапі, поки дозволено трекання.
   useEffect(() => {
-    if (hadInitialViewport) return;
-
     if (!navigator.geolocation) {
       setIsLocating(false);
       return;
     }
 
-    let cancelled = false;
-
-    navigator.geolocation.getCurrentPosition(
+    const watchId = navigator.geolocation.watchPosition(
       (position) => {
-        if (cancelled) return;
         setUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude});
         setIsLocating(false);
       },
-      () => {
-        if (!cancelled) setIsLocating(false);
-      },
+      () => setIsLocating(false),
       {enableHighAccuracy: true, timeout: 5000},
     );
 
-    return () => {
-      cancelled = true;
-    };
-  }, [hadInitialViewport]);
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, []);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -103,7 +91,7 @@ export default function CommonMap() {
       const mapInstance = map?.getMap();
 
       mapInstance.easeTo({
-        center: selected.geometry.coordinates,
+        center: selected.geometry.coordinates as [number, number],
         zoom: 12,
         duration: 500,
       });
@@ -213,6 +201,11 @@ export default function CommonMap() {
                 showUserHeading
               />
               <NavigationControl position={'bottom-right'} showCompass={false} />
+              {userLocation && (
+                <Marker latitude={userLocation.latitude} longitude={userLocation.longitude} anchor={'center'}>
+                  <div className={styles.userLocationMarker} />
+                </Marker>
+              )}
               {!isLoading && <MapLayers />}
               {!isMobileView &&
                 popupInfo.map((info, i) => (

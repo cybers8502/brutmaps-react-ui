@@ -1,3 +1,5 @@
+@use '../helpers/mixins' as *;
+
 .article {
   display: grid;
   grid-template-columns: 100%;

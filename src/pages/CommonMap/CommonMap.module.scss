@@ -1,4 +1,4 @@
-@import '~/styles/helpers/mixins';
+@use '~/styles/helpers/mixins' as *;
 
 body:has(.commonMap) {
   background-color: var(--primary-background);
@@ -33,4 +33,13 @@ body:has(.commonMap) {
       isolation: isolate;
     }
   }
+}
+
+.userLocationMarker {
+  inline-size: 16px;
+  block-size: 16px;
+  border-radius: 50%;
+  background-color: var(--primary-red);
+  border: 2px solid var(--primary-white);
+  box-shadow: 0 0 0 4px rgba(219, 19, 19, 0.3);
 }

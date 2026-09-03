@@ -1,4 +1,4 @@
-@import '~/styles/helpers/mixins';
+@use '~/styles/helpers/mixins' as *;
 
 .title {
   margin-block-end: 20px;

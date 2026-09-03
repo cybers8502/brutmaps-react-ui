@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {type RefObject, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import type {MapRef} from 'react-map-gl';
+import type {MapRef} from 'react-map-gl/mapbox';
 import {useSearchParams} from 'react-router-dom';
 import Button from '~/components/Button/Button.tsx';
 import GeocoderControl from '~/components/GeocoderControl/GeocoderControl.tsx';
@@ -13,7 +13,7 @@ import useMobileState from '~/hooks/useMobileState.ts';
 import styles from './MapFilters.module.scss';
 
 interface MapFiltersProps {
-  mapRef: RefObject<MapRef>;
+  mapRef: RefObject<MapRef | null>;
 }
 
 export default function MapFilters({mapRef}: MapFiltersProps) {

@@ -1,7 +1,7 @@
 import {Mousewheel, Pagination, Scrollbar} from 'swiper/modules';
 import {Swiper, type SwiperRef, SwiperSlide} from 'swiper/react';
-import 'swiper/scss';
-import 'swiper/scss/a11y';
+import 'swiper/css';
+import 'swiper/css/a11y';
 import {useRef} from 'react';
 import {Link} from 'react-router-dom';
 import type {GalleryImage} from '~/components/SightBlogArticle/GalleryImage.interface.ts';
@@ -62,9 +62,6 @@ export default function BlogGallery({gallery, initialIndex}: BlogGalleryProps) {
         1024: {
           spaceBetween: 21,
         },
-      }}
-      onSwiper={(swiperInstance) => {
-        swiperRef.current = swiperInstance;
       }}>
       {gallery.map((item, index) => {
         const figcaption = <figcaption>{item?.author?.figcaption}</figcaption>;
@@ -75,7 +72,7 @@ export default function BlogGallery({gallery, initialIndex}: BlogGalleryProps) {
               <figure
                 onClick={() => {
                   if (!isActive && swiperRef.current) {
-                    swiperRef.current.slideTo(index);
+                    swiperRef.current.swiper.slideTo(index);
                   }
                 }}
                 style={{cursor: !isActive ? 'pointer' : 'default'}}>

@@ -1,5 +1,5 @@
 import type {ReactNode} from 'react';
-import {Popup} from 'react-map-gl';
+import {Popup} from 'react-map-gl/mapbox';
 import styles from './MapPointPopup.module.scss';
 
 interface PopupInfoProps {

@@ -1,5 +1,5 @@
 import type {SightFeature, SightsFeatureCollection} from '@brutmaps/api';
-import {Layer, Source} from 'react-map-gl';
+import {Layer, Source} from 'react-map-gl/mapbox';
 import useFetchMapDetails from '~/hooks/fetchApi/useFetchMap.tsx';
 import {clusterCountLayer, clusterLayer, unclutteredPointLayer} from './layers.ts';
 
