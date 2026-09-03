@@ -1,0 +1,47 @@
+@import '~/styles/helpers/mixins';
+
+.banner {
+  display: none;
+
+  @include pre-lg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px var(--paddings);
+    background-color: var(--primary-black);
+    color: var(--primary-white);
+  }
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-inline-size: 0;
+  color: inherit;
+}
+
+.text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.cta {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid var(--primary-white);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.close {
+  flex-shrink: 0;
+  display: flex;
+  color: var(--primary-white);
+  opacity: 0.7;
+}

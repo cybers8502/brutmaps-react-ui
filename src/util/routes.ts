@@ -28,4 +28,6 @@ export const socialLinks = {
   instagram: 'https://instagram.com/brutmaps',
 };
 
+export const appStoreLink = 'https://apps.apple.com/app/brutmaps-brutalism-map/id6792510280';
+
 export default routes;

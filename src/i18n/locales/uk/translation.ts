@@ -27,6 +27,11 @@ const translation: Translation = {
     shop: 'Магазин',
     about: 'Про нас',
   },
+  appBanner: {
+    text: 'Завантажте застосунок Brutmaps',
+    cta: 'App Store',
+    dismiss: 'Закрити',
+  },
   siteHead: {
     logIn: 'Увійти',
     signUp: 'Зареєструватися',

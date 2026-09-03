@@ -25,6 +25,11 @@ const translation = {
     shop: 'Shop',
     about: 'About',
   },
+  appBanner: {
+    text: 'Get the Brutmaps app',
+    cta: 'App Store',
+    dismiss: 'Dismiss',
+  },
   siteHead: {
     logIn: 'Log In',
     signUp: 'Sign up',
