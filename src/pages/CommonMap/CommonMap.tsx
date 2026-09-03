@@ -1,5 +1,5 @@
 import {Suspense, useCallback, useEffect, useRef, useState} from 'react';
-import {Map, NavigationControl} from 'react-map-gl';
+import {GeolocateControl, Map, NavigationControl} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import debounce from 'lodash.debounce';
 import {useTranslation} from 'react-i18next';
@@ -35,6 +35,10 @@ export default function CommonMap() {
   const popupInfoRef = useRef<PopupInterface[]>([]);
   const [popupInfo, setPopupInfo] = useState<PopupInterface[]>([]);
   const [sightSlug, setSightSlug] = useState<string | null>(null);
+  const [userLocation, setUserLocation] = useState<{latitude: number; longitude: number} | null>(null);
+  // Якщо в'юпорт вже збережено в контексті (був попередній перегляд мапи),
+  // геолокацію не чекаємо — одразу показуємо мапу з нього.
+  const [isLocating, setIsLocating] = useState(() => !viewport);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,6 +57,39 @@ export default function CommonMap() {
   useEffect(() => {
     if (!location.pathname.startsWith(`${routes.sightSinglePage}/`)) setSightSlug(null);
   }, [location.pathname]);
+
+  // Визначаємо геолокацію користувача до першого рендеру мапи, щоб одразу
+  // показати її з місця користувача — без анімованого доцентрування після завантаження.
+  // hadInitialViewport зафіксований разово при монтуванні: якщо в'юпорт вже був
+  // збережений у контексті, геолокацію взагалі не запитуємо.
+  const hadInitialViewport = useRef(!!viewport).current;
+
+  useEffect(() => {
+    if (hadInitialViewport) return;
+
+    if (!navigator.geolocation) {
+      setIsLocating(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        if (cancelled) return;
+        setUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude});
+        setIsLocating(false);
+      },
+      () => {
+        if (!cancelled) setIsLocating(false);
+      },
+      {enableHighAccuracy: true, timeout: 5000},
+    );
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hadInitialViewport]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -135,13 +172,14 @@ export default function CommonMap() {
     });
 
   const getInitialView = () => {
-    return (
-      viewport || {
-        latitude: 48.86199106320665,
-        longitude: 2.347146829343072,
-        zoom: 9,
-      }
-    );
+    if (viewport) return viewport;
+    if (userLocation) return {...userLocation, zoom: 12};
+
+    return {
+      latitude: 48.86199106320665,
+      longitude: 2.347146829343072,
+      zoom: 9,
+    };
   };
 
   if (isError) return <p>{t('common.serverError')}</p>;
@@ -151,48 +189,63 @@ export default function CommonMap() {
   return (
     <Suspense fallback={<div>{t('map.loadingMap')}</div>}>
       <SiteLayout className={styles.commonMap} contentClassName={styles.commonMapContent}>
-        <MapFilters mapRef={mapRef} />
+        {isLocating ? (
+          <div>{t('map.loadingMap')}</div>
+        ) : (
+          <>
+            <MapFilters mapRef={mapRef} />
 
-        <Map
-          ref={mapRef}
-          initialViewState={initialViewport}
-          mapStyle='mapbox://styles/mapbox/dark-v10'
-          mapboxAccessToken={mapboxToken}
-          interactiveLayerIds={[clusterLayer.id, unclutteredPointLayer.id] as string[]}
-          onClick={handleMapClick}
-          onMouseEnter={handlePointMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onLoad={handleViewportChange}
-          onMoveEnd={handleViewportChange}>
-          <NavigationControl position={'bottom-right'} showCompass={false} />
-          {!isLoading && <MapLayers />}
-          {!isMobileView &&
-            popupInfo.map((info, i) => (
-              <MapPointPopup key={i} popupInfo={info}>
-                <SightPreviewPopup popupInfo={info} onClick={() => handlePopupClick(info.properties.slug)} />
-              </MapPointPopup>
-            ))}
-        </Map>
+            <Map
+              ref={mapRef}
+              initialViewState={initialViewport}
+              mapStyle='mapbox://styles/mapbox/dark-v10'
+              mapboxAccessToken={mapboxToken}
+              interactiveLayerIds={[clusterLayer.id, unclutteredPointLayer.id] as string[]}
+              onClick={handleMapClick}
+              onMouseEnter={handlePointMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onLoad={handleViewportChange}
+              onMoveEnd={handleViewportChange}>
+              <GeolocateControl
+                position={'bottom-right'}
+                positionOptions={{enableHighAccuracy: true}}
+                trackUserLocation
+                showUserHeading
+              />
+              <NavigationControl position={'bottom-right'} showCompass={false} />
+              {!isLoading && <MapLayers />}
+              {!isMobileView &&
+                popupInfo.map((info, i) => (
+                  <MapPointPopup key={i} popupInfo={info}>
+                    <SightPreviewPopup
+                      popupInfo={info}
+                      onClick={() => handlePopupClick(info.properties.slug)}
+                    />
+                  </MapPointPopup>
+                ))}
+            </Map>
 
-        <MapObjectsBadge />
+            <MapObjectsBadge />
 
-        {sightSlug && (
-          <SightBlogArticle
-            sightSlug={sightSlug}
-            onSeeMap={() => setSightSlug(null)}
-            className={styles['blog-article']}
-          />
+            {sightSlug && (
+              <SightBlogArticle
+                sightSlug={sightSlug}
+                onSeeMap={() => setSightSlug(null)}
+                className={styles['blog-article']}
+              />
+            )}
+
+            {isMobileView &&
+              popupInfo.map((info, i) => (
+                <SightPreviewPopup
+                  key={i}
+                  popupInfo={info}
+                  closeHandle={hidePopup}
+                  onClick={() => handlePopupClick(info.properties.slug)}
+                />
+              ))}
+          </>
         )}
-
-        {isMobileView &&
-          popupInfo.map((info, i) => (
-            <SightPreviewPopup
-              key={i}
-              popupInfo={info}
-              closeHandle={hidePopup}
-              onClick={() => handlePopupClick(info.properties.slug)}
-            />
-          ))}
       </SiteLayout>
     </Suspense>
   );
