@@ -1,11 +1,13 @@
 import {useArchitect, useSightsList, useSightsMap} from '@brutmaps/api';
 import parse from 'html-react-parser';
+import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
 import ArchitectBuildingItem from '~/components/ArchitectDetail/ArchitectBuildingItem/ArchitectBuildingItem.tsx';
 import ArchitectMap from '~/components/ArchitectDetail/ArchitectMap/ArchitectMap.tsx';
 import {ArrowLeftIcon} from '~/components/Icons/Icons.tsx';
 import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
+import {getInitials} from '~/util/getInitials.ts';
 import routes from '~/util/routes.ts';
 import styles from './ArchitectDetail.module.scss';
 
@@ -15,6 +17,7 @@ interface ArchitectDetailProps {
 
 export default function ArchitectDetail({slug}: ArchitectDetailProps) {
   const {t} = useTranslation();
+  const [imageFailed, setImageFailed] = useState(false);
   const {architect, isLoading, error} = useArchitect(slug);
 
   const architectId = architect ? String(architect.id) : undefined;
@@ -43,10 +46,16 @@ export default function ArchitectDetail({slug}: ArchitectDetailProps) {
 
         <div className={styles.header}>
           <picture className={styles.picture}>
-            {architect.image?.url ? (
-              <img src={architect.image.url} alt={architect.image.alt || name} />
+            {architect.image?.url && !imageFailed ? (
+              <img
+                src={architect.image.url}
+                alt={architect.image.alt || name}
+                onError={() => setImageFailed(true)}
+              />
             ) : (
-              <span className={styles.pictureFallback} aria-hidden='true' />
+              <span className={styles.pictureFallback} aria-hidden='true'>
+                {getInitials(architect)}
+              </span>
             )}
           </picture>
           <h1 className={styles.title}>{name}</h1>

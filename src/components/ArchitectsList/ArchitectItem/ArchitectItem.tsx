@@ -2,6 +2,7 @@ import type {Architect} from '@brutmaps/api';
 import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
+import {getInitials} from '~/util/getInitials.ts';
 import routes from '~/util/routes.ts';
 import styles from './ArchitectItem.module.scss';
 
@@ -23,7 +24,9 @@ export default function ArchitectItem({architect}: ArchitectItemProps) {
         {showImage ? (
           <img src={image.url} alt={image.alt || name} loading='lazy' onError={() => setImageFailed(true)} />
         ) : (
-          <span className={styles.pictureFallback} aria-hidden='true' />
+          <span className={styles.pictureFallback} aria-hidden='true'>
+            {getInitials(architect)}
+          </span>
         )}
       </picture>
       <div className={styles.body}>

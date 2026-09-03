@@ -36,10 +36,16 @@
 }
 
 .pictureFallback {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   inline-size: 100%;
   block-size: 100%;
-  background-color: var(--second-background);
+  background-color: var(--primary-white);
+  color: var(--primary-black);
+  font-size: 28px;
+  font-weight: 700;
+  opacity: 0.3;
 }
 
 .body {
