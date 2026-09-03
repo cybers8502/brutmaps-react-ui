@@ -2,10 +2,12 @@ import {type SightListItem, type SightsListSortBy, useSightsCount, useSightsList
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSearchParams} from 'react-router-dom';
+import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs.tsx';
 import Loader from '~/components/Loader/Loader.tsx';
 import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import {useInfiniteScroll} from '~/hooks/useInfiniteScroll.ts';
+import routes from '~/util/routes.ts';
 import ObjectItem from './ObjectItem/ObjectItem.tsx';
 import ObjectsFilters from './ObjectsFilters/ObjectsFilters.tsx';
 import styles from './ObjectsList.module.scss';
@@ -47,8 +49,12 @@ export default function ObjectsList() {
     setPage((prev) => prev + 1);
   }, hasMore && !isLoading);
 
+  const breadcrumbItems = [{name: t('common.home'), path: routes.commonMap}, {name: t('nav.objects')}];
+
   return (
     <>
+      <Breadcrumbs items={breadcrumbItems} />
+
       <div className={styles.pageHeader}>
         <PageTitle>{t('objects.title')}</PageTitle>
         <ObjectsFilters />

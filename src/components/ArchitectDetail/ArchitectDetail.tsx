@@ -2,10 +2,9 @@ import {useArchitect, useSightsList, useSightsMap} from '@brutmaps/api';
 import parse from 'html-react-parser';
 import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Link} from 'react-router-dom';
 import ArchitectBuildingItem from '~/components/ArchitectDetail/ArchitectBuildingItem/ArchitectBuildingItem.tsx';
 import ArchitectMap from '~/components/ArchitectDetail/ArchitectMap/ArchitectMap.tsx';
-import {ArrowLeftIcon} from '~/components/Icons/Icons.tsx';
+import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs.tsx';
 import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import {getInitials} from '~/util/getInitials.ts';
 import routes from '~/util/routes.ts';
@@ -36,13 +35,16 @@ export default function ArchitectDetail({slug}: ArchitectDetailProps) {
 
   const name = architect.fullName || architect.title;
 
+  const breadcrumbItems = [
+    {name: t('common.home'), path: routes.commonMap},
+    {name: t('nav.architects'), path: routes.architects},
+    {name},
+  ];
+
   return (
     <div className={styles.wrap}>
       <div className={styles.info}>
-        <Link to={routes.architects} className={styles.backLink}>
-          <ArrowLeftIcon size={16} />
-          {t('architects.backToList')}
-        </Link>
+        <Breadcrumbs items={breadcrumbItems} />
 
         <div className={styles.header}>
           <picture className={styles.picture}>

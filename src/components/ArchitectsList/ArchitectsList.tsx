@@ -3,12 +3,14 @@ import classNames from 'classnames';
 import {useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import ArchitectItem from '~/components/ArchitectsList/ArchitectItem/ArchitectItem.tsx';
+import Breadcrumbs from '~/components/Breadcrumbs/Breadcrumbs.tsx';
 import CancelButton from '~/components/CancelButton/CancelButton.tsx';
 import {SearchIcon} from '~/components/Icons/Icons.tsx';
 import PageContentLoader from '~/components/PageContentLoader/PageContentLoader.tsx';
 import PageTitle from '~/components/PageTitle/PageTitle.tsx';
 import useDebounce from '~/hooks/useDebounce.ts';
 import {useInfiniteScroll} from '~/hooks/useInfiniteScroll.ts';
+import routes from '~/util/routes.ts';
 import styles from './ArchitectsList.module.scss';
 
 type SortBy = 'count' | 'name';
@@ -52,8 +54,12 @@ export default function ArchitectsList() {
     setVisibleCount((prev) => prev + PER_PAGE);
   }, hasMore && !loading);
 
+  const breadcrumbItems = [{name: t('common.home'), path: routes.commonMap}, {name: t('nav.architects')}];
+
   return (
     <>
+      <Breadcrumbs items={breadcrumbItems} />
+
       <div className={styles.pageHeader}>
         <PageTitle>{t('architects.title')}</PageTitle>
       </div>
