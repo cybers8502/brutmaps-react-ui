@@ -1,0 +1,113 @@
+@import '~/styles/helpers/mixins';
+
+.wrap {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: 1fr;
+
+  @include lg {
+    grid-template-columns: 1fr 440px;
+    align-items: start;
+  }
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-block-end: 24px;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-block-end: 24px;
+}
+
+.picture {
+  display: block;
+  flex-shrink: 0;
+  inline-size: 100px;
+  block-size: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.pictureFallback {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  background-color: var(--second-background);
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.description {
+  margin-block-end: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.85;
+
+  p + p {
+    margin-block-start: 12px;
+  }
+}
+
+.wikiLink {
+  display: inline-flex;
+  align-items: center;
+  block-size: 40px;
+  padding-inline: 20px;
+  margin-block-end: 32px;
+  border: 2px solid #2d2d2d;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 500;
+
+  &:hover {
+    border-color: var(--primary-red);
+    color: var(--primary-red);
+  }
+}
+
+.buildingsTitle {
+  margin-block-end: 16px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.buildingsList {
+  display: grid;
+  gap: 10px;
+}
+
+.mapWrap {
+  block-size: 320px;
+  overflow: hidden;
+
+  @include lg {
+    position: sticky;
+    inset-block-start: 20px;
+    block-size: 600px;
+  }
+}

@@ -2,6 +2,7 @@ const routes = {
   commonMap: '/',
   sightSinglePage: '/sight',
   objects: '/objects',
+  architects: '/architects',
   blog: '/blog',
   shop: '/shop',
   about: '/about',

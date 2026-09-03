@@ -22,6 +22,7 @@ const translation: Translation = {
   nav: {
     map: 'Карта',
     objects: 'Об’єкти',
+    architects: 'Архітектори',
     blog: 'Блог',
     shop: 'Магазин',
     about: 'Про нас',
@@ -122,6 +123,18 @@ const translation: Translation = {
     sortOldest: 'Сортувати: спочатку старі',
     loadMore: 'Показати ще',
     noResults: 'Немає об’єктів за цими фільтрами',
+  },
+  architects: {
+    title: 'Архітектори',
+    count: '{{total}} архітекторів',
+    buildingsCount: '{{count}} будівель',
+    searchPlaceholder: 'Пошук архітекторів...',
+    sortByCount: 'Найбільше будівель',
+    sortByName: 'А–Я',
+    noResults: 'Немає архітекторів за цим запитом',
+    backToList: 'Усі архітектори',
+    wikiLink: 'Посилання на Wikipedia',
+    buildingsTitle: 'Будівлі ({{count}})',
   },
   about: {
     title: 'Про нас',

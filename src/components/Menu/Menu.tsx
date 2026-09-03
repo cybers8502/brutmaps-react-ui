@@ -26,6 +26,13 @@ export default function Menu() {
       </li>
       <li>
         <Link
+          to={routes.architects}
+          className={classNames({[styles['is-active']]: location.pathname.startsWith(routes.architects)})}>
+          {t('nav.architects')}
+        </Link>
+      </li>
+      <li>
+        <Link
           to={routes.blog}
           className={classNames({[styles['is-active']]: location.pathname === routes.blog})}>
           {t('nav.blog')}

@@ -20,6 +20,7 @@ const translation = {
   nav: {
     map: 'Map',
     objects: 'Objects',
+    architects: 'Architects',
     blog: 'Blog',
     shop: 'Shop',
     about: 'About',
@@ -120,6 +121,18 @@ const translation = {
     sortOldest: 'Sort by: Earliest added first',
     loadMore: 'Load more',
     noResults: 'No objects match these filters',
+  },
+  architects: {
+    title: 'Architects',
+    count: '{{total}} architects',
+    buildingsCount: '{{count}} buildings',
+    searchPlaceholder: 'Search architects...',
+    sortByCount: 'Most buildings',
+    sortByName: 'A–Z',
+    noResults: 'No architects match your search',
+    backToList: 'All architects',
+    wikiLink: 'Link to Wikipedia',
+    buildingsTitle: 'Buildings ({{count}})',
   },
   about: {
     title: 'About',

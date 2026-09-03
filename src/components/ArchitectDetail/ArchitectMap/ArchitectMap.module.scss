@@ -1,0 +1,9 @@
+.pin {
+  display: block;
+  inline-size: 14px;
+  block-size: 14px;
+  border-radius: 50%;
+  background-color: var(--primary-red);
+  border: 2px solid var(--primary-white);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+}

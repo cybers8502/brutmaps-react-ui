@@ -15,6 +15,8 @@ import {MapProvider} from './context/MapContext.tsx';
 import routes from './util/routes.ts';
 
 const AboutPage = lazy(() => import('~/pages/AboutPage/AboutPage.tsx'));
+const ArchitectsPage = lazy(() => import('~/pages/ArchitectsPage/ArchitectsPage.tsx'));
+const ArchitectPage = lazy(() => import('~/pages/ArchitectPage/ArchitectPage.tsx'));
 const Login = lazy(() => import('~/pages/AuhServices/Login/Login.tsx'));
 const LostPasswordPage = lazy(() => import('~/pages/AuhServices/PasswordRecovery/LostPasswordPage.tsx'));
 const ResetPasswordPage = lazy(() => import('~/pages/AuhServices/PasswordRecovery/ResetPasswordPage.tsx'));
@@ -54,6 +56,8 @@ export default function App() {
                     <Route path={routes.commonMap} element={<CommonMap />} />
                     <Route path={`${routes.sightSinglePage}/:slug`} element={<SightPage />} />
                     <Route path={routes.objects} element={<ObjectsPage />} />
+                    <Route path={routes.architects} element={<ArchitectsPage />} />
+                    <Route path={`${routes.architects}/:slug`} element={<ArchitectPage />} />
                     <Route path={routes.blog} element={<BlogRootPage />} />
                     <Route path={routes.instagram} element={<InstagramPage />} />
                     <Route path={`${routes.blog}/:slug`} element={<BlogArticle />} />
