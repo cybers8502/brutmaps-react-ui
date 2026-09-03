@@ -5,5 +5,10 @@
 }
 
 .main {
+  // AppStoreBanner renders display:none on desktop, so without an explicit
+  // row it gets auto-placed into the 2nd (auto) track instead of the 3rd
+  // (1fr) one, collapsing to its content height — breaking every page that
+  // relies on height:100% cascading down (e.g. the map).
+  grid-row: 3;
   min-block-size: 0;
 }
